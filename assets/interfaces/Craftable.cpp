@@ -1,0 +1,41 @@
+#include "../../include/interfaces/Craftable.h"
+#include <stdexcept>
+
+Craftable::Craftable(ItemId id, std::string name, int sellAmount,
+	int timeToCraft, const std::unordered_map<ItemId, int>& itemsRequired) :
+	Item(id, name), sellAmount(sellAmount),
+	timeToCraft(timeToCraft) {
+
+	SetItemsRequired(itemsRequired);
+}
+
+int Craftable::GetSellAmount() const {
+	return sellAmount;
+}
+
+void Craftable::SetSellAmount(int newSellAmount) {
+	sellAmount = newSellAmount;
+}
+
+int Craftable::GetTimeToCraft() const {
+	return timeToCraft;
+}
+
+void Craftable::SetTimeToCraft(int newTimeToCraft) {
+	timeToCraft = newTimeToCraft;
+}
+
+const std::unordered_map<ItemId, int>& Craftable::GetItemsRequired() const {
+	return itemsRequired;
+}
+
+void Craftable::SetItemsRequired(const std::unordered_map<ItemId, int>& newItemsRequired) {
+	for (const auto& requirement : newItemsRequired) {
+		const int requiredCount = requirement.second;
+		if (requiredCount <= 0) {
+			throw std::invalid_argument("SetItemsRequired: Required item count must be greater than 0.");
+		}
+	}
+
+	itemsRequired = newItemsRequired;
+}

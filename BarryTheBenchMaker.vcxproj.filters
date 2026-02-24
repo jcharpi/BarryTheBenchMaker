@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{d46a04c1-c94a-401f-b277-282ef9f18a53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{64798698-4024-4fcb-873b-df1c1bfb0c54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets">
+      <UniqueIdentifier>{a8cd0230-54d8-406e-bec5-2c307b5293e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets\items">
+      <UniqueIdentifier>{97af7a13-8a99-4d23-9bbd-48457fbf8cbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets\items\materials">
+      <UniqueIdentifier>{9eb21cca-d9e6-478e-a5fd-fe5f16eb038c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets\items\craftables">
+      <UniqueIdentifier>{8bfb2e9a-8153-4351-a3b2-0cc8626363d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\items">
+      <UniqueIdentifier>{9986bc88-58e4-49f7-aef4-125cc7f4afc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\items\materials">
+      <UniqueIdentifier>{24e992ea-2157-4939-8df6-d4c59c119289}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\items\craftables">
+      <UniqueIdentifier>{e66ade33-8151-48c5-8f22-e0b5cb00694a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets\items\tools">
+      <UniqueIdentifier>{4f85eb07-feff-4c6e-a445-3a3c6f650ed5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets\interfaces">
+      <UniqueIdentifier>{cc85333c-478e-4a58-8d7b-b30ee349f3be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\items\tools">
+      <UniqueIdentifier>{fda85dc8-2c19-4469-a710-7d4f406f973a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\interfaces">
+      <UniqueIdentifier>{43f9853b-fac2-42ec-8309-1b45d4ce4c9f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="assets\items\tools\Axe.cpp">
+      <Filter>assets\items\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="assets\Player.cpp">
+      <Filter>assets</Filter>
+    </ClCompile>
+    <ClCompile Include="BarryTheBenchMaker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="assets\items\Cake.cpp">
+      <Filter>assets\items</Filter>
+    </ClCompile>
+    <ClCompile Include="assets\interfaces\Material.cpp">
+      <Filter>assets\interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="assets\interfaces\Craftable.cpp">
+      <Filter>assets\interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="assets\items\craftables\Bench.cpp">
+      <Filter>assets\items\craftables</Filter>
+    </ClCompile>
+    <ClCompile Include="assets\items\craftables\BenchLeg.cpp">
+      <Filter>assets\items\craftables</Filter>
+    </ClCompile>
+    <ClCompile Include="assets\items\craftables\BenchSeat.cpp">
+      <Filter>assets\items\craftables</Filter>
+    </ClCompile>
+    <ClCompile Include="assets\items\materials\Wood.cpp">
+      <Filter>assets\items\materials</Filter>
+    </ClCompile>
+    <ClCompile Include="assets\interfaces\Item.cpp">
+      <Filter>assets\interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="assets\items\tools\Sword.cpp">
+      <Filter>assets\items\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="assets\interfaces\Tool.cpp">
+      <Filter>assets\interfaces</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Player.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\items\tools\Axe.h">
+      <Filter>include\items\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="include\items\Cake.h">
+      <Filter>include\items</Filter>
+    </ClInclude>
+    <ClInclude Include="include\interfaces\Material.h">
+      <Filter>include\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="include\interfaces\Craftable.h">
+      <Filter>include\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="include\items\craftables\Bench.h">
+      <Filter>include\items\craftables</Filter>
+    </ClInclude>
+    <ClInclude Include="include\items\craftables\BenchLeg.h">
+      <Filter>include\items\craftables</Filter>
+    </ClInclude>
+    <ClInclude Include="include\items\craftables\BenchSeat.h">
+      <Filter>include\items\craftables</Filter>
+    </ClInclude>
+    <ClInclude Include="include\items\materials\Wood.h">
+      <Filter>include\items\materials</Filter>
+    </ClInclude>
+    <ClInclude Include="include\interfaces\Item.h">
+      <Filter>include\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="include\items\tools\Sword.h">
+      <Filter>include\items\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="include\interfaces\Tool.h">
+      <Filter>include\interfaces</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

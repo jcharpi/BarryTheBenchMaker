@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="BarryTheBenchMaker.vcxproj" Id="328de52d-935b-4406-83d5-ccfdf59f65ad" />
+</Solution>

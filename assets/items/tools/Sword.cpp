@@ -1,0 +1,48 @@
+#include "../../../include/items/tools/Sword.h"
+
+int Sword::GetDamageForTier(int tier) {
+	switch (tier) {
+	default:
+	case 1:
+		return 25;
+	case 2:
+		return 50;
+	case 3:
+		return 100;
+	}
+}
+
+std::string Sword::GetNameForTier(int tier) {
+	switch (tier) {
+	default:
+	case 1:
+		return "Sword";
+	case 2:
+		return "Sword II";
+	case 3:
+		return "Sword III";
+	}
+}
+
+Sword::Sword() : Tool(ItemId::Sword, GetNameForTier(GetTier()), 1), damage(GetDamageForTier(GetTier())) {}
+
+int Sword::GetDamage() const {
+	return damage;
+}
+
+void Sword::SetDamage(int newDamage) {
+	damage = newDamage;
+}
+
+bool Sword::Upgrade() {
+	const int currentTier = GetTier();
+	if (currentTier >= 3) {
+		return false;
+	}
+
+	const int newTier = currentTier + 1;
+	SetTier(newTier);
+	SetDamage(GetDamageForTier(newTier));
+	SetName(GetNameForTier(newTier));
+	return true;
+}
