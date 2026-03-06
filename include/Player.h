@@ -8,6 +8,8 @@
 #include "items/tools/Axe.h"
 #include "items/tools/Sword.h"
 
+class Wood;
+
 class Player {
 private:
 	int currentHealth;
@@ -24,9 +26,12 @@ public:
 	int GetCurrentHealth() const;
 	int GetMaxHealth() const;
 	int GetGold() const;
+	
 	Sword* GetSword() const;
 	Axe* GetAxe() const;
+	
 	const std::unordered_map<ItemId, int>& GetItemsOwned() const;
+	void PrintInventory() const;
 
 	void AddItem(Item* item, int amount);
 	int GetItemCount(const Item* item) const;
@@ -35,6 +40,7 @@ public:
 	bool craft(Craftable* item);
 	int sell(Item* item);
 	bool eatCake();
+
 	bool upgradeSword();
 	bool upgradeAxe();
 };

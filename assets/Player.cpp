@@ -1,6 +1,6 @@
 #include "../include/Player.h"
 #include "../include/items/materials/Wood.h"
-
+#include <iostream>
 #include <algorithm>
 #include <chrono>
 #include <thread>
@@ -44,6 +44,23 @@ Axe* Player::GetAxe() const {
 
 const std::unordered_map<ItemId, int>& Player::GetItemsOwned() const {
 	return itemsOwned;
+}
+
+void Player::PrintInventory() const {
+	if (itemsOwned.empty()) {
+		std::cout << "Inventory is empty! Get choppin' some wood!\n";
+		return;
+	}
+
+	std::cout << "Inventory\n";
+	for (const auto& [itemId, count] : itemsOwned) {
+		std::string name = "Unknown";
+		auto item = itemLookup.find(itemId);
+		if (item != itemLookup.end() && item->second != nullptr) {
+			name = item->second->GetName();
+		}
+		std::cout << "- " << name << ": " << count << "\n";
+	}
 }
 
 void Player::AddItem(Item* item, int amount) {
