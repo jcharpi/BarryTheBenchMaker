@@ -36,10 +36,10 @@ public:
 	void AddItem(Item* item, int amount);
 	int GetItemCount(const Item* item) const;
 
-	bool chopWood(Wood* wood);
+	bool chop(Wood* wood);
 	bool craft(Craftable* item);
 	int sell(Item* item);
-	bool eatCake();
+	bool eat();
 
 	bool upgradeSword();
 	bool upgradeAxe();

@@ -85,7 +85,7 @@ int Player::GetItemCount(const Item* item) const {
 	return ownedItemEntry->second;
 }
 
-bool Player::chopWood(Wood* wood) {
+bool Player::chop(Wood* wood) {
 	if (axe == nullptr || wood == nullptr) {
 		return false;
 	}
@@ -169,7 +169,7 @@ int Player::sell(Item* item) {
 	return sellAmount;
 }
 
-bool Player::eatCake() {
+bool Player::eat() {
 	auto ownedCakeEntry = itemsOwned.find(ItemId::Cake);
 	if (ownedCakeEntry == itemsOwned.end() || ownedCakeEntry->second <= 0) {
 		return false;
