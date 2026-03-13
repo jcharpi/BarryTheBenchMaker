@@ -1,5 +1,4 @@
 #include "../include/Player.h"
-#include "../include/items/materials/Wood.h"
 #include <iostream>
 #include <algorithm>
 #include <chrono>
@@ -85,7 +84,7 @@ int Player::GetItemCount(const Item* item) const {
 	return ownedItemEntry->second;
 }
 
-bool Player::chop(Wood* wood) {
+bool Player::chop(Material* wood) {
 	if (axe == nullptr || wood == nullptr) {
 		return false;
 	}
@@ -144,7 +143,7 @@ int Player::sell(Item* item) {
 	}
 
 	auto ownedItemEntry = itemsOwned.find(item->GetId());
-	if (ownedItemEntry == itemsOwned.end() || ownedItemEntry->second <= 0) {
+	if (ownedItemEntry == itemsOwned.end()) {
 		return 0;
 	}
 
@@ -167,6 +166,26 @@ int Player::sell(Item* item) {
 
 	gold += sellAmount;
 	return sellAmount;
+}
+
+bool Player::buy(Item* item, int quantity) {
+	if (item == nullptr || quantity <= 0) {
+		return false;
+	}
+
+	auto* material = dynamic_cast<Material*>(item);
+	if (material == nullptr) {
+		return false;
+	}
+
+	const int totalCost = material->GetBuyAmount() * quantity;
+	if (gold < totalCost) {
+		return false;
+	}
+
+	gold -= totalCost;
+	AddItem(item, quantity);
+	return true;
 }
 
 bool Player::eat() {

@@ -8,8 +8,6 @@
 #include "items/tools/Axe.h"
 #include "items/tools/Sword.h"
 
-class Wood;
-
 class Player {
 private:
 	int currentHealth;
@@ -36,9 +34,10 @@ public:
 	void AddItem(Item* item, int amount);
 	int GetItemCount(const Item* item) const;
 
-	bool chop(Wood* wood);
+	bool chop(Material* wood);
 	bool craft(Craftable* item);
 	int sell(Item* item);
+	bool buy(Item* item, int quantity);
 	bool eat();
 
 	bool upgradeSword();
