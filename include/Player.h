@@ -36,7 +36,7 @@ public:
 
 	bool chop(Material* wood);
 	bool craft(Craftable* item);
-	int sell(Item* item);
+	int sell(Item* item, int quantity);
 	bool buy(Item* item, int quantity);
 	bool eat();
 

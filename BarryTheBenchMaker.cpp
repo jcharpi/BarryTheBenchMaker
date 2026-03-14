@@ -47,61 +47,38 @@ static Craftable* FindCraftable(const std::vector<Craftable*>& craftables, const
     return nullptr;
 }
 
-// ============================================================
-// main  — the game loop
-// ============================================================
 int main()
 {
     std::cout << "A good night's sleep! I feel well rested. Time to make some benches!\n";
     std::cout << "I need to gather some wood first. I can chop trees with my axe.\n";
 
-    // Set up items — these are the "world" objects Barry interacts with.
-    // They live here in main so their lifetime matches the whole game.
     Sword sword;
     Axe axe;
     Material wood(ItemId::Wood, "Wood", 15, 5);
-    Cake cake(10, 5, 25);   // buy: 10 gold, sell: 5 gold, heals: 25 HP
-    Craftable benchLeg(ItemId::BenchLeg,  "Bench Leg",  8,   10, {{ItemId::Wood, 2}});
+    Cake cake(10, 5, 25);   // buy: 10g, sell: 5g, heals: 25 HP
+    Craftable benchLeg(ItemId::BenchLeg,   "Bench Leg",  8,   10, {{ItemId::Wood, 2}});
     Craftable benchSeat(ItemId::BenchSeat, "Bench Seat", 90,  25, {{ItemId::Wood, 12}});
-    Craftable bench(ItemId::Bench,      "Bench",      200, 35, {{ItemId::BenchLeg, 4}, {ItemId::BenchSeat, 1}});
+    Craftable bench(ItemId::Bench,         "Bench",      200, 35, {{ItemId::BenchLeg, 4}, {ItemId::BenchSeat, 1}});
 
-    // Shop inventory — items available to purchase
-    std::vector<Material*> shopItems = { &cake };
-
-    // Craftable items
-    std::vector<Craftable*> craftables = { &benchLeg, &benchSeat, &bench };
-
-    // Item lookup for sell — maps ItemId to Item* for all world items
-    // We pass this to the sell handler to resolve target names
-    std::vector<Item*> allSellableItems = { &wood, &cake, &benchLeg, &benchSeat, &bench };
+    std::vector<Material*> shopItems    = { &cake };
+    std::vector<Craftable*> craftables  = { &benchLeg, &benchSeat, &bench };
+    std::vector<Item*> sellableItems    = { &wood, &cake, &benchLeg, &benchSeat, &bench };
 
     Player player(100, 0, &sword, &axe);
 
-    // --------------------------------------------------------
-    // THE GAME LOOP
-    // This runs forever until the player types "quit".
-    // Each iteration:
-    //   1. Print the prompt (what can Barry do right now?)
-    //   2. Read a line of input
-    //   3. Parse it into an action + quantity + optional target
-    //   4. Check if the action is available
-    //   5. Execute it (quantity times for repeatable actions)
-    // --------------------------------------------------------
     std::string input;
 
     while (true) {
-        std::vector<Action> available = GetAvailableActions(player);
+        std::vector<Action> available = GetAvailableActions(player, craftables, sellableItems);
         std::cout << std::format("\nTime to make some benches... or uh, I guess I could also: {}\n> ", PrintPrompt(available));
         std::getline(std::cin, input);
 
         ParsedCommand cmd = ParseInput(input);
 
-        if (cmd.action == Action::Quit) {
-            break;
-        }
+        if (cmd.action == Action::Quit) break;
 
         if (cmd.action == Action::Unknown) {
-            std::cout << "Hmm, not sure what that means. Try: chop 1, sell 1 wood, sell 3 wood, buy 2 cake, craft 1 benchleg\n";
+            std::cout << "Hmm, not sure what that means. Try: chop 1, sell 1 wood, buy 2 cake, craft 1 benchleg\n";
             continue;
         }
 
@@ -111,114 +88,102 @@ int main()
             continue;
         }
 
+        if (cmd.action == Action::Inv) {
+            player.PrintInventory();
+            continue;
+        }
+
+        if (cmd.action == Action::Sell) {
+            if (cmd.target.empty()) {
+                std::cout << "What would you like to sell?\n";
+                for (Item* item : sellableItems) {
+                    if (player.GetItemCount(item) == 0) continue;
+                    int sellPrice = 0;
+                    if (auto* m = dynamic_cast<Material*>(item)) sellPrice = m->GetSellAmount();
+                    else if (auto* c = dynamic_cast<Craftable*>(item)) sellPrice = c->GetSellAmount();
+                    if (sellPrice > 0) {
+                        std::cout << std::format("  {} (x{}) — {} gold each\n",
+                            item->GetName(), player.GetItemCount(item), sellPrice);
+                    }
+                }
+                std::cout << "(e.g., sell 1 wood  OR  sell 3 wood)\n";
+                continue;
+            }
+
+            Item* toSell = nullptr;
+            for (Item* item : sellableItems) {
+                if (NormalizeName(item->GetName()) == cmd.target) { toSell = item; break; }
+            }
+
+            if (toSell == nullptr) {
+                std::cout << std::format("I don't have any \"{}\" to sell.\n", cmd.target);
+                continue;
+            }
+
+            int goldEarned = player.sell(toSell, cmd.quantity);
+            if (goldEarned == 0) {
+                std::cout << std::format("Couldn't sell {}.\n", toSell->GetName());
+            } else {
+                std::cout << std::format("Sold {}x {} for {} gold! (Total gold: {})\n",
+                    cmd.quantity, toSell->GetName(), goldEarned, player.GetGold());
+            }
+            continue;
+        }
+
+        if (cmd.action == Action::Buy) {
+            if (cmd.target.empty()) {
+                std::cout << "Welcome to the shop! Here's what's available:\n";
+                for (Material* item : shopItems) {
+                    std::cout << std::format("  {} — {} gold\n", item->GetName(), item->GetBuyAmount());
+                }
+                std::cout << std::format("(e.g., buy 1 cake  OR  buy 2 cake)  [You have: {} gold]\n", player.GetGold());
+                continue;
+            }
+
+            Material* toBuy = FindShopItem(shopItems, cmd.target);
+            if (toBuy == nullptr) {
+                std::cout << std::format("I don't sell \"{}\" here.\n", cmd.target);
+                continue;
+            }
+
+            bool success = player.buy(toBuy, cmd.quantity);
+            if (!success) {
+                std::cout << std::format("Can't afford {}x {} — need {} gold but only have {}.\n",
+                    cmd.quantity, toBuy->GetName(), toBuy->GetBuyAmount() * cmd.quantity, player.GetGold());
+            } else {
+                std::cout << std::format("Bought {}x {} for {} gold! (Remaining gold: {})\n",
+                    cmd.quantity, toBuy->GetName(), toBuy->GetBuyAmount() * cmd.quantity, player.GetGold());
+            }
+            continue;
+        }
+
+        // Repeatable actions: executed once per unit of quantity
         for (int i = 0; i < cmd.quantity; i++) {
             if (cmd.action == Action::Chop) {
-                bool success = player.chop(&wood);
-                if (!success) {
+                if (!player.chop(&wood)) {
                     std::cout << "Couldn't chop.\n";
                     break;
                 }
-
                 std::cout << "Chopped! (" << i + 1 << "/" << cmd.quantity << ")\n";
-            }
-
-            else if (cmd.action == Action::Inv) {
-                player.PrintInventory();
-                break;
             }
 
             else if (cmd.action == Action::Eat) {
                 std::cout << std::format("I'm sitting pretty at {}/{} health...\n", player.GetCurrentHealth(), player.GetMaxHealth());
-
-                bool success = player.eat();
-                if (!success) {
+                if (!player.eat()) {
                     std::cout << "I'd love to eat some cake... but I'll have to buy some first!\n";
                     break;
                 }
-
                 std::cout << std::format("Ah that's better! Now I'm resting at {}/{} health...\n", player.GetCurrentHealth(), player.GetMaxHealth());
-            }
-
-            else if (cmd.action == Action::Sell) {
-                if (cmd.target.empty()) {
-                    // Show sellable items from player's inventory
-                    std::cout << "What would you like to sell?\n";
-                    bool hasSellable = false;
-                    for (Item* item : allSellableItems) {
-                        if (player.GetItemCount(item) == 0) continue;
-                        int sellPrice = 0;
-                        if (auto* m = dynamic_cast<Material*>(item)) sellPrice = m->GetSellAmount();
-                        else if (auto* c = dynamic_cast<Craftable*>(item)) sellPrice = c->GetSellAmount();
-                        if (sellPrice > 0) {
-                            std::cout << std::format("  {} (x{}) — {} gold each\n",
-                                item->GetName(), player.GetItemCount(item), sellPrice);
-                            hasSellable = true;
-                        }
-                    }
-                    if (!hasSellable) {
-                        std::cout << "  Nothing to sell right now.\n";
-                    }
-                    std::cout << "(e.g., sell 1 wood  OR  sell 3 wood)\n";
-                    break;
-                }
-
-                // Find the item by target name
-                Item* toSell = nullptr;
-                for (Item* item : allSellableItems) {
-                    if (NormalizeName(item->GetName()) == cmd.target) { toSell = item; break; }
-                }
-
-                if (toSell == nullptr) {
-                    std::cout << std::format("I don't have any \"{}\" to sell.\n", cmd.target);
-                    break;
-                }
-
-                int goldEarned = player.sell(toSell);
-                if (goldEarned == 0) {
-                    std::cout << std::format("Couldn't sell {}.\n", toSell->GetName());
-                    break;
-                }
-                std::cout << std::format("Sold 1 {} for {} gold! (Total gold: {})\n",
-                    toSell->GetName(), goldEarned, player.GetGold());
-            }
-
-            else if (cmd.action == Action::Buy) {
-                if (cmd.target.empty()) {
-                    // Show shop listing
-                    std::cout << "Welcome to the shop! Here's what's available:\n";
-                    for (Material* item : shopItems) {
-                        std::cout << std::format("  {} — {} gold\n", item->GetName(), item->GetBuyAmount());
-                    }
-                    std::cout << std::format("(e.g., buy 1 cake  OR  buy 2 cake)  [You have: {} gold]\n", player.GetGold());
-                    break;
-                }
-
-                Material* toBuy = FindShopItem(shopItems, cmd.target);
-                if (toBuy == nullptr) {
-                    std::cout << std::format("I don't sell \"{}\" here.\n", cmd.target);
-                    break;
-                }
-
-                bool success = player.buy(toBuy, cmd.quantity);
-                if (!success) {
-                    std::cout << std::format("Can't afford {}x {} — need {} gold but only have {}.\n",
-                        cmd.quantity, toBuy->GetName(), toBuy->GetBuyAmount() * cmd.quantity, player.GetGold());
-                    break;
-                }
-                std::cout << std::format("Bought {}x {} for {} gold! (Remaining gold: {})\n",
-                    cmd.quantity, toBuy->GetName(), toBuy->GetBuyAmount() * cmd.quantity, player.GetGold());
             }
 
             else if (cmd.action == Action::Craft) {
                 if (cmd.target.empty()) {
-                    // Show craftable items listing
                     std::cout << "What would you like to craft?\n";
                     for (Craftable* item : craftables) {
-                        std::string req = "";
+                        std::string req;
                         for (const auto& [reqId, reqCount] : item->GetItemsRequired()) {
-                            // Map ItemId back to a readable name via allSellableItems
                             std::string reqName = "item";
-                            for (Item* wi : allSellableItems) {
+                            for (Item* wi : sellableItems) {
                                 if (wi->GetId() == reqId) { reqName = wi->GetName(); break; }
                             }
                             if (!req.empty()) req += ", ";
@@ -237,8 +202,7 @@ int main()
                     break;
                 }
 
-                bool success = player.craft(toCraft);
-                if (!success) {
+                if (!player.craft(toCraft)) {
                     std::cout << std::format("Not enough materials to craft {}.\n", toCraft->GetName());
                     break;
                 }

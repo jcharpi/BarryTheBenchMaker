@@ -1,5 +1,7 @@
 #include "../include/Action.h"
 #include "../include/Player.h"
+#include "../include/interfaces/Craftable.h"
+#include "../include/interfaces/Item.h"
 #include <sstream>
 #include <algorithm>
 #include <vector>
@@ -21,7 +23,11 @@ ParsedCommand ParseInput(const std::string& input) {
     else if (command == "sell") result.action = Action::Sell;
     else result.action = Action::Unknown;
 
-    // Format is always: action quantity [target]
+    // inv and quit take no arguments
+    if (result.action == Action::Inv || result.action == Action::Quit) {
+        return result;
+    }
+
     std::string qtyStr;
     if (!(stream >> qtyStr)) {
         result.action = Action::Unknown;
@@ -39,31 +45,31 @@ ParsedCommand ParseInput(const std::string& input) {
     return result;
 }
 
-std::vector<Action> GetAvailableActions(const Player& player) {
+std::vector<Action> GetAvailableActions(const Player& player, const std::vector<Craftable*>& craftables, const std::vector<Item*>& sellableItems) {
     std::vector<Action> available;
 
     const auto& owned = player.GetItemsOwned();
 
-    bool hasMaterial = std::any_of(owned.begin(), owned.end(), [](const auto& p) {
-        return p.first != ItemId::Sword && p.first != ItemId::Axe && p.first != ItemId::Cake;
+    // Can craft if any owned item is an ingredient in at least one recipe
+    bool hasCraftIngredient = std::any_of(craftables.begin(), craftables.end(), [&owned](const Craftable* c) {
+        for (const auto& [reqId, count] : c->GetItemsRequired()) {
+            if (owned.count(reqId)) return true;
+        }
+        return false;
     });
-    bool hasSellable = std::any_of(owned.begin(), owned.end(), [](const auto& p) {
-        return p.first != ItemId::Sword && p.first != ItemId::Axe;
+
+    bool hasSellable = std::any_of(sellableItems.begin(), sellableItems.end(), [&owned](const Item* item) {
+        return owned.count(item->GetId()) > 0;
     });
 
     available.push_back(Action::Buy);
     available.push_back(Action::Chop);
-    if (hasMaterial) {
-        available.push_back(Action::Craft);
-    }
-    if (owned.count(ItemId::Cake) > 0) {
-        available.push_back(Action::Eat);
-    }
+    if (hasCraftIngredient) available.push_back(Action::Craft);
+    if (owned.count(ItemId::Cake)) available.push_back(Action::Eat);
     available.push_back(Action::Inv);
     available.push_back(Action::Quit);
-    if (hasSellable) {
-        available.push_back(Action::Sell);
-    }
+    if (hasSellable) available.push_back(Action::Sell);
+
     return available;
 }
 

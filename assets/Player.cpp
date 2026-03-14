@@ -133,39 +133,26 @@ bool Player::craft(Craftable* item) {
 	return true;
 }
 
-int Player::sell(Item* item) {
-	if (item == nullptr) {
-		return 0;
-	}
-
-	if (dynamic_cast<Tool*>(item) != nullptr) {
-		return 0;
-	}
+int Player::sell(Item* item, int quantity) {
+	if (item == nullptr || quantity <= 0) return 0;
+	if (dynamic_cast<Tool*>(item) != nullptr) return 0;
 
 	auto ownedItemEntry = itemsOwned.find(item->GetId());
-	if (ownedItemEntry == itemsOwned.end()) {
-		return 0;
-	}
+	if (ownedItemEntry == itemsOwned.end()) return 0;
 
 	int sellAmount = 0;
-	if (auto* material = dynamic_cast<Material*>(item); material != nullptr) {
-		sellAmount = material->GetSellAmount();
-	}
-	else if (auto* craftable = dynamic_cast<Craftable*>(item); craftable != nullptr) {
-		sellAmount = craftable->GetSellAmount();
-	}
+	if (auto* material = dynamic_cast<Material*>(item)) sellAmount = material->GetSellAmount();
+	else if (auto* craftable = dynamic_cast<Craftable*>(item)) sellAmount = craftable->GetSellAmount();
 
-	if (sellAmount <= 0) {
-		return 0;
-	}
+	if (sellAmount <= 0) return 0;
 
-	ownedItemEntry->second -= 1;
-	if (ownedItemEntry->second == 0) {
-		itemsOwned.erase(ownedItemEntry);
-	}
+	const int actualQuantity = std::min(quantity, ownedItemEntry->second);
+	ownedItemEntry->second -= actualQuantity;
+	if (ownedItemEntry->second == 0) itemsOwned.erase(ownedItemEntry);
 
-	gold += sellAmount;
-	return sellAmount;
+	const int totalEarned = sellAmount * actualQuantity;
+	gold += totalEarned;
+	return totalEarned;
 }
 
 bool Player::buy(Item* item, int quantity) {
