@@ -56,17 +56,17 @@ int main()
 
     Sword sword;
     Axe axe;
-    Material wood(ItemId::Wood, Name: "Wood", buyAmount: 15, sellAmount: 5);
+    Material wood(ItemId::Wood, name: "Wood", buyAmount: 15, sellAmount: 5);
     Cake cake(buyAmount: 10, sellAmount: 5, healAmount: 25);
-    Craftable benchLeg(ItemId::BenchLeg,   Name: "Bench Leg",  buyAmount: 8,   sellAmount: 10, ItemsRequired: {{ItemId::Wood, 2}});
-    Craftable benchSeat(ItemId::BenchSeat, Name: "Bench Seat", buyAmount: 90,  sellAmount: 25, ItemsRequired: {{ItemId::Wood, 12}});
-    Craftable bench(ItemId::Bench,         Name: "Bench",      buyAmount: 200, sellAmount: 35, ItemsRequired: {{ItemId::BenchLeg, 4}, {ItemId::BenchSeat, 1}});
+    Craftable benchLeg(ItemId::BenchLeg,   name: "Bench Leg",  sellAmount: 8,  timeToCraft: 10, itemsRequired: {{ItemId::Wood, 2}});
+    Craftable benchSeat(ItemId::BenchSeat, name: "Bench Seat", sellAmount: 90, timeToCraft: 25, itemsRequired: {{ItemId::Wood, 12}});
+    Craftable bench(ItemId::Bench,         name: "Bench",      sellAmount: 200, timeToCraft: 35, itemsRequired: {{ItemId::BenchLeg, 4}, {ItemId::BenchSeat, 1}});
 
     std::vector<Material*> buyables    = { &cake };
     std::vector<Craftable*> craftables  = { &benchLeg, &benchSeat, &bench };
     std::vector<Sellable*> sellables    = { &wood, &cake, &benchLeg, &benchSeat, &bench };
 
-    Player player(currentHealth: 100, startingGold: 0, sword: &sword, axe: &axe);
+    Player player(maxHealth: 100, startingGold: 0, sword: &sword, axe: &axe);
 
     std::string input;
 
