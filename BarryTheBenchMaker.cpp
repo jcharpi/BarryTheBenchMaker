@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <chrono>
 #include <thread>
+#include <windows.h>
 
 #include "include/Action.h"
 #include "include/Player.h"
@@ -51,6 +52,8 @@ static Craftable* FindCraftable(const std::vector<Craftable*>& craftables, const
 
 int main()
 {
+    SetConsoleOutputCP(CP_UTF8);
+
     std::cout << "A good night's sleep! I feel well rested. Time to make some benches!\n";
     std::cout << "I need to gather some wood first. I can chop trees with my axe.\n";
 
