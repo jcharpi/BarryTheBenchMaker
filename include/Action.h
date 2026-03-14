@@ -23,6 +23,6 @@ class Craftable;
 class Item;
 class Player;
 
-ParsedCommand ParseInput(const std::string& rawInput);
-std::vector<Action> GetAvailableActions(const Player& player, const std::vector<Craftable*>& craftables, const std::vector<Item*>& sellableItems);
+ParsedCommand ParseInput(const std::string& input);
+std::vector<Action> GetAvailableActions(const Player& player, const std::vector<Craftable*>& craftables, const std::vector<Item*>& sellables);
 std::string ActionToString(Action action);

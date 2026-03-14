@@ -76,12 +76,12 @@ int Player::GetItemCount(const Item* item) const {
 		return 0;
 	}
 
-	const auto ownedItemEntry = itemsOwned.find(item->GetId());
-	if (ownedItemEntry == itemsOwned.end()) {
+	const auto itemOwned = itemsOwned.find(item->GetId());
+	if (itemOwned == itemsOwned.end()) {
 		return 0;
 	}
 
-	return ownedItemEntry->second;
+	return itemOwned->second;
 }
 
 bool Player::chop(Material* wood) {
@@ -107,8 +107,8 @@ bool Player::craft(Craftable* item) {
 		const ItemId requiredItemId = requirement.first;
 		const int requiredCount = requirement.second;
 
-		const auto ownedItemEntry = itemsOwned.find(requiredItemId);
-		if (ownedItemEntry == itemsOwned.end() || ownedItemEntry->second < requiredCount) {
+		const auto itemOwned = itemsOwned.find(requiredItemId);
+		if (itemOwned == itemsOwned.end() || itemOwned->second < requiredCount) {
 			return false;
 		}
 	}
@@ -137,8 +137,8 @@ int Player::sell(Item* item, int quantity) {
 	if (item == nullptr || quantity <= 0) return 0;
 	if (dynamic_cast<Tool*>(item) != nullptr) return 0;
 
-	auto ownedItemEntry = itemsOwned.find(item->GetId());
-	if (ownedItemEntry == itemsOwned.end()) return 0;
+	auto itemOwned = itemsOwned.find(item->GetId());
+	if (itemOwned == itemsOwned.end()) return 0;
 
 	int sellAmount = 0;
 	if (auto* material = dynamic_cast<Material*>(item)) sellAmount = material->GetSellAmount();
@@ -146,9 +146,9 @@ int Player::sell(Item* item, int quantity) {
 
 	if (sellAmount <= 0) return 0;
 
-	const int actualQuantity = std::min(quantity, ownedItemEntry->second);
-	ownedItemEntry->second -= actualQuantity;
-	if (ownedItemEntry->second == 0) itemsOwned.erase(ownedItemEntry);
+	const int actualQuantity = std::min(quantity, itemOwned->second);
+	itemOwned->second -= actualQuantity;
+	if (itemOwned->second == 0) itemsOwned.erase(itemOwned);
 
 	const int totalEarned = sellAmount * actualQuantity;
 	gold += totalEarned;
@@ -156,14 +156,10 @@ int Player::sell(Item* item, int quantity) {
 }
 
 bool Player::buy(Item* item, int quantity) {
-	if (item == nullptr || quantity <= 0) {
-		return false;
-	}
+	if (item == nullptr || quantity <= 0) return false;
 
 	auto* material = dynamic_cast<Material*>(item);
-	if (material == nullptr) {
-		return false;
-	}
+	if (material == nullptr) return false;
 
 	const int totalCost = material->GetBuyAmount() * quantity;
 	if (gold < totalCost) {
