@@ -28,13 +28,13 @@ ParsedCommand ParseInput(const std::string& input) {
         return result;
     }
 
-    std::string qtyStr;
-    if (!(stream >> qtyStr)) {
+    std::string quantityString;
+    if (!(stream >> quantityString)) {
         result.action = Action::Unknown;
         return result;
     }
     try {
-        result.quantity = std::max(1, std::stoi(qtyStr));
+        result.quantity = std::max(1, std::stoi(quantityString));
     } catch (...) {
         result.action = Action::Unknown;
         return result;
@@ -51,9 +51,9 @@ std::vector<Action> GetAvailableActions(const Player& player, const std::vector<
     const auto& owned = player.GetItemsOwned();
 
     // Can craft if any owned item is an ingredient in at least one recipe
-    bool hasCraftIngredient = std::any_of(craftables.begin(), craftables.end(), [&owned](const Craftable* c) {
-        for (const auto& [reqId, count] : c->GetItemsRequired()) {
-            if (owned.count(reqId)) return true;
+    bool hasCraftIngredient = std::any_of(craftables.begin(), craftables.end(), [&owned](const Craftable* craftable) {
+        for (const auto& [requiredId, count] : craftable->GetItemsRequired()) {
+            if (owned.count(requiredId)) return true;
         }
         return false;
     });
