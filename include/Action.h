@@ -20,9 +20,9 @@ struct ParsedCommand {
 };
 
 class Craftable;
-class Item;
 class Player;
+class Sellable;
 
 ParsedCommand ParseInput(const std::string& input);
-std::vector<Action> GetAvailableActions(const Player& player, const std::vector<Craftable*>& craftables, const std::vector<Item*>& sellables);
+std::vector<Action> GetAvailableActions(const Player& player, const std::vector<Craftable*>& craftables, const std::vector<Sellable*>& sellables);
 std::string ActionToString(Action action);

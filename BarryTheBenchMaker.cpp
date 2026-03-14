@@ -9,6 +9,7 @@
 #include "include/Player.h"
 #include "include/interfaces/Material.h"
 #include "include/interfaces/Craftable.h"
+#include "include/interfaces/Sellable.h"
 #include "include/items/tools/Sword.h"
 #include "include/items/tools/Axe.h"
 #include "include/items/Cake.h"
@@ -29,6 +30,7 @@ static std::string PrintPrompt(const std::vector<Action>& available) {
     return result;
 }
 
+// Equivalent to Python's "if action in available"
 static bool IsActionAvailable(Action action, const std::vector<Action>& available) {
     return std::find(available.begin(), available.end(), action) != available.end();
 }
@@ -62,7 +64,7 @@ int main()
 
     std::vector<Material*> buyables    = { &cake };
     std::vector<Craftable*> craftables  = { &benchLeg, &benchSeat, &bench };
-    std::vector<Item*> sellables    = { &wood, &cake, &benchLeg, &benchSeat, &bench };
+    std::vector<Sellable*> sellables    = { &wood, &cake, &benchLeg, &benchSeat, &bench };
 
     Player player(currentHealth: 100, startingGold: 0, sword: &sword, axe: &axe);
 
@@ -96,22 +98,17 @@ int main()
         if (command.action == Action::Sell) {
             if (command.target.empty()) {
                 std::cout << "What would you like to sell?\n";
-                for (Item* sellable : sellables) {
+                for (Sellable* sellable : sellables) {
                     if (player.GetItemCount(sellable) == 0) continue;
-                    int sellPrice = 0;
-                    if (auto* material = dynamic_cast<Material*>(sellable)) sellPrice = material->GetSellAmount();
-                    else if (auto* craftable = dynamic_cast<Craftable*>(sellable)) sellPrice = craftable->GetSellAmount();
-                    if (sellPrice > 0) {
-                        std::cout << std::format("  {} (x{}) — {} gold each\n",
-                            sellable->GetName(), player.GetItemCount(sellable), sellPrice);
-                    }
+                    std::cout << std::format("  {} (x{}) — {} gold each\n",
+                        sellable->GetName(), player.GetItemCount(sellable), sellable->GetSellAmount());
                 }
                 std::cout << "(e.g., sell 1 wood  OR  sell 3 wood)\n";
                 continue;
             }
 
-            Item* itemToSell = nullptr;
-            for (Item* sellable : sellables) {
+            Sellable* itemToSell = nullptr;
+            for (Sellable* sellable : sellables) {
                 if (NormalizeName(sellable->GetName()) == command.target) { itemToSell = sellable; break; }
             }
 
@@ -120,14 +117,12 @@ int main()
                 continue;
             }
 
-            const int countBeforeSell = player.GetItemCount(itemToSell);
             const int goldEarned = player.sell(itemToSell, command.quantity);
             if (goldEarned == 0) {
                 std::cout << std::format("Couldn't sell {}.\n", itemToSell->GetName());
             } else {
-                const int actualSold = countBeforeSell - player.GetItemCount(itemToSell);
                 std::cout << std::format("Sold {}x {} for {} gold! (Total gold: {})\n",
-                    actualSold, itemToSell->GetName(), goldEarned, player.GetGold());
+                    command.quantity, itemToSell->GetName(), goldEarned, player.GetGold());
             }
             continue;
         }
@@ -164,8 +159,9 @@ int main()
             for (Craftable* craftable : craftables) {
                 std::string requirementsList;
                 for (const auto& [requiredId, requiredCount] : craftable->GetItemsRequired()) {
-                    std::string requiredName = "craftable";
-                    for (Item* sellable : sellables) {
+                    // Look up the ingredient name by ID from the world item list
+                    std::string requiredName = "item";
+                    for (Sellable* sellable : sellables) {
                         if (sellable->GetId() == requiredId) { requiredName = sellable->GetName(); break; }
                     }
                     if (!requirementsList.empty()) requirementsList += ", ";

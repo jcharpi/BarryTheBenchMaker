@@ -1,7 +1,7 @@
 #include "../include/Action.h"
 #include "../include/Player.h"
 #include "../include/interfaces/Craftable.h"
-#include "../include/interfaces/Item.h"
+#include "../include/interfaces/Sellable.h"
 #include <sstream>
 #include <algorithm>
 #include <vector>
@@ -24,19 +24,17 @@ ParsedCommand ParseInput(const std::string& input) {
     else result.action = Action::Unknown;
 
     // inv and quit take no arguments
-    if (result.action == Action::Inv || result.action == Action::Quit) {
-        return result;
-    }
+    if (result.action == Action::Inv || result.action == Action::Quit) return result;
 
-    std::string quantity;
-    if (!(stream >> quantity)) {
+    std::string quantityString;
+    if (!(stream >> quantityString)) {
         result.action = Action::Unknown;
         return result;
     }
 
     // Bound quantity to be positive
     try {
-        result.quantity = std::max(1, std::stoi(quantity));
+        result.quantity = std::max(1, std::stoi(quantityString));
     } catch (...) {
         result.action = Action::Unknown;
         return result;
@@ -48,31 +46,34 @@ ParsedCommand ParseInput(const std::string& input) {
     return result;
 }
 
-std::vector<Action> GetAvailableActions(const Player& player, const std::vector<Craftable*>& craftables, const std::vector<Item*>& sellables) {
-    std::vector<Action> availableActions;
+std::vector<Action> GetAvailableActions(const Player& player, const std::vector<Craftable*>& craftables, const std::vector<Sellable*>& sellables) {
+    std::vector<Action> available;
     const auto& itemsOwned = player.GetItemsOwned();
 
-    // Can craft if any owned item is an ingredient in at least one recipe
-    bool hasIngredient = std::any_of(craftables.begin(), craftables.end(), [&itemsOwned](const Craftable* craftable) {
-        for (const auto& [requiredItemId, requiredCount] : craftable->GetItemsRequired()) {
+    available.push_back(Action::Buy);
+    available.push_back(Action::Chop);
+
+    // Can craft if any owned item appears in at least one recipe
+    if (std::any_of(craftables.begin(), craftables.end(), [&itemsOwned](const Craftable* craftable) {
+        for (const auto& [requiredItemId, requiredCount] : craftable->GetItemsRequired())
             if (itemsOwned.count(requiredItemId)) return true;
-        }
         return false;
-    });
+    })) available.push_back(Action::Craft);
 
-    bool hasSellable = std::any_of(sellables.begin(), sellables.end(), [&itemsOwned](const Item* item) {
-        return itemsOwned.count(item->GetId()) > 0;
-    });
+    if (itemsOwned.count(ItemId::Cake)) available.push_back(Action::Eat);
 
-    availableActions.push_back(Action::Buy);
-    availableActions.push_back(Action::Chop);
-    if (hasIngredient) availableActions.push_back(Action::Craft);
-    if (itemsOwned.count(ItemId::Cake)) availableActions.push_back(Action::Eat);
-    availableActions.push_back(Action::Inv);
-    availableActions.push_back(Action::Quit);
-    if (hasSellable) availableActions.push_back(Action::Sell);
+    available.push_back(Action::Inv);
+    available.push_back(Action::Quit);
 
-    return availableActions;
+    // Can sell if any owned item is in the sellables list
+    if (std::any_of(sellables.begin(), sellables.end(), [&itemsOwned](const Sellable* sellable) {
+        return itemsOwned.count(sellable->GetId());
+    })) available.push_back(Action::Sell);
+
+    // Action enum is defined alphabetically, so integer sort = alphabetical order
+    std::sort(available.begin(), available.end());
+
+    return available;
 }
 
 std::string ActionToString(Action action) {

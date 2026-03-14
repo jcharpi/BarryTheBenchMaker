@@ -3,6 +3,7 @@
 #include "interfaces/Item.h"
 #include "interfaces/Craftable.h"
 #include "interfaces/Material.h"
+#include "interfaces/Sellable.h"
 #include "interfaces/Tool.h"
 #include "items/Cake.h"
 #include "items/tools/Axe.h"
@@ -36,7 +37,7 @@ public:
 
 	bool chop(Material* wood);
 	bool craft(Craftable* item);
-	int sell(Item* item, int quantity);
+	int sell(Sellable* item, int quantity);
 	bool buy(Item* item, int quantity);
 	bool eat();
 

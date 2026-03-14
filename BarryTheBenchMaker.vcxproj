@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="assets\Action.cpp" />
     <ClCompile Include="assets\items\tools\Axe.cpp" />
     <ClCompile Include="assets\Player.cpp" />
     <ClCompile Include="BarryTheBenchMaker.cpp" />
@@ -137,11 +138,13 @@
     <ClCompile Include="assets\interfaces\Craftable.cpp" />
     <ClCompile Include="assets\interfaces\Item.cpp" />
     <ClCompile Include="assets\interfaces\Material.cpp" />
+    <ClCompile Include="assets\interfaces\Sellable.cpp" />
     <ClCompile Include="assets\items\tools\Sword.cpp" />
     <ClCompile Include="assets\interfaces\Tool.cpp" />
     <ClCompile Include="assets\items\materials\Wood.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Action.h" />
     <ClInclude Include="include\Player.h" />
     <ClInclude Include="include\items\tools\Axe.h" />
     <ClInclude Include="include\items\Cake.h" />
@@ -151,6 +154,7 @@
     <ClInclude Include="include\interfaces\Craftable.h" />
     <ClInclude Include="include\interfaces\Item.h" />
     <ClInclude Include="include\interfaces\Material.h" />
+    <ClInclude Include="include\interfaces\Sellable.h" />
     <ClInclude Include="include\items\tools\Sword.h" />
     <ClInclude Include="include\interfaces\Tool.h" />
     <ClInclude Include="include\items\materials\Wood.h" />
