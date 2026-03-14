@@ -85,8 +85,17 @@
     <ClCompile Include="assets\interfaces\Tool.cpp">
       <Filter>assets\interfaces</Filter>
     </ClCompile>
+    <ClCompile Include="assets\Action.cpp">
+      <Filter>assets</Filter>
+    </ClCompile>
+    <ClCompile Include="assets\interfaces\Sellable.cpp">
+      <Filter>assets\interfaces</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Action.h">
+      <Filter>include</Filter>
+    </ClInclude>
     <ClInclude Include="include\Player.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -121,6 +130,9 @@
       <Filter>include\items\tools</Filter>
     </ClInclude>
     <ClInclude Include="include\interfaces\Tool.h">
+      <Filter>include\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="include\interfaces\Sellable.h">
       <Filter>include\interfaces</Filter>
     </ClInclude>
   </ItemGroup>
