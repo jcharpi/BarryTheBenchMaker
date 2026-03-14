@@ -1,6 +1,6 @@
 #include "../include/Player.h"
-#include "../include/items/materials/Wood.h"
-
+#include "../include/interfaces/Sellable.h"
+#include <iostream>
 #include <algorithm>
 #include <chrono>
 #include <thread>
@@ -46,32 +46,39 @@ const std::unordered_map<ItemId, int>& Player::GetItemsOwned() const {
 	return itemsOwned;
 }
 
-void Player::AddItem(Item* item, int amount) {
-	if (item == nullptr || amount <= 0) {
+void Player::PrintInventory() const {
+	if (itemsOwned.empty()) {
+		std::cout << "Inventory is empty! Get choppin' some wood!\n";
 		return;
 	}
+
+	std::cout << "Inventory\n";
+	for (const auto& [itemId, count] : itemsOwned) {
+		std::string name = "Unknown";
+		auto item = itemLookup.find(itemId);
+		if (item != itemLookup.end()) name = item->second->GetName();
+		std::cout << "- " << name << ": " << count << "\n";
+	}
+}
+
+void Player::AddItem(Item* item, int amount) {
+	if (item == nullptr || amount <= 0) return;
 
 	itemsOwned[item->GetId()] += amount;
 	itemLookup[item->GetId()] = item;
 }
 
 int Player::GetItemCount(const Item* item) const {
-	if (item == nullptr) {
-		return 0;
-	}
+	if (item == nullptr) return 0;
 
-	const auto ownedItemEntry = itemsOwned.find(item->GetId());
-	if (ownedItemEntry == itemsOwned.end()) {
-		return 0;
-	}
+	const auto itemOwned = itemsOwned.find(item->GetId());
+	if (itemOwned == itemsOwned.end()) return 0;
 
-	return ownedItemEntry->second;
+	return itemOwned->second;
 }
 
-bool Player::chopWood(Wood* wood) {
-	if (axe == nullptr || wood == nullptr) {
-		return false;
-	}
+bool Player::chop(Material* wood) {
+	if (axe == nullptr || wood == nullptr) return false;
 
 	const int timeToChop = std::max(1, axe->GetTimeToChop());
 	std::this_thread::sleep_for(std::chrono::seconds(timeToChop));
@@ -81,35 +88,20 @@ bool Player::chopWood(Wood* wood) {
 }
 
 bool Player::craft(Craftable* item) {
-	if (item == nullptr) {
-		return false;
-	}
+	if (item == nullptr) return false;
 
 	const auto& requirements = item->GetItemsRequired();
 
-	for (const auto& requirement : requirements) {
-		const ItemId requiredItemId = requirement.first;
-		const int requiredCount = requirement.second;
-
-		const auto ownedItemEntry = itemsOwned.find(requiredItemId);
-		if (ownedItemEntry == itemsOwned.end() || ownedItemEntry->second < requiredCount) {
-			return false;
-		}
+	// Validate we have all required ingredients before consuming any
+	for (const auto& [requiredItemId, requiredCount] : requirements) {
+		const auto itemOwned = itemsOwned.find(requiredItemId);
+		if (itemOwned == itemsOwned.end() || itemOwned->second < requiredCount) return false;
 	}
 
-	for (const auto& requirement : requirements) {
-		const ItemId requiredItemId = requirement.first;
-		const int requiredCount = requirement.second;
-
-		auto requiredItemInventoryEntry = itemsOwned.find(requiredItemId);
-		if (requiredItemInventoryEntry == itemsOwned.end()) {
-			continue;
-		}
-
-		requiredItemInventoryEntry->second -= requiredCount;
-		if (requiredItemInventoryEntry->second <= 0) {
-			itemsOwned.erase(requiredItemInventoryEntry);
-		}
+	for (const auto& [requiredItemId, requiredCount] : requirements) {
+		auto itemOwned = itemsOwned.find(requiredItemId);
+		itemOwned->second -= requiredCount;
+		if (itemOwned->second == 0) itemsOwned.erase(itemOwned);
 	}
 
 	itemsOwned[item->GetId()] += 1;
@@ -117,77 +109,56 @@ bool Player::craft(Craftable* item) {
 	return true;
 }
 
-int Player::sell(Item* item) {
-	if (item == nullptr) {
-		return 0;
-	}
+int Player::sell(Sellable* item, int quantity) {
+	if (item == nullptr || quantity <= 0) return 0;
 
-	if (dynamic_cast<Tool*>(item) != nullptr) {
-		return 0;
-	}
+	auto itemOwned = itemsOwned.find(item->GetId());
+	if (itemOwned == itemsOwned.end() || itemOwned->second < quantity) return 0;
 
-	auto ownedItemEntry = itemsOwned.find(item->GetId());
-	if (ownedItemEntry == itemsOwned.end() || ownedItemEntry->second <= 0) {
-		return 0;
-	}
+	itemOwned->second -= quantity;
+	if (itemOwned->second == 0) itemsOwned.erase(itemOwned);
 
-	int sellAmount = 0;
-	if (auto* material = dynamic_cast<Material*>(item); material != nullptr) {
-		sellAmount = material->GetSellAmount();
-	}
-	else if (auto* craftable = dynamic_cast<Craftable*>(item); craftable != nullptr) {
-		sellAmount = craftable->GetSellAmount();
-	}
-
-	if (sellAmount <= 0) {
-		return 0;
-	}
-
-	ownedItemEntry->second -= 1;
-	if (ownedItemEntry->second == 0) {
-		itemsOwned.erase(ownedItemEntry);
-	}
-
-	gold += sellAmount;
-	return sellAmount;
+	const int totalEarned = item->GetSellAmount() * quantity;
+	gold += totalEarned;
+	return totalEarned;
 }
 
-bool Player::eatCake() {
+bool Player::buy(Item* item, int quantity) {
+	if (item == nullptr || quantity <= 0) return false;
+
+	auto* material = dynamic_cast<Material*>(item);
+	if (material == nullptr) return false;
+
+	const int totalCost = material->GetBuyAmount() * quantity;
+	if (gold < totalCost) return false;
+
+	gold -= totalCost;
+	AddItem(item, quantity);
+	return true;
+}
+
+bool Player::eat() {
 	auto ownedCakeEntry = itemsOwned.find(ItemId::Cake);
-	if (ownedCakeEntry == itemsOwned.end() || ownedCakeEntry->second <= 0) {
-		return false;
-	}
+	if (ownedCakeEntry == itemsOwned.end()) return false;
 
 	auto cakeLookupEntry = itemLookup.find(ItemId::Cake);
-	if (cakeLookupEntry == itemLookup.end()) {
-		return false;
-	}
+	if (cakeLookupEntry == itemLookup.end()) return false;
 
 	auto* cake = dynamic_cast<Cake*>(cakeLookupEntry->second);
-	if (cake == nullptr) {
-		return false;
-	}
+	if (cake == nullptr) return false;
 
 	currentHealth = std::min(maxHealth, currentHealth + cake->GetHealAmount());
 	ownedCakeEntry->second -= 1;
-	if (ownedCakeEntry->second <= 0) {
-		itemsOwned.erase(ownedCakeEntry);
-	}
+	if (ownedCakeEntry->second == 0) itemsOwned.erase(ownedCakeEntry);
 	return true;
 }
 
 bool Player::upgradeSword() {
-	if (sword == nullptr) {
-		return false;
-	}
-
+	if (sword == nullptr) return false;
 	return sword->Upgrade();
 }
 
 bool Player::upgradeAxe() {
-	if (axe == nullptr) {
-		return false;
-	}
-
+	if (axe == nullptr) return false;
 	return axe->Upgrade();
 }

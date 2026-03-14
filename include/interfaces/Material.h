@@ -1,21 +1,13 @@
 #pragma once
-#include <string>
-#include "Item.h"
+#include "Sellable.h"
 
-class Material : public Item {
+class Material : public Sellable {
 private:
 	int buyAmount;
-	int sellAmount;
 
 public:
-	Material(ItemId id,
-		std::string name,
-		int buyAmount,
-		int sellAmount);
+	Material(ItemId id, std::string name, int buyAmount, int sellAmount);
 
 	int GetBuyAmount() const;
 	void SetBuyAmount(int newBuyAmount);
-
-	int GetSellAmount() const;
-	void SetSellAmount(int newSellAmount);
 };

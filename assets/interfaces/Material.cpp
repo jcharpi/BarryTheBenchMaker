@@ -1,8 +1,7 @@
 #include "../../include/interfaces/Material.h"
 
-Material::Material(ItemId id, std::string name,
-	int buyAmount, int sellAmount) :
-	Item(id, name), buyAmount(buyAmount), sellAmount(sellAmount) {
+Material::Material(ItemId id, std::string name, int buyAmount, int sellAmount) :
+	Sellable(id, name, sellAmount), buyAmount(buyAmount) {
 }
 
 int Material::GetBuyAmount() const {
@@ -11,12 +10,4 @@ int Material::GetBuyAmount() const {
 
 void Material::SetBuyAmount(int newBuyAmount) {
 	buyAmount = newBuyAmount;
-}
-
-int Material::GetSellAmount() const {
-	return sellAmount;
-}
-
-void Material::SetSellAmount(int newSellAmount) {
-	sellAmount = newSellAmount;
 }

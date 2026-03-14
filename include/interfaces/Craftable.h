@@ -1,23 +1,15 @@
 #pragma once
-#include <string>
 #include <unordered_map>
-#include "Item.h"
+#include "Sellable.h"
 
-class Craftable : public Item {
+class Craftable : public Sellable {
 private:
-	int sellAmount;
 	int timeToCraft;
 	std::unordered_map<ItemId, int> itemsRequired;
 
 public:
-	Craftable(ItemId id,
-		std::string name,
-		int sellAmount,
-		int timeToCraft,
+	Craftable(ItemId id, std::string name, int sellAmount, int timeToCraft,
 		const std::unordered_map<ItemId, int>& itemsRequired);
-
-	int GetSellAmount() const;
-	void SetSellAmount(int newSellAmount);
 
 	int GetTimeToCraft() const;
 	void SetTimeToCraft(int newTimeToCraft);

@@ -3,6 +3,7 @@
 #include "interfaces/Item.h"
 #include "interfaces/Craftable.h"
 #include "interfaces/Material.h"
+#include "interfaces/Sellable.h"
 #include "interfaces/Tool.h"
 #include "items/Cake.h"
 #include "items/tools/Axe.h"
@@ -24,17 +25,22 @@ public:
 	int GetCurrentHealth() const;
 	int GetMaxHealth() const;
 	int GetGold() const;
+	
 	Sword* GetSword() const;
 	Axe* GetAxe() const;
+	
 	const std::unordered_map<ItemId, int>& GetItemsOwned() const;
+	void PrintInventory() const;
 
 	void AddItem(Item* item, int amount);
 	int GetItemCount(const Item* item) const;
 
-	bool chopWood(Wood* wood);
+	bool chop(Material* wood);
 	bool craft(Craftable* item);
-	int sell(Item* item);
-	bool eatCake();
+	int sell(Sellable* item, int quantity);
+	bool buy(Item* item, int quantity);
+	bool eat();
+
 	bool upgradeSword();
 	bool upgradeAxe();
 };
