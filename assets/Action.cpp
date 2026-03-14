@@ -27,16 +27,15 @@ ParsedCommand ParseInput(const std::string& input) {
     if (result.action == Action::Inv || result.action == Action::Quit) return result;
 
     std::string quantityString;
-    if (!(stream >> quantityString)) {
-        result.action = Action::Unknown;
-        return result;
-    }
+    if (!(stream >> quantityString)) return result;
 
     // Bound quantity to be positive
     try {
         result.quantity = std::max(1, std::stoi(quantityString));
     } catch (...) {
-        result.action = Action::Unknown;
+        // No quantity; treat it as the target with default quantity
+        result.target = quantityString;
+        std::transform(result.target.begin(), result.target.end(), result.target.begin(), ::tolower);
         return result;
     }
 
