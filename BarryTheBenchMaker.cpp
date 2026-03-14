@@ -198,20 +198,13 @@ int main()
             }
 
             else if (command.action == Action::Craft) {
-                Craftable* toCraft = FindCraftable(craftables, command.target);
-                if (toCraft == nullptr) {
-                    std::cout << std::format("I don't know how to craft \"{}\".\n", command.target);
-                    break;
-                }
+                Craftable* itemToCraft = FindCraftable(craftables, command.target);
+                if (itemToCraft == nullptr) { std::cout << std::format("I don't know how to craft \"{}\".\n", command.target); break; }
 
-                if (!player.craft(toCraft)) {
-                    std::cout << std::format("Not enough materials to craft {}.\n", toCraft->GetName());
-                    break;
-                }
-
-                std::cout << std::format("Crafting {}...\n", toCraft->GetName());
-                std::this_thread::sleep_for(std::chrono::seconds(toCraft->GetTimeToCraft()));
-                std::cout << std::format("Done! {} crafted. ({}/{})\n", toCraft->GetName(), i + 1, command.quantity);
+                std::cout << std::format("Crafting {}...\n", itemToCraft->GetName());
+                std::this_thread::sleep_for(std::chrono::seconds(itemToCraft->GetTimeToCraft()));
+                if (!player.craft(itemToCraft)) { std::cout << std::format("Not enough materials to craft {}.\n", itemToCraft->GetName()); break; }
+                std::cout << std::format("Done! {} crafted. ({}/{})\n", itemToCraft->GetName(), i + 1, command.quantity);
             }
         }
     }
