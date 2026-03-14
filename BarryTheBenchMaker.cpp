@@ -74,6 +74,7 @@ int main()
         std::vector<Action> availableActions = GetAvailableActions(player, craftables, sellables);
         std::cout << std::format("\nTime to make some benches... or uh, I guess I could also: {}\n> ", PrintPrompt(availableActions));
         std::getline(std::cin, input);
+        std::cout << "\n";
 
         ParsedCommand command = ParseInput(input);
 
