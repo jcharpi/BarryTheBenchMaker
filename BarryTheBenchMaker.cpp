@@ -161,8 +161,8 @@ int main()
                 for (const auto& [requiredId, requiredCount] : craftable->GetItemsRequired()) {
                     // Look up the ingredient name by ID from the world item list
                     std::string requiredName = "item";
-                    for (Sellable* sellable : sellables) {
-                        if (sellable->GetId() == requiredId) { requiredName = sellable->GetName(); break; }
+                    for (Sellable* ingredientItem : sellables) {
+                        if (ingredientItem->GetId() == requiredId) { requiredName = ingredientItem->GetName(); break; }
                     }
                     if (!requirementsList.empty()) requirementsList += ", ";
                     requirementsList += std::format("{} {}", requiredCount, requiredName);
