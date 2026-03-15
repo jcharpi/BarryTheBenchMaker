@@ -1,0 +1,51 @@
+{
+    "player": {
+        "maxHealth": 100,
+        "startingGold": 0
+    },
+    "materials": {
+        "wood": {
+            "buyAmount": 15,
+            "sellAmount": 5
+        }
+    },
+    "consumables": {
+        "cake": {
+            "buyAmount": 10,
+            "sellAmount": 5,
+            "healAmount": 25
+        }
+    },
+    "craftables": {
+        "benchLeg": {
+            "sellAmount": 8,
+            "timeToCraft": 10,
+            "requirements": {
+                "wood": 2
+            }
+        },
+        "benchSeat": {
+            "sellAmount": 90,
+            "timeToCraft": 25,
+            "requirements": {
+                "wood": 12
+            }
+        },
+        "bench": {
+            "sellAmount": 200,
+            "timeToCraft": 35,
+            "requirements": {
+                "benchLeg": 4,
+                "benchSeat": 1
+            }
+        }
+    },
+    "tools": {
+        "axe": {
+            "chopTime": [4, 2, 1]
+        },
+        "sword": {
+            "damage": [25, 50, 100]
+        }
+    }
+}

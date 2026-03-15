@@ -54,28 +54,30 @@ int main()
 {
     SetConsoleOutputCP(CP_UTF8);
 
-    std::cout << "A good night's sleep! I feel well rested. Time to make some benches!\n";
-    std::cout << "I need to gather some wood first. I can chop trees with my axe.\n";
+    std::cout << "Ashpeak. The goblin tunnels.\n";
+    std::cout << "...Going to need supplies. Cake for the road. A better blade, maybe.\n";
+    std::cout << "All of that costs gold.\n";
+    std::cout << "Gold means benches. Quick ones, nothing like the Settle. No time for that now.\n";
 
     Sword sword;
     Axe axe;
-    Material wood(ItemId::Wood, "Wood", 15, 5);
-    Cake cake(10, 5, 25);
-    Craftable benchLeg (ItemId::BenchLeg,  "Bench Leg",  8,   10, {{ItemId::Wood, 2}});
-    Craftable benchSeat(ItemId::BenchSeat, "Bench Seat", 90,  25, {{ItemId::Wood, 12}});
-    Craftable bench    (ItemId::Bench,     "Bench",      200, 35, {{ItemId::BenchLeg, 4}, {ItemId::BenchSeat, 1}});
+    Material wood(ItemId::Wood, "Wood", 1, 1);
+    Cake cake(1, 1, 1);
+    Craftable benchLeg (ItemId::BenchLeg,  "Bench Leg",  1, 1, {{ItemId::Wood, 1}});
+    Craftable benchSeat(ItemId::BenchSeat, "Bench Seat", 1, 1, {{ItemId::Wood, 1}});
+    Craftable bench    (ItemId::Bench,     "Bench",      1, 1, {{ItemId::BenchLeg, 1}, {ItemId::BenchSeat, 1}});
 
     std::vector<Material*> buyables    = { &cake };
     std::vector<Craftable*> craftables  = { &benchLeg, &benchSeat, &bench };
     std::vector<Sellable*> sellables    = { &wood, &cake, &benchLeg, &benchSeat, &bench };
 
-    Player player(100, 0, &sword, &axe);
+    Player player(1, 1, &sword, &axe);
 
     std::string input;
 
     while (true) {
         std::vector<Action> availableActions = GetAvailableActions(player, craftables, sellables);
-        std::cout << std::format("\nTime to make some benches... or uh, I guess I could also: {}\n> ", PrintPrompt(availableActions));
+        std::cout << std::format("\nWhat next? {}\n> ", PrintPrompt(availableActions));
         std::getline(std::cin, input);
         std::cout << "\n";
 
@@ -84,7 +86,7 @@ int main()
         if (command.action == Action::Quit) break;
 
         if (command.action == Action::Unknown) {
-            std::cout << "Hmm, not sure what that means. Try: chop 1, sell 1 wood, buy 2 cake, craft 1 benchleg\n";
+            std::cout << "...Not sure what that means. Try: chop, sell, buy, craft, eat, inv, quit.\n";
             continue;
         }
 
@@ -94,14 +96,14 @@ int main()
         }
 
         if (!IsActionAvailable(command.action, availableActions)) {
-            std::cout << "Ha! If only... unfortunately, seems like that's not an option for me right now.\n";
+            std::cout << "Can't do that right now.\n";
             std::cout << std::format("Available right now: {}\n", PrintPrompt(availableActions));
             continue;
         }
 
         if (command.action == Action::Sell) {
             if (command.target.empty()) {
-                std::cout << "What would you like to sell?\n";
+                std::cout << "What to sell, then?\n";
                 for (Sellable* sellable : sellables) {
                     if (player.GetItemCount(sellable) == 0) continue;
                     std::cout << std::format("  {} (x{}) — {} gold each\n",
@@ -133,7 +135,7 @@ int main()
 
         if (command.action == Action::Buy) {
             if (command.target.empty()) {
-                std::cout << "Welcome to the shop! Here's what's available:\n";
+                std::cout << "Let's see what they have.\n";
                 for (Material* item : buyables) {
                     std::cout << std::format("  {} — {} gold\n", item->GetName(), item->GetBuyAmount());
                 }
@@ -149,8 +151,8 @@ int main()
 
             bool success = player.buy(itemToBuy, command.quantity);
             if (!success) {
-                std::cout << std::format("Can't afford {}x {} — need {} gold but only have {}.\n",
-                    command.quantity, itemToBuy->GetName(), itemToBuy->GetBuyAmount() * command.quantity, player.GetGold());
+                std::cout << std::format("Not enough gold. Need {}, only have {}.\n",
+                    itemToBuy->GetBuyAmount() * command.quantity, player.GetGold());
             } else {
                 std::cout << std::format("Bought {}x {} for {} gold! (Remaining gold: {})\n",
                     command.quantity, itemToBuy->GetName(), itemToBuy->GetBuyAmount() * command.quantity, player.GetGold());
@@ -189,12 +191,12 @@ int main()
             }
 
             else if (command.action == Action::Eat) {
-                std::cout << std::format("I'm sitting pretty at {}/{} health...\n", player.GetCurrentHealth(), player.GetMaxHealth());
+                std::cout << std::format("{}/{} health.\n", player.GetCurrentHealth(), player.GetMaxHealth());
                 if (!player.eat()) {
-                    std::cout << "I'd love to eat some cake... but I'll have to buy some first!\n";
+                    std::cout << "No cake. Going to have to buy some.\n";
                     break;
                 }
-                std::cout << std::format("Ah that's better! Now I'm resting at {}/{} health...\n", player.GetCurrentHealth(), player.GetMaxHealth());
+                std::cout << std::format("...Better. {}/{} health.\n", player.GetCurrentHealth(), player.GetMaxHealth());
             }
 
             else if (command.action == Action::Craft) {
