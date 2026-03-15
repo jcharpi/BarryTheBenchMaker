@@ -6,17 +6,26 @@
   { "speaker": "NARRATOR", "text": "One of them, set back from the road beneath a broad oak, belonged to the bench maker, to Barry." },
   { "speaker": "NARRATOR", "text": "Inside, the workshop smelled of pine shavings and linseed oil. Tools lined the walls in careful rows: chisels, planes, axes, mallets, each worn smooth from years of steady use. A cat slept on a pile of offcuts in the corner, undisturbed by anything." },
   { "speaker": "NARRATOR", "text": "And there, where the light fell cleanest, sat a bench." },
-  { "speaker": "NARRATOR", "lines": [
-    "",
-    "",
-    "              ╔══════════════════════════════╗",
-    "              ║  ❧   · · · · · · · · ·   ❧   ║",
-    "              ╚══════════════════════════════╝",
-    "                    ║                  ║",
-    "                    ║                  ║",
-    "              ══════╩══════════════════╩══════",
-    ""
-  ]},
+  {
+    "speaker": "NARRATOR",
+    "lines": [
+      "",
+      "",
+      "  *               *        *     *                  *",
+      "        *    *                          *    *   *",
+      "",
+      "          ╔══════════════════════════════╗",
+      "          ║  ❧   · · · · · · · · ·   ❧   ║",
+      "          ╚═════╦══════════════════╦═════╝",
+      "                ║                  ║",
+      "                ║                  ║",
+      "          ══════╩══════════════════╩══════",
+      "",
+      "     *    *   *                  *         *",
+      "  *          *         *   *                   *",
+      ""
+    ]
+  },
   { "speaker": "BARRY", "text": "Leg joints." },
   { "speaker": "BARRY", "text": "Flush. All four. Indistinguishable." },
   { "speaker": "BARRY", "text": "Grain." },
