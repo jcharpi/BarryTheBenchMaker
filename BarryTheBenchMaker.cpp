@@ -80,6 +80,7 @@ int main()
         std::vector<Action> availableActions = GetAvailableActions(player, craftables, sellables);
         std::cout << std::format("\nWhat next? {}\n> ", PrintPrompt(availableActions));
         std::getline(std::cin, input);
+        system("cls");
         std::cout << "\n";
 
         ParsedCommand command = ParseInput(input);

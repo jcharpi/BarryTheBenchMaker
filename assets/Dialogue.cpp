@@ -23,7 +23,14 @@ std::vector<DialogueEntry> LoadDialogue(const std::string& filepath) {
 
 	for (const Json::Value& entry : root) {
 		std::string speaker = entry["speaker"].asString();
-		std::string text = entry["text"].asString();
+		std::string text;
+		if (entry.isMember("lines")) {
+			for (const Json::Value& line : entry["lines"]) {
+				text += line.asString() + "\n";
+			}
+		} else {
+			text = entry["text"].asString();
+		}
 		dialogue.push_back(DialogueEntry{ speaker, text });
 	}
 

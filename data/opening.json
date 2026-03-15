@@ -6,6 +6,17 @@
   { "speaker": "NARRATOR", "text": "One of them, set back from the road beneath a broad oak, belonged to the bench maker, to Barry." },
   { "speaker": "NARRATOR", "text": "Inside, the workshop smelled of pine shavings and linseed oil. Tools lined the walls in careful rows: chisels, planes, axes, mallets, each worn smooth from years of steady use. A cat slept on a pile of offcuts in the corner, undisturbed by anything." },
   { "speaker": "NARRATOR", "text": "And there, where the light fell cleanest, sat a bench." },
+  { "speaker": "NARRATOR", "lines": [
+    "",
+    "",
+    "              ╔══════════════════════════════╗",
+    "              ║  ❧   · · · · · · · · ·   ❧   ║",
+    "              ╚══════════════════════════════╝",
+    "                    ║                  ║",
+    "                    ║                  ║",
+    "              ══════╩══════════════════╩══════",
+    ""
+  ]},
   { "speaker": "BARRY", "text": "Leg joints." },
   { "speaker": "BARRY", "text": "Flush. All four. Indistinguishable." },
   { "speaker": "BARRY", "text": "Grain." },
@@ -20,6 +31,21 @@
   { "speaker": "NARRATOR", "text": "The bench was carved from the heartwood of a Singing Oak, a tree that only fell when its song was complete. Barry had sat beside that tree for nearly a year before it came down on its own." },
   { "speaker": "NARRATOR", "text": "A knock at the workshop door broke the stillness. A courier, young and out of breath, wearing the colours of a lord's house, held out a letter sealed in dark wax and left without waiting for a reply." },
   { "speaker": "NARRATOR", "text": "The seal bore the crest of Crane's Reach, a tower on high stone, the seat of Lord Harwick Crane, whose name moved through Greyna's trading halls with the weight of old money and older land." },
+  { "speaker": "NARRATOR", "lines": [
+    "",
+    "",
+    "          ┌─────────────────────────────────┐",
+    "          │                                 │",
+    "          │          C R A N E ' S          │",
+    "          │            R E A C H            │",
+    "          │                                 │",
+    "          │               ▓▓▓               │",
+    "          │            ▓▓▓▓▓▓▓▓▓            │",
+    "          │               ▓▓▓               │",
+    "          │                                 │",
+    "          └─────────────────────────────────┘",
+    ""
+  ]},
   { "speaker": "LORD CRANE", "text": "Word of your craft has reached me. I will have the bench. Name a sum befitting the work, and deliver it to Crane's Reach before the month's end. — H. Crane" },
   { "speaker": "BARRY", "text": "...Sell it?" },
   { "speaker": "NARRATOR", "text": "Barry looked around the workshop that had suited him well for so many years. The tools were good, some inherited from his father, some earned bench by bench over a lifetime of careful work. His name was known along the harbour and in the ports beyond." },
@@ -30,6 +56,17 @@
   { "speaker": "NARRATOR", "text": "Though in his heart, Barry knew he could never again make a bench near as beautiful nor as perfect." },
   { "speaker": "NARRATOR", "text": "Barry spent the evening wrapping the bench in oiled cloth, binding it with rope at each joint. He laid out the cart fittings by the door and checked the bindings twice before turning in." },
   { "speaker": "NARRATOR", "text": "The following morning, Barry opened the workshop door. The air was still and cool. Light fell across the floor in a wide band from the window, and in that light there was nothing." },
+  { "speaker": "NARRATOR", "lines": [
+    "",
+    "",
+    "              ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄",
+    "              ┆                              ┆",
+    "              ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄",
+    "                    ┆                  ┆",
+    "                    ┆                  ┆",
+    "              ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄",
+    ""
+  ]},
   { "speaker": "NARRATOR", "text": "The oiled cloth lay folded on the workbench, unused. The rope bindings sat coiled beside it, untouched. The cart fittings were still by the door where he had left them. The space in the centre of the room was empty." },
   { "speaker": "NARRATOR", "text": "Barry checked the back room. He checked the yard behind the workshop. He moved crates he knew were far too small to hide anything. He checked the back room again. He stood in the doorway of the yard and looked out at the road as if the bench might be sitting there, waiting." },
   { "speaker": "NARRATOR", "text": "The workshop door had not been forced. The lock was untouched. The windows were latched from inside." },
@@ -40,5 +77,19 @@
   { "speaker": "NARRATOR", "text": "They kept to themselves, unless, of course, someone paid them enough not to." },
   { "speaker": "BARRY", "text": "Right." },
   { "speaker": "NARRATOR", "text": "The road from Greyna to Ashpeak climbed north through the pine forest and into thinning air." },
-  { "speaker": "NARRATOR", "text": "Barry knew what he must do and began to prepare for the journey ahead." }
+  { "speaker": "NARRATOR", "text": "Barry knew what he must do and began to prepare for the journey ahead." },
+  { "speaker": "NARRATOR", "lines": [
+    "",
+    "",
+    "    ╔══════════════════════════════════════════════╗",
+    "    ║                                              ║",
+    "    ║              B · A · R · R · Y               ║",
+    "    ║                                              ║",
+    "    ║                    T H E                     ║",
+    "    ║                                              ║",
+    "    ║            B E N C H   M A K E R             ║",
+    "    ║                                              ║",
+    "    ╚══════════════════════════════════════════════╝",
+    ""
+  ]}
 ]
