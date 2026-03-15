@@ -25,6 +25,9 @@
     <Filter Include="include\interfaces">
       <UniqueIdentifier>{43f9853b-fac2-42ec-8309-1b45d4ce4c9f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="data">
+      <UniqueIdentifier>{b2e1f3c7-9d4a-4e8f-a6b5-3c7d2e1f9a8b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="assets\items\tools\Axe.cpp">
@@ -58,6 +61,9 @@
     <ClCompile Include="assets\interfaces\Sellable.cpp">
       <Filter>assets\interfaces</Filter>
     </ClCompile>
+    <ClCompile Include="assets\Dialogue.cpp">
+      <Filter>assets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Action.h">
@@ -90,5 +96,16 @@
     <ClInclude Include="include\interfaces\Sellable.h">
       <Filter>include\interfaces</Filter>
     </ClInclude>
+    <ClInclude Include="include\Dialogue.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="data\values.json">
+      <Filter>data</Filter>
+    </None>
+    <None Include="data\opening.json">
+      <Filter>data</Filter>
+    </None>
   </ItemGroup>
 </Project>

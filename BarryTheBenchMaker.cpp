@@ -14,6 +14,7 @@
 #include "include/items/tools/Sword.h"
 #include "include/items/tools/Axe.h"
 #include "include/items/Cake.h"
+#include "include/Dialogue.h"
 
 static std::string NormalizeName(std::string name) {
     name.erase(std::remove(name.begin(), name.end(), ' '), name.end());
@@ -53,7 +54,7 @@ static Craftable* FindCraftable(const std::vector<Craftable*>& craftables, const
 int main()
 {
     SetConsoleOutputCP(CP_UTF8);
-
+    PlayDialogue(LoadDialogue("data/opening.json"));
     std::cout << "Ashpeak. The goblin tunnels.\n";
     std::cout << "...Going to need supplies. Cake for the road. A better blade, maybe.\n";
     std::cout << "All of that costs gold.\n";
