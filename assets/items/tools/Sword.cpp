@@ -4,11 +4,11 @@ int Sword::GetDamageForTier(int tier) {
 	switch (tier) {
 	default:
 	case 1:
-		return 25;
+		return 1;
 	case 2:
-		return 50;
+		return 1;
 	case 3:
-		return 100;
+		return 1;
 	}
 }
 

@@ -48,7 +48,7 @@ const std::unordered_map<ItemId, int>& Player::GetItemsOwned() const {
 
 void Player::PrintInventory() const {
 	if (itemsOwned.empty()) {
-		std::cout << "Inventory is empty! Get choppin' some wood!\n";
+		std::cout << "Nothing here yet.\n";
 		return;
 	}
 

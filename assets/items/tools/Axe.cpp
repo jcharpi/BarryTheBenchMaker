@@ -4,9 +4,9 @@ int Axe::GetTimeToChopForTier(int tier) {
 	switch (tier) {
 	default:
 	case 1:
-		return 4;
+		return 1;
 	case 2:
-		return 2;
+		return 1;
 	case 3:
 		return 1;
 	}
