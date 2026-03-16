@@ -34,6 +34,14 @@ void Sword::SetDamage(int newDamage) {
 	damage = newDamage;
 }
 
+int Sword::GetUpgradeCost() const {
+	switch (GetTier()) {
+	case 1: return 1;
+	case 2: return 1;
+	default: return 0;
+	}
+}
+
 bool Sword::Upgrade() {
 	const int currentTier = GetTier();
 	if (currentTier >= 3) {

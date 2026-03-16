@@ -87,6 +87,47 @@ int main()
 
         if (command.action == Action::Quit) break;
 
+        // TODO: Handle Action::Continue
+        if (command.action == Action::Continue) {
+            std::cout << "Nothing to continue yet.\n";
+            continue;
+		}
+
+        if (command.action == Action::Upgrade) {
+            std::unordered_map<std::string, Tool*> tools = {
+                { "axe",   player.GetAxe()   },
+                { "sword", player.GetSword() }
+            };
+
+            if (command.target.empty()) {
+                std::cout << "Hmm, let's see what I can upgrade.\n";
+                for (const auto& [name, tool] : tools) {
+                    if (tool != nullptr && tool->GetUpgradeCost() > 0)
+                        std::cout << std::format("  {} ({} gold)\n", tool->GetName(), tool->GetUpgradeCost());
+                }
+                continue;
+            }
+
+            auto toolEntry = tools.find(command.target);
+            if (toolEntry == tools.end()) {
+                std::cout << std::format("Don't know how to upgrade \"{}\".\n", command.target);
+                continue;
+            }
+
+            Tool* tool = toolEntry->second;
+            const int cost = tool->GetUpgradeCost();
+
+            if (cost == 0) std::cout << tool->GetName() << " is as good as I can get it.\n";
+            else if (player.GetGold() < cost) std::cout << std::format("The blacksmith wants {} gold, but I only have {}.\n", cost, player.GetGold());
+            else {
+                tool->Upgrade();
+                player.LoseGold(cost);
+                std::cout << std::format("Upgraded to {}! Remaining gold: {}\n", tool->GetName(), player.GetGold());
+            }
+
+            continue;
+        }
+
         if (command.action == Action::Unknown) {
             std::cout << "...Not sure what that means. Try: chop, sell, buy, craft, eat, inv, quit.\n";
             continue;

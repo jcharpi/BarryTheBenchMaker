@@ -13,5 +13,6 @@ public:
 
 	int GetTimeToChop() const;
 	void SetTimeToChop(int newTimeToChop);
+	int GetUpgradeCost() const override;
 	bool Upgrade();
 };

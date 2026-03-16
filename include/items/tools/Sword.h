@@ -13,5 +13,6 @@ public:
 
 	int GetDamage() const;
 	void SetDamage(int newDamage);
+	int GetUpgradeCost() const override;
 	bool Upgrade();
 };

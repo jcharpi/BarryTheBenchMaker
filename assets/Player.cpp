@@ -162,3 +162,19 @@ bool Player::upgradeAxe() {
 	if (axe == nullptr) return false;
 	return axe->Upgrade();
 }
+
+void Player::TakeDamage(int amount) {
+	currentHealth = std::max(0, currentHealth - amount);
+}
+
+void Player::SetCurrentHealth(int health) {
+	currentHealth = std::clamp(health, 0, maxHealth);
+}
+
+void Player::LoseGold(int amount = 1) {
+	if (amount < 0) {
+		gold = std::max(0, gold - gold / 4);
+	} else {
+		gold = std::max(0, gold - amount);
+	}
+}

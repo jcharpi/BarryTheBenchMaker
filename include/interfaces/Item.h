@@ -8,7 +8,10 @@ enum class ItemId {
 	BenchSeat,
 	Bench,
 	Sword,
-	Axe
+	Axe,
+	BearPelt,
+	GoblinEar,
+	GoblinCrown
 };
 
 class Item {

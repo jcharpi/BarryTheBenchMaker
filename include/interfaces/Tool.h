@@ -10,4 +10,6 @@ public:
 
 	int GetTier() const;
 	void SetTier(int newTier);
+	virtual int GetUpgradeCost() const = 0;
+	virtual bool Upgrade() = 0;
 };

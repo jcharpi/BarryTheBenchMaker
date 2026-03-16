@@ -5,12 +5,14 @@
 enum class Action {
     Buy,
     Chop,
-    Craft,  // shown when owned items overlap any recipe's ingredients
-    Eat,    // shown when player has Cake
+    Continue,// continues to next encounter
+    Craft,   // shown when owned items overlap any recipe's ingredients
+    Eat,     // shown when player has Cake
     Inv,
     Quit,
-    Sell,   // shown when player owns any sellable item
-    Unknown
+    Sell,    // shown when player owns any sellable item
+    Unknown,
+    Upgrade,
 };
 
 struct ParsedCommand {

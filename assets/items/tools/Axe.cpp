@@ -34,6 +34,14 @@ void Axe::SetTimeToChop(int newTimeToChop) {
 	timeToChop = newTimeToChop;
 }
 
+int Axe::GetUpgradeCost() const {
+	switch (GetTier()) {
+	case 1: return 1;
+	case 2: return 1;
+	default: return 0;
+	}
+}
+
 bool Axe::Upgrade() {
 	const int currentTier = GetTier();
 	if (currentTier >= 3) {

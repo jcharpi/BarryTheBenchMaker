@@ -43,4 +43,8 @@ public:
 
 	bool upgradeSword();
 	bool upgradeAxe();
+
+	void TakeDamage(int amount);
+	void SetCurrentHealth(int health);
+	void LoseGold(int amount);
 };
