@@ -151,6 +151,8 @@
     <ClCompile Include="assets\items\tools\Sword.cpp" />
     <ClCompile Include="assets\interfaces\Tool.cpp" />
     <ClCompile Include="assets\Dialogue.cpp" />
+    <ClCompile Include="assets\Enemy.cpp" />
+    <ClCompile Include="assets\Combat.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Action.h" />
@@ -164,6 +166,8 @@
     <ClInclude Include="include\interfaces\Sellable.h" />
     <ClInclude Include="include\items\tools\Sword.h" />
     <ClInclude Include="include\interfaces\Tool.h" />
+    <ClInclude Include="include\Enemy.h" />
+    <ClInclude Include="include\Combat.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="data\values.json" />

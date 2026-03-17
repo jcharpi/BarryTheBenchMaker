@@ -64,6 +64,12 @@
     <ClCompile Include="assets\Dialogue.cpp">
       <Filter>assets</Filter>
     </ClCompile>
+    <ClCompile Include="assets\Enemy.cpp">
+      <Filter>assets</Filter>
+    </ClCompile>
+    <ClCompile Include="assets\Combat.cpp">
+      <Filter>assets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Action.h">
@@ -97,6 +103,12 @@
       <Filter>include\interfaces</Filter>
     </ClInclude>
     <ClInclude Include="include\Dialogue.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Combat.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
