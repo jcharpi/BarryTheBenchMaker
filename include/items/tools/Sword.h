@@ -14,7 +14,7 @@ public:
 
 	int GetDamage() const;
 	float GetHitChance() const;
-	void SetDamage(int newDamage);
 	int GetUpgradeCost() const override;
-	bool Upgrade();
+	void SetDamage(int newDamage);
+	bool Upgrade() override;
 };

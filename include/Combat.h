@@ -6,22 +6,21 @@
 enum class CombatAction {
 	Attack,
 	Block,
-	Parry,
-	Eat
+	Eat,
+	Parry
 };
 
 enum class CombatResult {
-	Victory,
-	Defeat
+	Defeat,
+	Victory
 };
-
-void RenderCombatHUD(const Player& player, const std::vector<Enemy>& enemies);
 
 struct CombatCommand {
 	CombatAction action;
-	int target;   // -1 means no target (Block, Parry with no index, Eat)
+	int target; // -1 means no target (Block, Eat)
 };
 
-bool ParseCombatInput(const std::string& input, CombatCommand& out);
+bool ParseCombatInput(const std::string& input, CombatCommand& result);
+void RenderCombatHUD(const Player& player, const std::vector<Enemy>& enemies);
 
 CombatResult RunCombat(Player& player, std::vector<Enemy>& enemies);

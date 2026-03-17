@@ -17,19 +17,15 @@ enum class EnemyAction {
 
 class Enemy {
 private:
-	std::string name;
-
-	int currentHp;
-	int maxHp;
-
-	int damage;
-	float hitChance;
 	float blockChance;
-
-	bool isBlocking;
-	float hitPenalty;
-
+	int currentHp;
+	int damage;
 	std::vector<EnemyDrop> drops;
+	float hitChance;
+	float hitPenalty;
+	bool isBlocking;
+	int maxHp;
+	std::string name;
 
 public:
 	Enemy(
@@ -41,20 +37,25 @@ public:
 		std::vector<EnemyDrop> drops
 	);
 
-	const std::string& GetName() const;
+	// Getters
+	float GetBlockChance() const;
 	int GetCurrentHp() const;
-	int GetMaxHp() const;
 	int GetDamage() const;
 	float GetHitChance(); // not const — consumes hitPenalty as a side effect
-	float GetBlockChance() const;
+	int GetMaxHp() const;
+	const std::string& GetName() const;
 
+	// State
 	bool IsBlocking() const;
 	bool IsDead() const;
 
-	void TakeDamage(int amount);
-	EnemyAction ChooseAction(); // not const — sets isBlocking as a side effect
-	void SetIsBlocking(bool blocking);
+	// Setters
 	void SetHitPenalty(float penalty);
+	void SetIsBlocking(bool blocking);
+
+	// Actions
+	EnemyAction ChooseAction(); // not const — sets isBlocking as a side effect
 	void ResetTurnState();
 	std::vector<EnemyDrop> RollDrops() const;
+	void TakeDamage(int amount);
 };

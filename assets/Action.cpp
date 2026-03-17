@@ -1,10 +1,11 @@
+#include <algorithm>
+#include <sstream>
+#include <vector>
+
 #include "../include/Action.h"
 #include "../include/Player.h"
 #include "../include/interfaces/Craftable.h"
 #include "../include/interfaces/Sellable.h"
-#include <sstream>
-#include <algorithm>
-#include <vector>
 
 ParsedCommand ParseInput(const std::string& input) {
     ParsedCommand result;

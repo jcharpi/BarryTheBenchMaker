@@ -1,5 +1,6 @@
-#include <random>
 #include <algorithm>
+#include <random>
+
 #include "../include/Enemy.h"
 
 static std::mt19937 rng(std::random_device{}());
@@ -11,22 +12,18 @@ Enemy::Enemy(
 	float hitChance,
 	float blockChance,
 	std::vector<EnemyDrop> drops
-) : name(name), maxHp(maxHp), damage(damage), hitChance(hitChance), blockChance(blockChance), drops(drops) {
+) : blockChance(blockChance), damage(damage), drops(drops), hitChance(hitChance), hitPenalty(0.0f), isBlocking(false), maxHp(maxHp), name(name) {
 	currentHp = maxHp;
-	isBlocking = false;
-	hitPenalty = 0.0f;
 }
 
-const std::string& Enemy::GetName() const {
-	return name;
+// Getters
+
+float Enemy::GetBlockChance() const {
+	return blockChance;
 }
 
 int Enemy::GetCurrentHp() const {
 	return currentHp;
-}
-
-int Enemy::GetMaxHp() const {
-	return maxHp;
 }
 
 int Enemy::GetDamage() const {
@@ -35,29 +32,39 @@ int Enemy::GetDamage() const {
 
 float Enemy::GetHitChance() {
 	float effectiveHitChance = std::max(0.0f, hitChance - hitPenalty);
-	hitPenalty = 0.0f; // Reset hitPenalty after applying it to the hit chance.
+	hitPenalty = 0.0f;
 	return effectiveHitChance;
 }
 
-float Enemy::GetBlockChance() const {
-	return blockChance;
+int Enemy::GetMaxHp() const {
+	return maxHp;
 }
+
+const std::string& Enemy::GetName() const {
+	return name;
+}
+
+// State
 
 bool Enemy::IsBlocking() const {
 	return isBlocking;
-}
-
-void Enemy::SetIsBlocking(bool blocking) {
-	isBlocking = blocking;
 }
 
 bool Enemy::IsDead() const {
 	return currentHp <= 0;
 }
 
-void Enemy::TakeDamage(int amount) {
-	currentHp = std::max(0, currentHp - amount);
+// Setters
+
+void Enemy::SetHitPenalty(float penalty) {
+	hitPenalty = penalty;
 }
+
+void Enemy::SetIsBlocking(bool blocking) {
+	isBlocking = blocking;
+}
+
+// Actions
 
 EnemyAction Enemy::ChooseAction() {
 	std::uniform_real_distribution<float> dist(0.0f, 1.0f);
@@ -69,10 +76,6 @@ EnemyAction Enemy::ChooseAction() {
 	} else {
 		return EnemyAction::Attack;
 	}
-}
-
-void Enemy::SetHitPenalty(float penalty) {
-	hitPenalty = penalty;
 }
 
 void Enemy::ResetTurnState() {
@@ -94,4 +97,8 @@ std::vector<EnemyDrop> Enemy::RollDrops() const {
 	}
 
 	return result;
+}
+
+void Enemy::TakeDamage(int amount) {
+	currentHp = std::max(0, currentHp - amount);
 }
