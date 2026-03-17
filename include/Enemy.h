@@ -46,12 +46,14 @@ public:
 	int GetMaxHp() const;
 	int GetDamage() const;
 	float GetHitChance(); // not const — consumes hitPenalty as a side effect
+	float GetBlockChance() const;
 
 	bool IsBlocking() const;
 	bool IsDead() const;
 
 	void TakeDamage(int amount);
 	EnemyAction ChooseAction(); // not const — sets isBlocking as a side effect
+	void SetIsBlocking(bool blocking);
 	void SetHitPenalty(float penalty);
 	void ResetTurnState();
 	std::vector<EnemyDrop> RollDrops() const;

@@ -39,8 +39,16 @@ float Enemy::GetHitChance() {
 	return effectiveHitChance;
 }
 
+float Enemy::GetBlockChance() const {
+	return blockChance;
+}
+
 bool Enemy::IsBlocking() const {
 	return isBlocking;
+}
+
+void Enemy::SetIsBlocking(bool blocking) {
+	isBlocking = blocking;
 }
 
 bool Enemy::IsDead() const {

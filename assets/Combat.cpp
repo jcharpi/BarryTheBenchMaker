@@ -1,55 +1,61 @@
-#include "../../include/Combat.h"
 #include <iostream>
 #include <format>
 #include <string>
 #include <random>
+#include <sstream>
+#include <algorithm>
+#include "../include/Combat.h"
 
-// ---------------------------------------------------------------------------
-// RenderCombatHUD
-// ---------------------------------------------------------------------------
-// Called once per round before prompting the player.
-// Should print something like:
-//
-//   === COMBAT ===
-//   1. Forest Bear  [########--]  80/120
-//
-//   Barry  [######----]  60/100  | Gold: 42 | Cakes: 2
-//
-// Tips:
-//   - Build the HP bar with a loop: fill '#' for filled portion, '-' for remainder.
-//   - Bar width = 10 chars. filled = (currentHp * 10) / maxHp.
-//   - Use std::format for clean number formatting.
-//   - Dead enemies: skip the bar and just print "[DEAD]".
+static std::mt19937 rng(std::random_device{}());
 
 void RenderCombatHUD(const Player& player, const std::vector<Enemy>& enemies) {
-	// TODO: Print "=== COMBAT ===" header.
+	std::cout << "=== COMBAT ===\n";
+	for (size_t i = 0; i < enemies.size(); i++) {
+		std::string enemyBar;
+		if (enemies[i].IsDead()) {
+			enemyBar = "DEAD";
+			std::cout << std::format("{}. {}  [{}]\n", i + 1, enemies[i].GetName(), enemyBar);
+		} else {
+			int filledLength = (enemies[i].GetCurrentHp() * 10) / enemies[i].GetMaxHp();
+			enemyBar = std::string(filledLength, '#') + std::string(10 - filledLength, '-');
+			std::cout << std::format("{}. {}  [{}]  {}/{}\n", i + 1, enemies[i].GetName(), enemyBar, enemies[i].GetCurrentHp(), enemies[i].GetMaxHp());
+		}
+	}
 
-	// TODO: Loop through enemies with an index (use a regular for loop, not range-based,
-	// so you have the index number for targeting).
-	// Print: "{i+1}. {name}  [{bar}]  {currentHp}/{maxHp}"
-	// If IsDead(), print: "{i+1}. {name}  [DEAD]"
+	int filledLength = (player.GetCurrentHealth() * 10) / player.GetMaxHealth();
+	std::string playerBar = std::string(filledLength, '#') + std::string(10 - filledLength, '-');
+	int cakeCount = player.GetCakeCount();
 
-	// TODO: Print a blank line, then the player row:
-	// "Barry  [{bar}]  {currentHp}/{maxHealth}  | Gold: {gold} | Cakes: {cakeCount}"
-	// Player::GetItemCount() takes an Item* — you'll need a Cake instance, or
-	// expose a cake count getter. Think about the cleanest way to get this number.
+	std::cout << std::format("\nBarry  [{}]  {}/{}  | Gold: {} | Cakes: {}\n", playerBar, player.GetCurrentHealth(), player.GetMaxHealth(), player.GetGold(), cakeCount);
+	
 }
 
-// ---------------------------------------------------------------------------
-// ParseCombatInput
-// ---------------------------------------------------------------------------
-// Turns a raw string into a CombatCommand.
-// "attack" or "attack 3" → Attack (target 0-indexed or -1)
-// "block"                → Block
-// "parry" or "parry 2"  → Parry
-// "eat"                  → Eat
-// Research: "C++ istringstream parse tokens" — same pattern as Action.cpp's ParseInput.
+bool ParseCombatInput(const std::string& input, CombatCommand& result) {
+	std::string action;
+	std::istringstream stream(input);
+	int target = 0;
+	stream >> action;
+	std::transform(action.begin(), action.end(), action.begin(), ::tolower);
+	stream >> target;
+	result.target = target - 1; // 0 → -1 (no target), 1 → 0, 2 → 1, etc.
 
-bool ParseCombatInput(const std::string& input, CombatCommand& out) {
-	// TODO: Read the first word to determine action.
-	// If it's "attack" or "parry", try to read a second word as an int for the target.
-	// Target from user is 1-based ("attack 1" means enemies[0]) — store as 0-based internally.
-	// Return false if first word doesn't match any action.
+	if (action == "attack") {
+		result.action = CombatAction::Attack;
+		return true;
+	}
+	if (action == "parry") {
+		result.action = CombatAction::Parry;
+		return true;
+	}
+	if (action == "block") {
+		result.action = CombatAction::Block;
+		return true;
+	}
+	if (action == "eat") {
+		result.action = CombatAction::Eat;
+		return true;
+	}
+
 	return false;
 }
 
@@ -81,39 +87,136 @@ bool ParseCombatInput(const std::string& input, CombatCommand& out) {
 
 CombatResult RunCombat(Player& player, std::vector<Enemy>& enemies) {
 	while (true) {
+		// All enemies dead → Victory
+		if (std::all_of(enemies.begin(), enemies.end(), [](const Enemy& e) { return e.IsDead(); })) return CombatResult::Victory;
+		
+		// Player HP <= 0 → Defeat
+		else if (player.GetCurrentHealth() <= 0) return CombatResult::Defeat;
 
-		// TODO: Step 1 — count living enemies. If 0, break to Victory.
+		//reset turn state on all living enemies.
+		for (Enemy& enemy : enemies) {
+			if (!enemy.IsDead()) {
+				enemy.ResetTurnState();
+			}
+		}
 
-		// TODO: Step 2 — if player HP <= 0, break to Defeat.
+		RenderCombatHUD(player, enemies);
 
-		// TODO: Step 3 — call ResetTurnState() on every living enemy.
+		// Step 5 — input loop
+		CombatCommand command;
+		std::string input;
+		while (true) {
+			std::cout << "\n> ";
+			std::getline(std::cin, input);
 
-		// TODO: Step 4 — RenderCombatHUD().
+			if (!ParseCombatInput(input, command)) {
+				std::cout << "...Not an option. Try: attack, block, parry, eat.\n";
+				continue;
+			}
 
-		// TODO: Step 5 — input loop.
-		// Print "> " prompt, read a line, parse it. If invalid, print hint and loop.
-		// For Attack/Parry, validate the target index is in range and the enemy isn't dead.
+			// Attack and Parry require a valid, living target
+			if (command.action == CombatAction::Attack || command.action == CombatAction::Parry) {
+				if (command.target < 0 || command.target >= (int)enemies.size()) {
+					std::cout << std::format("Which one? Pick a number (1–{}).\n", enemies.size());
+					continue;
+				}
+				if (enemies[command.target].IsDead()) {
+					std::cout << "Already down.\n";
+					continue;
+				}
+			}
 
-		// TODO: Step 6 — enemy actions.
-		// Call ChooseAction() on each living enemy. Store results (you'll need them in step 7).
-		// If ChooseAction() returns Block, set that enemy's isBlocking flag.
-		// (You may want to expose a SetBlocking() setter on Enemy, or handle it here.)
+			break;
+		}
 
-		// TODO: Step 7 — resolve the turn using the matrix above.
-		// Hint: resolve player's action against each enemy separately for multi-enemy later.
-		// For Phase 2 (1 enemy), just resolve against enemies[0].
 
-		// TODO: Print round summary — who hit who, for how much, any misses.
+		// Step 6 — enemy actions
+		std::vector<EnemyAction> enemyActions;
+		for (Enemy& enemy : enemies) {
+			if (!enemy.IsDead()) {
+				enemyActions.push_back(enemy.ChooseAction()); // sets isBlocking as side effect
+			} else {
+				enemyActions.push_back(EnemyAction::Attack); // placeholder for dead slots
+			}
+		}
+
+		// Step 7 — resolve the turn
+		std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+		const float playerHitChance = player.GetSword()->GetHitChance();
+
+		// Player's action
+		if (command.action == CombatAction::Attack) {
+			Enemy& target = enemies[command.target];
+			float hitChance = target.IsBlocking()
+				? std::max(0.05f, playerHitChance - target.GetBlockChance())
+				: playerHitChance;
+
+			if (dist(rng) < hitChance) {
+				int dmg = player.GetSword()->GetDamage();
+				target.TakeDamage(dmg);
+				std::cout << std::format("Barry hits {} for {} damage!\n", target.GetName(), dmg);
+			} else {
+				std::cout << std::format("Barry swings at {} — misses.\n", target.GetName());
+			}
+
+		} else if (command.action == CombatAction::Block) {
+			std::cout << "Barry braces.\n";
+
+		} else if (command.action == CombatAction::Parry) {
+			Enemy& target = enemies[command.target];
+			EnemyAction targetAction = enemyActions[command.target];
+
+			if (targetAction == EnemyAction::Attack) {
+				// Parry success — negate the attack, weaken the enemy next turn
+				target.SetHitPenalty(0.2f);
+				std::cout << std::format("Barry parries {}! The attack is deflected — they're off-balance.\n", target.GetName());
+			} else {
+				// Parry stumble — enemy blocked, Barry is wide open next turn.
+				// A penalty of -1.0f makes effectiveHitChance = hitChance + 1.0f,
+				// which always exceeds 1.0f, so the hit roll always succeeds.
+				const float GUARANTEED_HIT_PENALTY = -1.0f;
+				target.SetHitPenalty(GUARANTEED_HIT_PENALTY);
+				std::cout << std::format("Barry lunges — {} was blocking. Barry stumbles and is left wide open.\n", target.GetName());
+			}
+
+		} else if (command.action == CombatAction::Eat) {
+			if (player.eat()) {
+				std::cout << std::format("Barry eats a cake. {}/{} HP.\n", player.GetCurrentHealth(), player.GetMaxHealth());
+			} else {
+				std::cout << "No cake left.\n";
+			}
+		}
+
+		// Enemy attacks
+		for (size_t i = 0; i < enemies.size(); i++) {
+			if (enemies[i].IsDead()) continue;
+			if (enemyActions[i] == EnemyAction::Block) {
+				std::cout << std::format("{} braces.\n", enemies[i].GetName());
+				continue;
+			}
+
+			float effectiveHitChance = enemies[i].GetHitChance();
+			if (command.action == CombatAction::Block) effectiveHitChance /= 2.0f;
+
+			if (command.action == CombatAction::Parry && (int)i == command.target && enemyActions[i] == EnemyAction::Attack) continue;
+
+			if (dist(rng) < effectiveHitChance) {
+				int dmg = enemies[i].GetDamage();
+				player.TakeDamage(dmg);
+				std::cout << std::format("{} hits Barry for {} damage!\n", enemies[i].GetName(), dmg);
+			} else {
+				std::cout << std::format("{} swings at Barry — misses.\n", enemies[i].GetName());
+			}
+		}
 	}
 
 	// Victory path
 	// TODO: Roll drops for all enemies (RollDrops()), print what dropped,
 	// add dropped items to player inventory as Sellables.
-	// Research: player.AddItem() expects an Item* and a count.
 
 	// Defeat path
 	// TODO: player.LoseGold() with 25% of current gold.
-	// HP penalty: set player HP to some reduced value (encounter-specific — hardcode for now).
+	// HP penalty: set player HP to 50% for now, encounter-specific later.
 	// Print defeat flavor text.
 
 	return CombatResult::Victory; // placeholder — replace with actual return based on outcome

@@ -34,6 +34,7 @@ public:
 
 	void AddItem(Item* item, int amount);
 	int GetItemCount(const Item* item) const;
+	int GetCakeCount() const { return itemsOwned.count(ItemId::Cake) ? itemsOwned.at(ItemId::Cake) : 0; }
 
 	bool chop(Material* wood);
 	bool craft(Craftable* item);
