@@ -1,13 +1,12 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "interfaces/Item.h"
+#include "interfaces/Sellable.h"
 
 struct EnemyDrop {
-	ItemId itemId;
-	std::string itemName;
-	int sellValue;
+	Sellable* item;
 	float dropChance;
+	int quantity;
 };
 
 enum class EnemyAction {

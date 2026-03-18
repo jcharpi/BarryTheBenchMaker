@@ -43,7 +43,8 @@ public:
 	int Sell(Sellable* item, int quantity);
 
 	// Combat
-	void LoseGold(int amount);
+	void LoseIntGold(int amount);
+	void LosePercentGold(int percent);
 	void SetCurrentHealth(int health);
 	void TakeDamage(int amount);
 	bool UpgradeAxe();

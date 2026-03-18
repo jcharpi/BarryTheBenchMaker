@@ -174,10 +174,22 @@ static void ResolveEnemyAttacks(
 CombatResult RunCombat(Player& player, std::vector<Enemy>& enemies) {
 	while (true) {
 		if (std::all_of(enemies.begin(), enemies.end(), [](const Enemy& enemy) { return enemy.IsDead(); })) {
+				for (Enemy& enemy : enemies) {
+				std::vector<EnemyDrop> drops = enemy.RollDrops();
+				for (const EnemyDrop& drop : drops) {
+					player.AddItem(drop.item, drop.quantity);
+					std::cout << std::format("{} dropped {}x {}.\n", enemy.GetName(), drop.quantity, drop.item->GetName());
+				}
+			}
+
+			std::cout << "\nBarry is victorious! Hopefully this is the last of them...\n";
 			return CombatResult::Victory;
 		}
 
 		if (player.GetCurrentHealth() <= 0) {
+			player.SetCurrentHealth(player.GetMaxHealth() / 2);
+			player.LosePercentGold(25);
+			std::cout << "\nBarry collapses to the ground... but he's not out yet. He lost some gold, but at least he can keep fighting.\n";
 			return CombatResult::Defeat;
 		}
 
@@ -231,15 +243,4 @@ CombatResult RunCombat(Player& player, std::vector<Enemy>& enemies) {
 		ResolvePlayerAction(command, player, enemies, enemyActions, dist);
 		ResolveEnemyAttacks(command, player, enemies, enemyActions, dist);
 	}
-
-	// Victory path
-	// TODO: Roll drops for all enemies (RollDrops()), print what dropped,
-	// add dropped items to player inventory as Sellables.
-
-	// Defeat path
-	// TODO: player.LoseGold() with 25% of current gold.
-	// HP penalty: set player HP to 50% for now, encounter-specific later.
-	// Print defeat flavor text.
-
-	return CombatResult::Victory; // placeholder — replace with actual return based on outcome
 }

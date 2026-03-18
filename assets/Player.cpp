@@ -164,12 +164,12 @@ int Player::Sell(Sellable* item, int quantity) {
 
 // Combat
 
-void Player::LoseGold(int amount) {
-	if (amount < 0) {
-		gold = std::max(0, gold - gold / 4);
-	} else {
-		gold = std::max(0, gold - amount);
-	}
+void Player::LoseIntGold(int amount) {
+	gold = std::max(0, gold - amount);
+}
+
+void Player::LosePercentGold(int percent) {
+	gold = std::max(0, gold - ((gold * percent) / 100));
 }
 
 void Player::SetCurrentHealth(int health) {
