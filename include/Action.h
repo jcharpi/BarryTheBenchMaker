@@ -33,6 +33,7 @@ std::string PrintPrompt(const std::vector<Action>& available);
 void HandleAction(
     const ParsedCommand& command,
     Player& player,
+	int& storyProgress,
     const std::vector<Action>& availableActions,
     Material* choppable,
     const std::vector<Material*>& buyables,

@@ -31,6 +31,8 @@ int main()
     Craftable benchSeat(ItemId::BenchSeat, "Bench Seat", 1, 1, {{ItemId::Wood, 1}});
     Craftable bench    (ItemId::Bench,     "Bench",      1, 1, {{ItemId::BenchLeg, 1}, {ItemId::BenchSeat, 1}});
 
+	int storyProgress = 0;
+
     std::vector<Material*> buyables    = { &cake };
     std::vector<Craftable*> craftables  = { &benchLeg, &benchSeat, &bench };
     std::vector<Sellable*> sellables    = { &wood, &cake, &benchLeg, &benchSeat, &bench };
@@ -50,7 +52,7 @@ int main()
 
         if (command.action == Action::Quit) break;
 
-        HandleAction(command, player, availableActions, &wood, buyables, craftables, sellables);
+        HandleAction(command, player, storyProgress, availableActions, &wood, buyables, craftables, sellables);
     }
 
     std::cout << "\nSee you next time, Barry.\n";

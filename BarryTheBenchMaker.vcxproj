@@ -153,6 +153,7 @@
     <ClCompile Include="assets\Dialogue.cpp" />
     <ClCompile Include="assets\Enemy.cpp" />
     <ClCompile Include="assets\Combat.cpp" />
+    <ClCompile Include="assets\Encounters.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Action.h" />
@@ -168,10 +169,13 @@
     <ClInclude Include="include\interfaces\Tool.h" />
     <ClInclude Include="include\Enemy.h" />
     <ClInclude Include="include\Combat.h" />
+    <ClInclude Include="include\Encounter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="data\values.json" />
     <None Include="data\opening.json" />
+    <None Include="data\preBear.json" />
+    <None Include="data\postBear.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

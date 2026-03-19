@@ -70,6 +70,9 @@
     <ClCompile Include="assets\Combat.cpp">
       <Filter>assets</Filter>
     </ClCompile>
+    <ClCompile Include="assets\Encounters.cpp">
+      <Filter>assets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Action.h">
@@ -111,12 +114,21 @@
     <ClInclude Include="include\Combat.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\Encounter.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\values.json">
       <Filter>data</Filter>
     </None>
     <None Include="data\opening.json">
+      <Filter>data</Filter>
+    </None>
+    <None Include="data\preBear.json">
+      <Filter>data</Filter>
+    </None>
+    <None Include="data\postBear.json">
       <Filter>data</Filter>
     </None>
   </ItemGroup>

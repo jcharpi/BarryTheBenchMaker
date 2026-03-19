@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "../include/Action.h"
+#include "../include/Encounter.h"
 #include "../include/Player.h"
 #include "../include/interfaces/Craftable.h"
 #include "../include/interfaces/Material.h"
@@ -264,6 +265,7 @@ std::string PrintPrompt(const std::vector<Action>& available) {
 void HandleAction(
     const ParsedCommand& command,
     Player& player,
+	int& storyProgress,
     const std::vector<Action>& availableActions,
     Material* wood,
     const std::vector<Material*>& buyables,
@@ -271,7 +273,13 @@ void HandleAction(
     const std::vector<Sellable*>& sellables)
 {
     if (command.action == Action::Continue) {
-        std::cout << "Nothing to continue yet.\n";
+        if (storyProgress < 3) {
+			RunEncounter(player, storyProgress);
+        }
+        else {
+            std::cout << "Time to watch the sunrise and enjoy my bench.\n";
+        }
+
         return;
     }
 
