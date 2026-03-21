@@ -147,30 +147,6 @@ static void ResolveEnemyAttacks(
 	}
 }
 
-// RunCombat — The Main Loop
-// Structure (one iteration = one full round):
-//   1. Check win condition: all enemies dead → Victory
-//   2. Check lose condition: player HP <= 0 → Defeat
-//   3. ResetTurnState() on all living enemies
-//   4. RenderCombatHUD()
-//   5. Prompt player, call ParseCombatInput() — loop until valid input
-//   6. Each living enemy calls ChooseAction()
-//   7. Resolve the turn (see resolution matrix below)
-//   8. Print round summary, loop back to step 1
-
-// Resolution matrix (player action vs enemy action):
-//
-//   Player \ Enemy  |  Attack                          |  Block
-//   ----------------+----------------------------------+----------------------------------
-//   Attack          | Player hits at base hitChance    | Player hits at (hitChance - enemy blockChance), min 5%
-//   Block           | Enemy hits at half hit chance    | Nothing happens
-//   Parry           | Enemy attack negated + enemy     | Barry stumbles — enemy guaranteed
-//                   | gets -20% hit next turn          | hit next turn (enemy hitChance = 1.0)
-//   Eat             | Heal 25 HP, enemy hits normally  | Heal 25 HP, nothing else
-
-// Hitting: roll float [0.0, 1.0). If roll < effectiveHitChance, it's a hit.
-// On a hit, deal the attacker's damage to the defender.
-
 CombatResult RunCombat(Player& player, std::vector<Enemy>& enemies) {
 	while (true) {
 		if (std::all_of(enemies.begin(), enemies.end(), [](const Enemy& enemy) { return enemy.IsDead(); })) {
@@ -205,7 +181,7 @@ CombatResult RunCombat(Player& player, std::vector<Enemy>& enemies) {
 		CombatCommand command;
 		std::string input;
 		while (true) {
-			std::cout << "\n> ";
+			std::cout << "\n(attack / block / parry / eat)\n> ";
 			std::getline(std::cin, input);
 
 			if (!ParseCombatInput(input, command)) {
@@ -216,7 +192,7 @@ CombatResult RunCombat(Player& player, std::vector<Enemy>& enemies) {
 			// Attack and Parry require a valid, living target
 			if (command.action == CombatAction::Attack || command.action == CombatAction::Parry) {
 				if (command.target < 0 || command.target >= (int)enemies.size()) {
-					std::cout << std::format("Which one? Pick a number (1–{}).\n", enemies.size());
+					std::cout << std::format("Which one? Pick a number (example: attack 1, parry 2).\n", enemies.size());
 					continue;
 				}
 				if (enemies[command.target].IsDead()) {

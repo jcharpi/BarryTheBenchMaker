@@ -5,6 +5,7 @@
 #include <windows.h>
 
 #include "include/Action.h"
+#include "include/Encounter.h"
 #include "include/Dialogue.h"
 #include "include/Player.h"
 #include "include/interfaces/Craftable.h"
@@ -35,7 +36,7 @@ int main()
 
     std::vector<Material*> buyables    = { &cake };
     std::vector<Craftable*> craftables  = { &benchLeg, &benchSeat, &bench };
-    std::vector<Sellable*> sellables    = { &wood, &cake, &benchLeg, &benchSeat, &bench };
+    std::vector<Sellable*> sellables    = { &wood, &cake, &benchLeg, &benchSeat, &bench, &bearPelt, &goblinEar, &goblinCrown };
 
     Player player(1, 1, &sword, &axe);
 

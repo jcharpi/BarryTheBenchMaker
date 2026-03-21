@@ -3,9 +3,9 @@
 #include "../include/Dialogue.h"
 #include "../include/interfaces/Sellable.h"
 
-static Sellable bearPelt(ItemId::BearPelt, "Bear Pelt", 50);
-static Sellable goblinEar(ItemId::GoblinEar, "Goblin Ear", 15);
-static Sellable goblinCrown(ItemId::GoblinCrown, "Goblin Crown", 200);
+Sellable bearPelt(ItemId::BearPelt, "Bear Pelt", 50);
+Sellable goblinEar(ItemId::GoblinEar, "Goblin Ear", 15);
+Sellable goblinCrown(ItemId::GoblinCrown, "Goblin Crown", 200);
 
 Encounter BearEncounter() {
 	return {
