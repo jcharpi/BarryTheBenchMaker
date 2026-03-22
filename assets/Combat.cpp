@@ -1,16 +1,16 @@
 #include <algorithm>
+#include <conio.h>
 #include <format>
 #include <iostream>
 #include <random>
 #include <sstream>
 #include <string>
 
-#include <conio.h>
 #include "../include/Combat.h"
 
 static std::mt19937 rng(std::random_device{}());
 
-// HUD
+// region HUD
 
 void RenderCombatHUD(const Player& player, const std::vector<Enemy>& enemies) {
 	std::cout << "=== COMBAT ===\n";
@@ -20,9 +20,9 @@ void RenderCombatHUD(const Player& player, const std::vector<Enemy>& enemies) {
 			enemyBar = "DEFEATED";
 			std::cout << std::format("{}. {}  [{}]\n", i + 1, enemies[i].GetName(), enemyBar);
 		} else {
-			int filledLength = (enemies[i].GetCurrentHp() * 10) / enemies[i].GetMaxHp();
+			int filledLength = (enemies[i].GetCurrentHealth() * 10) / enemies[i].GetMaxHealth();
 			enemyBar = std::string(filledLength, '#') + std::string(10 - filledLength, '-');
-			std::cout << std::format("{}. {}  [{}]  {}/{}\n", i + 1, enemies[i].GetName(), enemyBar, enemies[i].GetCurrentHp(), enemies[i].GetMaxHp());
+			std::cout << std::format("{}. {}  [{}]  {}/{}\n", i + 1, enemies[i].GetName(), enemyBar, enemies[i].GetCurrentHealth(), enemies[i].GetMaxHealth());
 		}
 	}
 
@@ -33,7 +33,7 @@ void RenderCombatHUD(const Player& player, const std::vector<Enemy>& enemies) {
 	std::cout << std::format("\nBarry  [{}]  {}/{}  | Gold: {} | Cakes: {}\n", playerBar, player.GetCurrentHealth(), player.GetMaxHealth(), player.GetGold(), cakeCount);
 }
 
-// Input
+// region Input
 
 bool ParseCombatInput(const std::string& input, CombatCommand& result) {
 	std::string action;
@@ -64,7 +64,7 @@ bool ParseCombatInput(const std::string& input, CombatCommand& result) {
 	return false;
 }
 
-// Turn resolution helpers
+// region Turn resolution
 
 static void ResolvePlayerAction(
 	const CombatCommand& command,

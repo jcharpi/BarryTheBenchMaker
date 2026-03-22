@@ -50,7 +50,7 @@ int main()
 
         while (true) {
             std::vector<Action> availableActions = GetAvailableActions(player, craftables, sellables);
-            std::cout << std::format("\nWhat next? {}\n> ", PrintPrompt(availableActions));
+            std::cout << std::format("\nWhat next? {}\n> ", FormatPrompt(availableActions));
             std::getline(std::cin, input);
             system("cls");
             std::cout << "\n";

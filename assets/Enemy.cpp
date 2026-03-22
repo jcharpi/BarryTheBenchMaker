@@ -12,8 +12,7 @@ Enemy::Enemy(
 	float hitChance,
 	float blockChance,
 	std::vector<EnemyDrop> drops
-) : blockChance(blockChance), damage(damage), drops(drops), hitChance(hitChance), hitPenalty(0.0f), isBlocking(false), maxHp(maxHp), name(name) {
-	currentHp = maxHp;
+) : blockChance(blockChance), currentHealth(maxHp), damage(damage), drops(drops), hitChance(hitChance), hitPenalty(0.0f), isBlocking(false), maxHealth(maxHp), name(name) {
 }
 
 // Getters
@@ -22,8 +21,8 @@ float Enemy::GetBlockChance() const {
 	return blockChance;
 }
 
-int Enemy::GetCurrentHp() const {
-	return currentHp;
+int Enemy::GetCurrentHealth() const {
+	return currentHealth;
 }
 
 int Enemy::GetDamage() const {
@@ -36,8 +35,8 @@ float Enemy::GetHitChance() {
 	return effectiveHitChance;
 }
 
-int Enemy::GetMaxHp() const {
-	return maxHp;
+int Enemy::GetMaxHealth() const {
+	return maxHealth;
 }
 
 const std::string& Enemy::GetName() const {
@@ -51,7 +50,7 @@ bool Enemy::IsBlocking() const {
 }
 
 bool Enemy::IsDead() const {
-	return currentHp <= 0;
+	return currentHealth <= 0;
 }
 
 // Setters
@@ -100,5 +99,5 @@ std::vector<EnemyDrop> Enemy::RollDrops() const {
 }
 
 void Enemy::TakeDamage(int amount) {
-	currentHp = std::max(0, currentHp - amount);
+	currentHealth = std::max(0, currentHealth - amount);
 }

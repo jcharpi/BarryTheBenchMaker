@@ -16,7 +16,7 @@
 #include "../include/interfaces/Sellable.h"
 #include "../include/interfaces/Tool.h"
 
-// Static helpers
+// region Helpers
 
 static std::string NormalizeName(std::string name) {
     name.erase(std::remove(name.begin(), name.end(), ' '), name.end());
@@ -38,7 +38,7 @@ static Craftable* FindCraftable(const std::vector<Craftable*>& craftables, const
     return nullptr;
 }
 
-// Action handlers
+// region Action handlers
 
 static void HandleUpgrade(Player& player, const ParsedCommand& command) {
     std::unordered_map<std::string, Tool*> tools = {
@@ -182,7 +182,7 @@ static void HandleCraftListing(const std::vector<Craftable*>& craftables, const 
     std::cout << "(e.g., craft 1 benchleg)\n";
 }
 
-// Parsing
+// region Parsing
 
 ParsedCommand ParseInput(const std::string& input) {
     ParsedCommand result;
@@ -277,7 +277,7 @@ std::string ActionToString(Action action) {
 	}
 }
 
-std::string PrintPrompt(const std::vector<Action>& available) {
+std::string FormatPrompt(const std::vector<Action>& available) {
     std::string result = "( ";
     for (int i = 0; i < (int)available.size(); i++) {
         if (i > 0) result += " / ";
@@ -328,7 +328,7 @@ void HandleAction(
 
     if (std::find(availableActions.begin(), availableActions.end(), command.action) == availableActions.end()) {
         std::cout << "Can't do that right now.\n";
-        std::cout << std::format("Available right now: {}\n", PrintPrompt(availableActions));
+        std::cout << std::format("Available right now: {}\n", FormatPrompt(availableActions));
         return;
     }
 

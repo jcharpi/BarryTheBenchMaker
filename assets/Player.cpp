@@ -173,12 +173,12 @@ void Player::LoseGold(int amount) {
 }
 
 void Player::LosePercentCake(int percent) {
-	auto cake = itemsOwned.find(ItemId::Cake);
-	if (cake == itemsOwned.end()) return;
+	auto cakeEntry = itemsOwned.find(ItemId::Cake);
+	if (cakeEntry == itemsOwned.end()) return;
 
-	int lost = (cake->second * percent) / 100;
-	cake->second -= lost;
-	if (cake->second <= 0) itemsOwned.erase(cake);
+	int lost = (cakeEntry->second * percent) / 100;
+	cakeEntry->second -= lost;
+	if (cakeEntry->second <= 0) itemsOwned.erase(cakeEntry);
 }
 
 void Player::LosePercentGold(int percent) {

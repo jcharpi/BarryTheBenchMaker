@@ -29,7 +29,7 @@ class Sellable;
 ParsedCommand ParseInput(const std::string& input);
 std::vector<Action> GetAvailableActions(const Player& player, const std::vector<Craftable*>& craftables, const std::vector<Sellable*>& sellables);
 std::string ActionToString(Action action);
-std::string PrintPrompt(const std::vector<Action>& available);
+std::string FormatPrompt(const std::vector<Action>& available);
 void HandleAction(
     const ParsedCommand& command,
     Player& player,

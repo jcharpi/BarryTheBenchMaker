@@ -17,13 +17,13 @@ enum class EnemyAction {
 class Enemy {
 private:
 	float blockChance;
-	int currentHp;
+	int currentHealth;
 	int damage;
 	std::vector<EnemyDrop> drops;
 	float hitChance;
 	float hitPenalty;
 	bool isBlocking;
-	int maxHp;
+	int maxHealth;
 	std::string name;
 
 public:
@@ -38,10 +38,10 @@ public:
 
 	// Getters
 	float GetBlockChance() const;
-	int GetCurrentHp() const;
+	int GetCurrentHealth() const;
 	int GetDamage() const;
 	float GetHitChance(); // not const — consumes hitPenalty as a side effect
-	int GetMaxHp() const;
+	int GetMaxHealth() const;
 	const std::string& GetName() const;
 
 	// State
