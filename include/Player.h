@@ -1,7 +1,7 @@
 #pragma once
 #include <unordered_map>
-#include "interfaces/Item.h"
 #include "interfaces/Craftable.h"
+#include "interfaces/Item.h"
 #include "interfaces/Material.h"
 #include "interfaces/Sellable.h"
 #include "interfaces/Tool.h"
@@ -11,36 +11,43 @@
 
 class Player {
 private:
-	int currentHealth;
-	int maxHealth;
-	int gold;
-	Sword* sword;
 	Axe* axe;
-	std::unordered_map<ItemId, int> itemsOwned;
+	int currentHealth;
+	int gold;
 	std::unordered_map<ItemId, Item*> itemLookup;
+	std::unordered_map<ItemId, int> itemsOwned;
+	int maxHealth;
+	Sword* sword;
 
 public:
 	Player(int maxHealth, int startingGold, Sword* sword, Axe* axe);
 
-	int GetCurrentHealth() const;
-	int GetMaxHealth() const;
-	int GetGold() const;
-	
-	Sword* GetSword() const;
+	// Getters
 	Axe* GetAxe() const;
-	
-	const std::unordered_map<ItemId, int>& GetItemsOwned() const;
-	void PrintInventory() const;
-
-	void AddItem(Item* item, int amount);
+	int GetCakeCount() const;
+	int GetCurrentHealth() const;
+	int GetGold() const;
 	int GetItemCount(const Item* item) const;
+	const std::unordered_map<ItemId, int>& GetItemsOwned() const;
+	int GetMaxHealth() const;
+	Sword* GetSword() const;
 
-	bool chop(Material* wood);
-	bool craft(Craftable* item);
-	int sell(Sellable* item, int quantity);
-	bool buy(Item* item, int quantity);
-	bool eat();
+	// Inventory
+	void AddItem(Item* item, int amount);
+	bool Buy(Item* item, int quantity);
+	bool Chop(Material* wood);
+	bool Craft(Craftable* item);
+	bool Eat();
+	void PrintInventory() const;
+	int Sell(Sellable* item, int quantity);
 
-	bool upgradeSword();
-	bool upgradeAxe();
+	// Combat
+	void LoseAllCake();
+	void LoseGold(int amount);
+	void LosePercentCake(int percent);
+	void LosePercentGold(int percent);
+	void SetCurrentHealth(int health);
+	void TakeDamage(int amount);
+	bool UpgradeAxe();
+	bool UpgradeSword();
 };

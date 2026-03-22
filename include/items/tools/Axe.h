@@ -12,6 +12,7 @@ public:
 	Axe();
 
 	int GetTimeToChop() const;
+	int GetUpgradeCost() const override;
 	void SetTimeToChop(int newTimeToChop);
-	bool Upgrade();
+	bool Upgrade() override;
 };

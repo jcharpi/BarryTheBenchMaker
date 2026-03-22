@@ -2,13 +2,16 @@
 #include <string>
 
 enum class ItemId {
-	Wood,
-	Cake,
+	Axe,
+	BearPelt,
+	Bench,
 	BenchLeg,
 	BenchSeat,
-	Bench,
+	Cake,
+	GoblinCrown,
+	GoblinEar,
 	Sword,
-	Axe
+	Wood
 };
 
 class Item {

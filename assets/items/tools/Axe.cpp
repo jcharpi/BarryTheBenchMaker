@@ -16,11 +16,11 @@ std::string Axe::GetNameForTier(int tier) {
 	switch (tier) {
 	default:
 	case 1:
-		return "Axe";
+		return "Rusty Axe";
 	case 2:
-		return "Axe II";
+		return "Functional Axe";
 	case 3:
-		return "Axe III";
+		return "Sharp Axe";
 	}
 }
 
@@ -32,6 +32,14 @@ int Axe::GetTimeToChop() const {
 
 void Axe::SetTimeToChop(int newTimeToChop) {
 	timeToChop = newTimeToChop;
+}
+
+int Axe::GetUpgradeCost() const {
+	switch (GetTier()) {
+	case 1: return 1;
+	case 2: return 1;
+	default: return 0;
+	}
 }
 
 bool Axe::Upgrade() {

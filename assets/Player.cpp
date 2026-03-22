@@ -1,16 +1,17 @@
-#include "../include/Player.h"
-#include "../include/interfaces/Sellable.h"
-#include <iostream>
 #include <algorithm>
 #include <chrono>
+#include <iostream>
 #include <thread>
 
+#include "../include/Player.h"
+#include "../include/interfaces/Sellable.h"
+
 Player::Player(int maxHealth, int startingGold, Sword* sword, Axe* axe) :
+	axe(axe),
 	currentHealth(maxHealth),
-	maxHealth(maxHealth),
 	gold(startingGold),
-	sword(sword),
-	axe(axe) {
+	maxHealth(maxHealth),
+	sword(sword) {
 	if (sword != nullptr) {
 		itemsOwned[sword->GetId()] = 1;
 		itemLookup[sword->GetId()] = sword;
@@ -22,50 +23,22 @@ Player::Player(int maxHealth, int startingGold, Sword* sword, Axe* axe) :
 	}
 }
 
-int Player::GetCurrentHealth() const {
-	return currentHealth;
-}
-
-int Player::GetMaxHealth() const {
-	return maxHealth;
-}
-
-int Player::GetGold() const {
-	return gold;
-}
-
-Sword* Player::GetSword() const {
-	return sword;
-}
+// Getters
 
 Axe* Player::GetAxe() const {
 	return axe;
 }
 
-const std::unordered_map<ItemId, int>& Player::GetItemsOwned() const {
-	return itemsOwned;
+int Player::GetCakeCount() const {
+	return itemsOwned.count(ItemId::Cake) ? itemsOwned.at(ItemId::Cake) : 0;
 }
 
-void Player::PrintInventory() const {
-	if (itemsOwned.empty()) {
-		std::cout << "Nothing here yet.\n";
-		return;
-	}
-
-	std::cout << "Inventory\n";
-	for (const auto& [itemId, count] : itemsOwned) {
-		std::string name = "Unknown";
-		auto item = itemLookup.find(itemId);
-		if (item != itemLookup.end()) name = item->second->GetName();
-		std::cout << "- " << name << ": " << count << "\n";
-	}
+int Player::GetCurrentHealth() const {
+	return currentHealth;
 }
 
-void Player::AddItem(Item* item, int amount) {
-	if (item == nullptr || amount <= 0) return;
-
-	itemsOwned[item->GetId()] += amount;
-	itemLookup[item->GetId()] = item;
+int Player::GetGold() const {
+	return gold;
 }
 
 int Player::GetItemCount(const Item* item) const {
@@ -77,7 +50,42 @@ int Player::GetItemCount(const Item* item) const {
 	return itemOwned->second;
 }
 
-bool Player::chop(Material* wood) {
+const std::unordered_map<ItemId, int>& Player::GetItemsOwned() const {
+	return itemsOwned;
+}
+
+int Player::GetMaxHealth() const {
+	return maxHealth;
+}
+
+Sword* Player::GetSword() const {
+	return sword;
+}
+
+// Inventory
+
+void Player::AddItem(Item* item, int amount) {
+	if (item == nullptr || amount <= 0) return;
+
+	itemsOwned[item->GetId()] += amount;
+	itemLookup[item->GetId()] = item;
+}
+
+bool Player::Buy(Item* item, int quantity) {
+	if (item == nullptr || quantity <= 0) return false;
+
+	auto* material = dynamic_cast<Material*>(item);
+	if (material == nullptr) return false;
+
+	const int totalCost = material->GetBuyAmount() * quantity;
+	if (gold < totalCost) return false;
+
+	gold -= totalCost;
+	AddItem(item, quantity);
+	return true;
+}
+
+bool Player::Chop(Material* wood) {
 	if (axe == nullptr || wood == nullptr) return false;
 
 	const int timeToChop = std::max(1, axe->GetTimeToChop());
@@ -87,12 +95,12 @@ bool Player::chop(Material* wood) {
 	return true;
 }
 
-bool Player::craft(Craftable* item) {
+bool Player::Craft(Craftable* item) {
 	if (item == nullptr) return false;
 
 	const auto& requirements = item->GetItemsRequired();
 
-	// Validate we have all required ingredients before consuming any
+	// Validate all required ingredients exist before consuming any
 	for (const auto& [requiredItemId, requiredCount] : requirements) {
 		const auto itemOwned = itemsOwned.find(requiredItemId);
 		if (itemOwned == itemsOwned.end() || itemOwned->second < requiredCount) return false;
@@ -109,35 +117,7 @@ bool Player::craft(Craftable* item) {
 	return true;
 }
 
-int Player::sell(Sellable* item, int quantity) {
-	if (item == nullptr || quantity <= 0) return 0;
-
-	auto itemOwned = itemsOwned.find(item->GetId());
-	if (itemOwned == itemsOwned.end() || itemOwned->second < quantity) return 0;
-
-	itemOwned->second -= quantity;
-	if (itemOwned->second == 0) itemsOwned.erase(itemOwned);
-
-	const int totalEarned = item->GetSellAmount() * quantity;
-	gold += totalEarned;
-	return totalEarned;
-}
-
-bool Player::buy(Item* item, int quantity) {
-	if (item == nullptr || quantity <= 0) return false;
-
-	auto* material = dynamic_cast<Material*>(item);
-	if (material == nullptr) return false;
-
-	const int totalCost = material->GetBuyAmount() * quantity;
-	if (gold < totalCost) return false;
-
-	gold -= totalCost;
-	AddItem(item, quantity);
-	return true;
-}
-
-bool Player::eat() {
+bool Player::Eat() {
 	auto ownedCakeEntry = itemsOwned.find(ItemId::Cake);
 	if (ownedCakeEntry == itemsOwned.end()) return false;
 
@@ -153,12 +133,72 @@ bool Player::eat() {
 	return true;
 }
 
-bool Player::upgradeSword() {
-	if (sword == nullptr) return false;
-	return sword->Upgrade();
+void Player::PrintInventory() const {
+	if (itemsOwned.empty()) {
+		std::cout << "Nothing here yet.\n";
+		return;
+	}
+
+	std::cout << "Inventory\n";
+	for (const auto& [itemId, count] : itemsOwned) {
+		std::string name = "Unknown";
+		auto itemEntry = itemLookup.find(itemId);
+		if (itemEntry != itemLookup.end()) name = itemEntry->second->GetName();
+		std::cout << "- " << name << ": " << count << "\n";
+	}
 }
 
-bool Player::upgradeAxe() {
+int Player::Sell(Sellable* item, int quantity) {
+	if (item == nullptr || quantity <= 0) return 0;
+
+	auto itemOwned = itemsOwned.find(item->GetId());
+	if (itemOwned == itemsOwned.end() || itemOwned->second < quantity) return 0;
+
+	itemOwned->second -= quantity;
+	if (itemOwned->second == 0) itemsOwned.erase(itemOwned);
+
+	const int totalEarned = item->GetSellAmount() * quantity;
+	gold += totalEarned;
+	return totalEarned;
+}
+
+// Combat
+
+void Player::LoseAllCake() {
+	itemsOwned.erase(ItemId::Cake);
+}
+
+void Player::LoseGold(int amount) {
+	gold = std::max(0, gold - amount);
+}
+
+void Player::LosePercentCake(int percent) {
+	auto cake = itemsOwned.find(ItemId::Cake);
+	if (cake == itemsOwned.end()) return;
+
+	int lost = (cake->second * percent) / 100;
+	cake->second -= lost;
+	if (cake->second <= 0) itemsOwned.erase(cake);
+}
+
+void Player::LosePercentGold(int percent) {
+	gold = std::max(0, gold - ((gold * percent) / 100));
+}
+
+void Player::SetCurrentHealth(int health) {
+	currentHealth = std::clamp(health, 0, maxHealth);
+}
+
+void Player::TakeDamage(int amount) {
+	currentHealth = std::max(0, currentHealth - amount);
+}
+
+bool Player::UpgradeAxe() {
 	if (axe == nullptr) return false;
 	return axe->Upgrade();
+}
+
+bool Player::UpgradeSword() {
+	if (sword == nullptr) return false;
+	return sword->Upgrade();
 }
