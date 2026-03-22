@@ -1,8 +1,9 @@
-#include "../include/Dialogue.h"
-#include <json/json.h>
+#include <conio.h>
 #include <fstream>
 #include <iostream>
-#include <conio.h>
+#include <json/json.h>
+
+#include "../include/Dialogue.h"
 
 std::vector<DialogueEntry> LoadDialogue(const std::string& filepath) {
 	std::vector<DialogueEntry> dialogue;

@@ -10,6 +10,7 @@
 #include "../include/Action.h"
 #include "../include/Encounter.h"
 #include "../include/Player.h"
+#include "../include/Voyage.h"
 #include "../include/interfaces/Craftable.h"
 #include "../include/interfaces/Material.h"
 #include "../include/interfaces/Sellable.h"
@@ -108,13 +109,37 @@ static void HandleSell(Player& player, const ParsedCommand& command, const std::
     }
 }
 
-static void HandleBuy(Player& player, const ParsedCommand& command, const std::vector<Material*>& buyables) {
+static void HandleBuy(Player& player, const ParsedCommand& command, const std::vector<Material*>& buyables, int& storyProgress) {
     if (command.target.empty()) {
         std::cout << "Let's see what they have.\n";
         for (Material* buyable : buyables) {
             std::cout << std::format("  {} — {} gold\n", buyable->GetName(), buyable->GetBuyAmount());
         }
+        if (storyProgress == 3) {
+            std::cout << std::format("  Ship — spends ALL your gold ({}) [type: buy ship]\n", player.GetGold());
+        }
         std::cout << std::format("(e.g., buy 1 cake  OR  buy 2 cake)  [You have: {} gold]\n", player.GetGold());
+        return;
+    }
+
+    if (command.target == "ship" && storyProgress == 3) {
+        int goldToSpend = player.GetGold();
+        if (goldToSpend <= 0) {
+            std::cout << "No gold, no ship. Going to need to earn some first.\n";
+            return;
+        }
+
+        player.LoseGold(goldToSpend);
+        std::cout << std::format("Spent {} gold on a ship. Crane's Reach, the bench maker is on his way.\n", goldToSpend);
+
+        VoyageResult result = RunVoyage(player, goldToSpend);
+
+        if (result == VoyageResult::Arrived) {
+            storyProgress = 4;
+        } else {
+            player.SetCurrentHealth(1);
+        }
+
         return;
     }
 
@@ -177,7 +202,6 @@ ParsedCommand ParseInput(const std::string& input) {
 	else if (action == "upgrade") result.action = Action::Upgrade;
     else result.action = Action::Unknown;
 
-    // inv and quit take no arguments
     if (result.action == Action::Inv || result.action == Action::Quit) return result;
 
     std::string quantityString;
@@ -276,6 +300,12 @@ void HandleAction(
         if (storyProgress < 3) {
 			RunEncounter(player, storyProgress);
         }
+        else if (storyProgress == 3) {
+            std::cout << "Crane's Reach is across open water. I need to buy a ship first. I'll use every bit of gold I have to make this journey. Whatever it takes. [type: buy ship]\n";
+        }
+        else if (storyProgress == 4) {
+            std::cout << "Time to face whatever's in that tower.\n";
+        }
         else {
             std::cout << "Time to watch the sunrise and enjoy my bench.\n";
         }
@@ -310,7 +340,7 @@ void HandleAction(
     }
 
     if (command.action == Action::Buy) {
-        HandleBuy(player, command, buyables);
+        HandleBuy(player, command, buyables, storyProgress);
         return;
     }
 

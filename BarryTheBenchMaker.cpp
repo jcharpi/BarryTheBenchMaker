@@ -5,8 +5,8 @@
 #include <windows.h>
 
 #include "include/Action.h"
-#include "include/Encounter.h"
 #include "include/Dialogue.h"
+#include "include/Encounter.h"
 #include "include/Player.h"
 #include "include/interfaces/Craftable.h"
 #include "include/interfaces/Material.h"

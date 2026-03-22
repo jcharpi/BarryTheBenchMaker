@@ -30,18 +30,20 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="assets\items\tools\Axe.cpp">
-      <Filter>assets\items\tools</Filter>
-    </ClCompile>
-    <ClCompile Include="assets\Player.cpp">
+    <ClCompile Include="assets\Action.cpp">
       <Filter>assets</Filter>
     </ClCompile>
-    <ClCompile Include="BarryTheBenchMaker.cpp" />
-    <ClCompile Include="assets\items\Cake.cpp">
-      <Filter>assets\items</Filter>
+    <ClCompile Include="assets\Combat.cpp">
+      <Filter>assets</Filter>
     </ClCompile>
-    <ClCompile Include="assets\interfaces\Material.cpp">
-      <Filter>assets\interfaces</Filter>
+    <ClCompile Include="assets\Dialogue.cpp">
+      <Filter>assets</Filter>
+    </ClCompile>
+    <ClCompile Include="assets\Encounters.cpp">
+      <Filter>assets</Filter>
+    </ClCompile>
+    <ClCompile Include="assets\Enemy.cpp">
+      <Filter>assets</Filter>
     </ClCompile>
     <ClCompile Include="assets\interfaces\Craftable.cpp">
       <Filter>assets\interfaces</Filter>
@@ -49,46 +51,47 @@
     <ClCompile Include="assets\interfaces\Item.cpp">
       <Filter>assets\interfaces</Filter>
     </ClCompile>
-    <ClCompile Include="assets\items\tools\Sword.cpp">
-      <Filter>assets\items\tools</Filter>
-    </ClCompile>
-    <ClCompile Include="assets\interfaces\Tool.cpp">
+    <ClCompile Include="assets\interfaces\Material.cpp">
       <Filter>assets\interfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="assets\Action.cpp">
-      <Filter>assets</Filter>
     </ClCompile>
     <ClCompile Include="assets\interfaces\Sellable.cpp">
       <Filter>assets\interfaces</Filter>
     </ClCompile>
-    <ClCompile Include="assets\Dialogue.cpp">
+    <ClCompile Include="assets\interfaces\Tool.cpp">
+      <Filter>assets\interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="assets\items\Cake.cpp">
+      <Filter>assets\items</Filter>
+    </ClCompile>
+    <ClCompile Include="assets\items\tools\Axe.cpp">
+      <Filter>assets\items\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="assets\items\tools\Sword.cpp">
+      <Filter>assets\items\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="assets\Player.cpp">
       <Filter>assets</Filter>
     </ClCompile>
-    <ClCompile Include="assets\Enemy.cpp">
+    <ClCompile Include="assets\Voyage.cpp">
       <Filter>assets</Filter>
     </ClCompile>
-    <ClCompile Include="assets\Combat.cpp">
-      <Filter>assets</Filter>
-    </ClCompile>
-    <ClCompile Include="assets\Encounters.cpp">
-      <Filter>assets</Filter>
-    </ClCompile>
+    <ClCompile Include="BarryTheBenchMaker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Action.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\Player.h">
+    <ClInclude Include="include\Combat.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\items\tools\Axe.h">
-      <Filter>include\items\tools</Filter>
+    <ClInclude Include="include\Dialogue.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\items\Cake.h">
-      <Filter>include\items</Filter>
+    <ClInclude Include="include\Encounter.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\interfaces\Material.h">
-      <Filter>include\interfaces</Filter>
+    <ClInclude Include="include\Enemy.h">
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\interfaces\Craftable.h">
       <Filter>include\interfaces</Filter>
@@ -96,36 +99,33 @@
     <ClInclude Include="include\interfaces\Item.h">
       <Filter>include\interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="include\items\tools\Sword.h">
-      <Filter>include\items\tools</Filter>
-    </ClInclude>
-    <ClInclude Include="include\interfaces\Tool.h">
+    <ClInclude Include="include\interfaces\Material.h">
       <Filter>include\interfaces</Filter>
     </ClInclude>
     <ClInclude Include="include\interfaces\Sellable.h">
       <Filter>include\interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="include\Dialogue.h">
+    <ClInclude Include="include\interfaces\Tool.h">
+      <Filter>include\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="include\items\Cake.h">
+      <Filter>include\items</Filter>
+    </ClInclude>
+    <ClInclude Include="include\items\tools\Axe.h">
+      <Filter>include\items\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="include\items\tools\Sword.h">
+      <Filter>include\items\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Player.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\Enemy.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Combat.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Encounter.h">
+    <ClInclude Include="include\Voyage.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="data\values.json">
-      <Filter>data</Filter>
-    </None>
     <None Include="data\opening.json">
-      <Filter>data</Filter>
-    </None>
-    <None Include="data\preBear.json">
       <Filter>data</Filter>
     </None>
     <None Include="data\postBear.json">
@@ -134,13 +134,25 @@
     <None Include="data\postGoblin.json">
       <Filter>data</Filter>
     </None>
-    <None Include="data\preGoblin.json">
-      <Filter>data</Filter>
-    </None>
     <None Include="data\postGoblinKing.json">
       <Filter>data</Filter>
     </None>
+    <None Include="data\postShip.json">
+      <Filter>data</Filter>
+    </None>
+    <None Include="data\preBear.json">
+      <Filter>data</Filter>
+    </None>
+    <None Include="data\preGoblin.json">
+      <Filter>data</Filter>
+    </None>
     <None Include="data\preGoblinKing.json">
+      <Filter>data</Filter>
+    </None>
+    <None Include="data\preShip.json">
+      <Filter>data</Filter>
+    </None>
+    <None Include="data\values.json">
       <Filter>data</Filter>
     </None>
   </ItemGroup>

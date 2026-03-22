@@ -140,46 +140,50 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="assets\Action.cpp" />
-    <ClCompile Include="assets\items\tools\Axe.cpp" />
-    <ClCompile Include="assets\Player.cpp" />
-    <ClCompile Include="BarryTheBenchMaker.cpp" />
-    <ClCompile Include="assets\items\Cake.cpp" />
+    <ClCompile Include="assets\Combat.cpp" />
+    <ClCompile Include="assets\Dialogue.cpp" />
+    <ClCompile Include="assets\Encounters.cpp" />
+    <ClCompile Include="assets\Enemy.cpp" />
     <ClCompile Include="assets\interfaces\Craftable.cpp" />
     <ClCompile Include="assets\interfaces\Item.cpp" />
     <ClCompile Include="assets\interfaces\Material.cpp" />
     <ClCompile Include="assets\interfaces\Sellable.cpp" />
-    <ClCompile Include="assets\items\tools\Sword.cpp" />
     <ClCompile Include="assets\interfaces\Tool.cpp" />
-    <ClCompile Include="assets\Dialogue.cpp" />
-    <ClCompile Include="assets\Enemy.cpp" />
-    <ClCompile Include="assets\Combat.cpp" />
-    <ClCompile Include="assets\Encounters.cpp" />
+    <ClCompile Include="assets\items\Cake.cpp" />
+    <ClCompile Include="assets\items\tools\Axe.cpp" />
+    <ClCompile Include="assets\items\tools\Sword.cpp" />
+    <ClCompile Include="assets\Player.cpp" />
+    <ClCompile Include="assets\Voyage.cpp" />
+    <ClCompile Include="BarryTheBenchMaker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Action.h" />
+    <ClInclude Include="include\Combat.h" />
     <ClInclude Include="include\Dialogue.h" />
-    <ClInclude Include="include\Player.h" />
-    <ClInclude Include="include\items\tools\Axe.h" />
-    <ClInclude Include="include\items\Cake.h" />
+    <ClInclude Include="include\Encounter.h" />
+    <ClInclude Include="include\Enemy.h" />
     <ClInclude Include="include\interfaces\Craftable.h" />
     <ClInclude Include="include\interfaces\Item.h" />
     <ClInclude Include="include\interfaces\Material.h" />
     <ClInclude Include="include\interfaces\Sellable.h" />
-    <ClInclude Include="include\items\tools\Sword.h" />
     <ClInclude Include="include\interfaces\Tool.h" />
-    <ClInclude Include="include\Enemy.h" />
-    <ClInclude Include="include\Combat.h" />
-    <ClInclude Include="include\Encounter.h" />
+    <ClInclude Include="include\items\Cake.h" />
+    <ClInclude Include="include\items\tools\Axe.h" />
+    <ClInclude Include="include\items\tools\Sword.h" />
+    <ClInclude Include="include\Player.h" />
+    <ClInclude Include="include\Voyage.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="data\preGoblin.json" />
-    <None Include="data\postGoblin.json" />
-    <None Include="data\preGoblinKing.json" />
-    <None Include="data\postGoblinKing.json" />
-    <None Include="data\values.json" />
     <None Include="data\opening.json" />
-    <None Include="data\preBear.json" />
     <None Include="data\postBear.json" />
+    <None Include="data\postGoblin.json" />
+    <None Include="data\postGoblinKing.json" />
+    <None Include="data\postShip.json" />
+    <None Include="data\preBear.json" />
+    <None Include="data\preGoblin.json" />
+    <None Include="data\preGoblinKing.json" />
+    <None Include="data\preShip.json" />
+    <None Include="data\values.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
