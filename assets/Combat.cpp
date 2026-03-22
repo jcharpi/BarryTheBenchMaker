@@ -17,7 +17,7 @@ void RenderCombatHUD(const Player& player, const std::vector<Enemy>& enemies) {
 	for (size_t i = 0; i < enemies.size(); i++) {
 		std::string enemyBar;
 		if (enemies[i].IsDead()) {
-			enemyBar = "DEAD";
+			enemyBar = "DEFEATED";
 			std::cout << std::format("{}. {}  [{}]\n", i + 1, enemies[i].GetName(), enemyBar);
 		} else {
 			int filledLength = (enemies[i].GetCurrentHp() * 10) / enemies[i].GetMaxHp();

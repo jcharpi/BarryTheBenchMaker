@@ -43,7 +43,11 @@ Encounter CraneEncounter() {
 	return {
 		"data/preCrane.json",
 		"data/postCrane.json",
-		{ Enemy("Lord Crane", 250, 35, 0.75f, 0.35f, {}) }
+		{
+			Enemy("Lord Crane", 250, 35, 0.75f, 0.35f, {}),
+			Enemy("Crane's Guard", 150, 28, 0.70f, 0.30f, {}),
+			Enemy("Crane's Guard", 150, 28, 0.70f, 0.30f, {}),
+		}
 	};
 }
 
@@ -119,10 +123,13 @@ static CombatResult RunCrane(Player& player, int& storyProgress) {
 		storyProgress = 3;
 		std::cout << "\nBarry woke back in Greyna, battered and benchless. He'll need another ship.\n";
 	}
+
+	return result;
 }
 
 void RunEncounter(Player& player, int& storyProgress) {
 	if (storyProgress == 0) RunBear(player, storyProgress);
 	else if (storyProgress == 1) RunGoblins(player, storyProgress);
 	else if (storyProgress == 2) RunGoblinKing(player, storyProgress);
+	else if (storyProgress == 4) RunCrane(player, storyProgress);
 }

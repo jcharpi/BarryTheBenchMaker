@@ -15,7 +15,6 @@
 #include "../include/interfaces/Material.h"
 #include "../include/interfaces/Sellable.h"
 #include "../include/interfaces/Tool.h"
-#include "Encounters.cpp"
 
 // Static helpers
 
@@ -137,7 +136,7 @@ static void HandleBuy(Player& player, const ParsedCommand& command, const std::v
 
         if (result == VoyageResult::Arrived) {
             storyProgress = 4;
-            RunCrane(player, storyProgress);
+            RunEncounter(player, storyProgress);
         } else {
             player.SetCurrentHealth(1);
         }
