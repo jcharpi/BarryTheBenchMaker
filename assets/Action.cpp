@@ -69,7 +69,7 @@ static void HandleUpgrade(Player& player, const ParsedCommand& command) {
         std::cout << std::format("The blacksmith wants {} gold, but I only have {}.\n", cost, player.GetGold());
     } else {
         tool->Upgrade();
-        player.LoseIntGold(cost);
+        player.LoseGold(cost);
         std::cout << std::format("Upgraded to {}! Remaining gold: {}\n", tool->GetName(), player.GetGold());
     }
 }
@@ -141,9 +141,9 @@ static void HandleCraftListing(const std::vector<Craftable*>& craftables, const 
         for (const auto& [requiredId, requiredCount] : craftable->GetItemsRequired()) {
             // Look up the ingredient name by ID from the world item list
             std::string requiredName = "item";
-            for (Sellable* ingredientItem : sellables) {
-                if (ingredientItem->GetId() == requiredId) {
-                    requiredName = ingredientItem->GetName();
+            for (Sellable* sellable : sellables) {
+                if (sellable->GetId() == requiredId) {
+                    requiredName = sellable->GetName();
                     break;
                 }
             }

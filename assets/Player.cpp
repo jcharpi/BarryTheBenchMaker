@@ -142,8 +142,8 @@ void Player::PrintInventory() const {
 	std::cout << "Inventory\n";
 	for (const auto& [itemId, count] : itemsOwned) {
 		std::string name = "Unknown";
-		auto item = itemLookup.find(itemId);
-		if (item != itemLookup.end()) name = item->second->GetName();
+		auto itemEntry = itemLookup.find(itemId);
+		if (itemEntry != itemLookup.end()) name = itemEntry->second->GetName();
 		std::cout << "- " << name << ": " << count << "\n";
 	}
 }
@@ -168,7 +168,7 @@ void Player::LoseAllCake() {
 	itemsOwned.erase(ItemId::Cake);
 }
 
-void Player::LoseIntGold(int amount) {
+void Player::LoseGold(int amount) {
 	gold = std::max(0, gold - amount);
 }
 

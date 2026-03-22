@@ -14,11 +14,10 @@ private:
 	Axe* axe;
 	int currentHealth;
 	int gold;
-	int maxHealth;
-	Sword* sword;
-
 	std::unordered_map<ItemId, Item*> itemLookup;
 	std::unordered_map<ItemId, int> itemsOwned;
+	int maxHealth;
+	Sword* sword;
 
 public:
 	Player(int maxHealth, int startingGold, Sword* sword, Axe* axe);
@@ -44,7 +43,7 @@ public:
 
 	// Combat
 	void LoseAllCake();
-	void LoseIntGold(int amount);
+	void LoseGold(int amount);
 	void LosePercentCake(int percent);
 	void LosePercentGold(int percent);
 	void SetCurrentHealth(int health);

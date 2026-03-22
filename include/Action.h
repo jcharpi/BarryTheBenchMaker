@@ -5,12 +5,12 @@
 enum class Action {
     Buy,
     Chop,
-    Continue,// continues to next encounter
-    Craft,   // shown when owned items overlap any recipe's ingredients
-    Eat,     // shown when player has Cake
+    Continue, // continues to next encounter
+    Craft,    // shown when owned items overlap any recipe's ingredients
+    Eat,      // shown when player has Cake
     Inv,
     Quit,
-    Sell,    // shown when player owns any sellable item
+    Sell,     // shown when player owns any sellable item
     Unknown,
     Upgrade,
 };
@@ -35,7 +35,7 @@ void HandleAction(
     Player& player,
 	int& storyProgress,
     const std::vector<Action>& availableActions,
-    Material* choppable,
+    Material* wood,
     const std::vector<Material*>& buyables,
     const std::vector<Craftable*>& craftables,
     const std::vector<Sellable*>& sellables

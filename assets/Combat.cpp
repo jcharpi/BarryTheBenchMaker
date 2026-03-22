@@ -189,7 +189,7 @@ CombatResult RunCombat(Player& player, std::vector<Enemy>& enemies) {
 			// Attack and Parry require a valid, living target
 			if (command.action == CombatAction::Attack || command.action == CombatAction::Parry) {
 				if (command.target < 0 || command.target >= (int)enemies.size()) {
-					std::cout << std::format("Which one? Pick a number (example: attack 1, parry 2).\n", enemies.size());
+				std::cout << std::format("Which one? Pick a number (example: attack 1, parry 2).\n");
 					continue;
 				}
 				if (enemies[command.target].IsDead()) {
