@@ -2,6 +2,7 @@
 #include "../include/Combat.h"
 #include "../include/Dialogue.h"
 #include "../include/interfaces/Sellable.h"
+#include <algorithm>
 #include <iostream>
 
 Sellable bearPelt(ItemId::BearPelt, "Bear Pelt", 50);
@@ -47,7 +48,7 @@ static CombatResult RunBear(Player& player, int& storyProgress) {
 		PlayDialogue(LoadDialogue(bearEncounter.postCutscene));
 		storyProgress = 1;
 	} else {
-		player.SetCurrentHealth(player.GetMaxHealth() / 2);
+		player.SetCurrentHealth(std::max(1, player.GetMaxHealth() / 2));
 		player.LosePercentGold(25);
 		std::cout << "\nBack in my workshop... Guess I'll have to prepare a bit more before starting off.\n";
 	}
@@ -85,7 +86,7 @@ static CombatResult RunGoblins(Player& player, int& storyProgress) {
 		storyProgress = 2;
 		RunGoblinKing(player, storyProgress);
 	} else {
-		player.SetCurrentHealth(player.GetMaxHealth() / 2);
+		player.SetCurrentHealth(std::max(1, player.GetMaxHealth() / 2));
 		player.LoseAllCake();
 		storyProgress = 1;
 		std::cout << "\nUgh... back in Kelsa. I'm a bit worse for wear, and I feel a few cakes lighter.\n";

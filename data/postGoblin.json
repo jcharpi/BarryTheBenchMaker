@@ -1,30 +1,114 @@
 [
-  { "speaker": "NARRATOR", "text": "The last goblin hit the ground and did not get up. The chamber went quiet, the kind of quiet that follows something no one expected." },
-  { "speaker": "NARRATOR", "text": "Barry stood in the centre of the room, breathing hard, sword slick and shaking in his grip. Around him, the bodies of the goblins who had stepped forward lay crumpled and still." },
-  { "speaker": "NARRATOR", "text": "The crowd had pulled back. The chatter was gone. Dozens of black eyes stared at him from the edges of the chamber, wide and unblinking." },
-  { "speaker": "NARRATOR", "text": "On his throne, the Goblin King sat upright. The practised ease was gone. He leaned forward, both hands on his knees, studying Barry the way one studies a tool that just did something it wasn't built for." },
-  { "speaker": "GOBLIN KING", "text": "...Huh." },
-  { "speaker": "GOBLIN KING", "text": "That was not what I expected." },
-  { "speaker": "GOBLIN KING", "text": "You fight like someone who learned last week and got angry about it. No form. No finesse. And yet here you stand and there they don't. Interesting." },
-  { "speaker": "NARRATOR", "text": "The king tilted his head. Something between amusement and genuine curiosity had replaced the smugness." },
-  { "speaker": "GOBLIN KING", "text": "So. A human who climbs the mountain on purpose, camps in our doorstep, and puts down five of my subjects before breakfast. You have my attention. Why are you here?" },
-  { "speaker": "BARRY", "text": "You know why I'm here." },
-  { "speaker": "GOBLIN KING", "text": "Do I?" },
-  { "speaker": "BARRY", "text": "Your goblins broke into my workshop. Locked doors. Latched windows. Nothing forced. Nothing missing but the one thing worth taking." },
-  { "speaker": "BARRY", "text": "Three years of my life sat in that room. A bench painstakingly crafted. Perfect. The best thing I have ever made." },
-  { "speaker": "BARRY", "text": "And you took it." },
-  { "speaker": "NARRATOR", "text": "The chamber was silent. Barry's voice carried to every wall." },
-  { "speaker": "NARRATOR", "text": "The king held Barry's gaze for a long moment. Then the corner of his mouth twitched, not quite a smile, closer to the expression of someone deciding how much of a card to play." },
-  { "speaker": "GOBLIN KING", "text": "A bench. You came all this way, through the forest, up the mountain, into the dark, for a bench." },
-  { "speaker": "BARRY", "text": "Yes." },
-  { "speaker": "GOBLIN KING", "text": "Hm." },
-  { "speaker": "NARRATOR", "text": "The king leaned back. He drummed his fingers once on the arm of his throne." },
-  { "speaker": "GOBLIN KING", "text": "My goblins are skilled at what they do. Getting in and out without a trace, that's what they're paid for. But they don't act on their own initiative. They're not thieves. They're contractors." },
-  { "speaker": "GOBLIN KING", "text": "Someone wanted your bench badly enough to pay my price for it. And my prices are not gentle." },
-  { "speaker": "NARRATOR", "text": "The king paused. Something behind his eyes shifted. A quiet wondering about what, exactly, the bench was worth, if it was cheaper to have it stolen." },
-  { "speaker": "BARRY", "text": "Who?" },
-  { "speaker": "GOBLIN KING", "text": "Now that is the question, isn't it." },
-  { "speaker": "NARRATOR", "text": "The king stood. He was shorter than Barry expected, but he carried himself like something much larger. The crowd shifted. The energy in the room changed." },
-  { "speaker": "GOBLIN KING", "text": "I am a king, bench maker. Information is currency down here, same as gold, same as cake, same as the fear that keeps the tunnels in order. I don't give it away." },
-  { "speaker": "GOBLIN KING", "text": "You want a name? Earn it." }
+  {
+    "speaker": "NARRATOR",
+    "text": "The last goblin hit the ground and did not get up. The chamber went quiet, the kind of quiet that follows something no one expected."
+  },
+  {
+    "speaker": "NARRATOR",
+    "text": "Barry stood in the centre of the room, breathing hard, sword slick and shaking in his grip. Around him, the bodies of the goblins who had stepped forward lay crumpled and still."
+  },
+  {
+    "speaker": "NARRATOR",
+    "text": "The crowd had pulled back. The chatter was gone. Dozens of black eyes stared at him from the edges of the chamber, wide and unblinking."
+  },
+  {
+    "speaker": "NARRATOR",
+    "text": "On his throne, the Goblin King sat upright. The practised ease was gone. He leaned forward, both hands on his knees, studying Barry the way one studies a tool that just did something it wasn't built for."
+  },
+  {
+    "speaker": "GOBLIN KING",
+    "text": "...Huh."
+  },
+  {
+    "speaker": "GOBLIN KING",
+    "text": "That was not what I expected."
+  },
+  {
+    "speaker": "GOBLIN KING",
+    "text": "You fight like someone who learned last week and got angry about it. No form. No finesse. And yet here you stand and there they don't. Interesting."
+  },
+  {
+    "speaker": "NARRATOR",
+    "text": "The king tilted his head. Something between amusement and genuine curiosity had replaced the smugness."
+  },
+  {
+    "speaker": "GOBLIN KING",
+    "text": "So. A human who climbs the mountain on purpose, camps in our doorstep, and puts down five of my subjects before breakfast. You have my attention. Why are you here?"
+  },
+  {
+    "speaker": "BARRY",
+    "text": "You know why I'm here."
+  },
+  {
+    "speaker": "GOBLIN KING",
+    "text": "Do I?"
+  },
+  {
+    "speaker": "BARRY",
+    "text": "Your goblins broke into my workshop. Locked doors. Latched windows. Nothing forced. Nothing missing but the one thing worth taking."
+  },
+  {
+    "speaker": "BARRY",
+    "text": "Three years of my life sat in that room. A bench painstakingly crafted. Perfect. The best thing I have ever made."
+  },
+  {
+    "speaker": "BARRY",
+    "text": "And you took it."
+  },
+  {
+    "speaker": "NARRATOR",
+    "text": "The chamber was silent. Barry's voice carried to every wall."
+  },
+  {
+    "speaker": "NARRATOR",
+    "text": "The king held Barry's gaze for a long moment. Then the corner of his mouth twitched, not quite a smile, closer to the expression of someone deciding how much of a card to play."
+  },
+  {
+    "speaker": "GOBLIN KING",
+    "text": "A bench. You came all this way, through the forest, up the mountain, into the dark, for a bench."
+  },
+  {
+    "speaker": "BARRY",
+    "text": "Yes."
+  },
+  {
+    "speaker": "GOBLIN KING",
+    "text": "Hm."
+  },
+  {
+    "speaker": "NARRATOR",
+    "text": "The king leaned back. He drummed his fingers once on the arm of his throne."
+  },
+  {
+    "speaker": "GOBLIN KING",
+    "text": "My goblins are skilled at what they do. Getting in and out without a trace, that's what they're paid for. But they don't act on their own initiative. They're not thieves. They're contractors."
+  },
+  {
+    "speaker": "GOBLIN KING",
+    "text": "Someone wanted your bench badly enough to pay my price for it. And my prices are not gentle."
+  },
+  {
+    "speaker": "NARRATOR",
+    "text": "The king paused. Something behind his eyes shifted. A quiet wondering about what, exactly, the bench was worth, if it was cheaper to have it stolen."
+  },
+  {
+    "speaker": "BARRY",
+    "text": "Who?"
+  },
+  {
+    "speaker": "GOBLIN KING",
+    "text": "Now that is the question, isn't it."
+  },
+  {
+    "speaker": "NARRATOR",
+    "text": "The king stood. He was shorter than Barry expected, but he carried himself like something much larger. The crowd shifted. The energy in the room changed."
+  },
+  {
+    "speaker": "GOBLIN KING",
+    "text": "I am a king, bench maker. Information is currency down here, same as gold, same as cake, same as the fear that keeps the tunnels in order. I don't give it away."
+  },
+  {
+    "speaker": "GOBLIN KING",
+    "text": "You want a name? Earn it."
+  }
 ]
