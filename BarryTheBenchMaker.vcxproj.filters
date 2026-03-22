@@ -131,16 +131,16 @@
     <None Include="data\postBear.json">
       <Filter>data</Filter>
     </None>
-    <None Include="C:\Users\charp\Downloads\postGoblin.json">
+    <None Include="data\postGoblin.json">
       <Filter>data</Filter>
     </None>
-    <None Include="C:\Users\charp\Downloads\preGoblin.json">
+    <None Include="data\preGoblin.json">
       <Filter>data</Filter>
     </None>
-    <None Include="C:\Users\charp\Downloads\postGoblinKing.json">
+    <None Include="data\postGoblinKing.json">
       <Filter>data</Filter>
     </None>
-    <None Include="C:\Users\charp\Downloads\preGoblinKing.json">
+    <None Include="data\preGoblinKing.json">
       <Filter>data</Filter>
     </None>
   </ItemGroup>
