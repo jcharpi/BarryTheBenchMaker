@@ -155,5 +155,14 @@
     <None Include="data\values.json">
       <Filter>data</Filter>
     </None>
+    <None Include="data\preCrane.json">
+      <Filter>data</Filter>
+    </None>
+    <None Include="data\postCrane.json">
+      <Filter>data</Filter>
+    </None>
+    <None Include="data\ending.json">
+      <Filter>data</Filter>
+    </None>
   </ItemGroup>
 </Project>

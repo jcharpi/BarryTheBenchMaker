@@ -15,6 +15,7 @@
 #include "../include/interfaces/Material.h"
 #include "../include/interfaces/Sellable.h"
 #include "../include/interfaces/Tool.h"
+#include "Encounters.cpp"
 
 // Static helpers
 
@@ -136,6 +137,7 @@ static void HandleBuy(Player& player, const ParsedCommand& command, const std::v
 
         if (result == VoyageResult::Arrived) {
             storyProgress = 4;
+            RunCrane(player, storyProgress);
         } else {
             player.SetCurrentHealth(1);
         }
@@ -302,9 +304,6 @@ void HandleAction(
         }
         else if (storyProgress == 3) {
             std::cout << "Crane's Reach is across open water. I need to buy a ship first. I'll use every bit of gold I have to make this journey. Whatever it takes. [type: buy ship]\n";
-        }
-        else if (storyProgress == 4) {
-            std::cout << "Time to face whatever's in that tower.\n";
         }
         else {
             std::cout << "Time to watch the sunrise and enjoy my bench.\n";

@@ -39,6 +39,14 @@ Encounter GoblinKingEncounter() {
 	};
 }
 
+Encounter CraneEncounter() {
+	return {
+		"data/preCrane.json",
+		"data/postCrane.json",
+		{ Enemy("Lord Crane", 250, 35, 0.75f, 0.35f, {}) }
+	};
+}
+
 static CombatResult RunBear(Player& player, int& storyProgress) {
 	Encounter bearEncounter = BearEncounter();
 	PlayDialogue(LoadDialogue(bearEncounter.preCutscene));
@@ -93,6 +101,24 @@ static CombatResult RunGoblins(Player& player, int& storyProgress) {
 	}
 
 	return result;
+}
+
+static CombatResult RunCrane(Player& player, int& storyProgress) {
+	Encounter craneEncounter = CraneEncounter();
+	PlayDialogue(LoadDialogue(craneEncounter.preCutscene));
+	CombatResult result = RunCombat(player, craneEncounter.enemies);
+
+	if (result == CombatResult::Victory) {
+		PlayDialogue(LoadDialogue(craneEncounter.postCutscene));
+		PlayDialogue(LoadDialogue("data/ending.json"));
+		storyProgress = 5;
+	}
+	else {
+		player.SetCurrentHealth(1);
+		player.LoseAllCake();
+		storyProgress = 3;
+		std::cout << "\nBarry woke back in Greyna, battered and benchless. He'll need another ship.\n";
+	}
 }
 
 void RunEncounter(Player& player, int& storyProgress) {

@@ -19,5 +19,6 @@ struct Encounter {
 Encounter BearEncounter();
 Encounter GoblinEncounter();
 Encounter GoblinKingEncounter();
+Encounter CraneEncounter();
 
 void RunEncounter(Player& player, int& storyProgress);
