@@ -16,5 +16,6 @@ public:
 	float GetHitChance() const;
 	int GetUpgradeCost() const override;
 	void SetDamage(int newDamage);
+	void SetGoblinBlade();
 	bool Upgrade() override;
 };

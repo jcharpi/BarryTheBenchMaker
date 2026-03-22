@@ -163,9 +163,6 @@ CombatResult RunCombat(Player& player, std::vector<Enemy>& enemies) {
 		}
 
 		if (player.GetCurrentHealth() <= 0) {
-			player.SetCurrentHealth(player.GetMaxHealth() / 2);
-			player.LosePercentGold(25);
-			std::cout << "\nBarry collapses to the ground... but he's not out yet. He lost some gold, but at least he can keep fighting.\n";
 			return CombatResult::Defeat;
 		}
 

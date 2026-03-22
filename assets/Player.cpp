@@ -164,8 +164,21 @@ int Player::Sell(Sellable* item, int quantity) {
 
 // Combat
 
+void Player::LoseAllCake() {
+	itemsOwned.erase(ItemId::Cake);
+}
+
 void Player::LoseIntGold(int amount) {
 	gold = std::max(0, gold - amount);
+}
+
+void Player::LosePercentCake(int percent) {
+	auto cake = itemsOwned.find(ItemId::Cake);
+	if (cake == itemsOwned.end()) return;
+
+	int lost = (cake->second * percent) / 100;
+	cake->second -= lost;
+	if (cake->second <= 0) itemsOwned.erase(cake);
 }
 
 void Player::LosePercentGold(int percent) {

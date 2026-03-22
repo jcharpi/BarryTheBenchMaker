@@ -131,5 +131,17 @@
     <None Include="data\postBear.json">
       <Filter>data</Filter>
     </None>
+    <None Include="C:\Users\charp\Downloads\postGoblin.json">
+      <Filter>data</Filter>
+    </None>
+    <None Include="C:\Users\charp\Downloads\preGoblin.json">
+      <Filter>data</Filter>
+    </None>
+    <None Include="C:\Users\charp\Downloads\postGoblinKing.json">
+      <Filter>data</Filter>
+    </None>
+    <None Include="C:\Users\charp\Downloads\preGoblinKing.json">
+      <Filter>data</Filter>
+    </None>
   </ItemGroup>
 </Project>

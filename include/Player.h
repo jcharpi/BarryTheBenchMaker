@@ -43,7 +43,9 @@ public:
 	int Sell(Sellable* item, int quantity);
 
 	// Combat
+	void LoseAllCake();
 	void LoseIntGold(int amount);
+	void LosePercentCake(int percent);
 	void LosePercentGold(int percent);
 	void SetCurrentHealth(int health);
 	void TakeDamage(int amount);

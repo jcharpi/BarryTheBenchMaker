@@ -16,11 +16,11 @@ std::string Axe::GetNameForTier(int tier) {
 	switch (tier) {
 	default:
 	case 1:
-		return "Axe";
+		return "Rusty Axe";
 	case 2:
-		return "Axe II";
+		return "Functional Axe";
 	case 3:
-		return "Axe III";
+		return "Sharp Axe";
 	}
 }
 
