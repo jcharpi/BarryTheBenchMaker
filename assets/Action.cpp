@@ -49,14 +49,14 @@ static void HandleUpgrade(Player& player, const ParsedCommand& command) {
         std::cout << "Hmm, let's see what I can upgrade.\n";
         for (const auto& [name, tool] : tools) {
             if (tool != nullptr && tool->GetUpgradeCost() > 0)
-                std::cout << std::format("  {} ({} gold)\n", tool->GetName(), tool->GetUpgradeCost());
+                std::cout << std::format("  {} ({} gold)  [type: upgrade {}]\n", tool->GetName(), tool->GetUpgradeCost(), name);
         }
         return;
     }
 
     auto toolEntry = tools.find(command.target);
     if (toolEntry == tools.end()) {
-        std::cout << std::format("Don't know how to upgrade \"{}\".\n", command.target);
+        std::cout << std::format("Don't know how to upgrade \"{}\". Try: upgrade sword, upgrade axe.\n", command.target);
         return;
     }
 
@@ -79,8 +79,8 @@ static void HandleSell(Player& player, const ParsedCommand& command, const std::
         std::cout << "What to sell, then?\n";
         for (Sellable* sellable : sellables) {
             if (player.GetItemCount(sellable) == 0) continue;
-            std::cout << std::format("  {} (x{}) — {} gold each\n",
-                sellable->GetName(), player.GetItemCount(sellable), sellable->GetSellAmount());
+            std::cout << std::format("  {} (x{}) — {} gold each  [type: sell {}]\n",
+                sellable->GetName(), player.GetItemCount(sellable), sellable->GetSellAmount(), NormalizeName(sellable->GetName()));
         }
         std::cout << "(e.g., sell 1 wood  OR  sell 3 wood)\n";
         return;

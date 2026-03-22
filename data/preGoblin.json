@@ -35,10 +35,9 @@
   { "speaker": "NARRATOR", "text": "The king did not stop them." },
   { "speaker": "NARRATOR", "text": "He watched." },
   { "speaker": "GOBLIN KING", "text": "Now, now. If my subjects want a go at you, that's their business. But I am not without standards." },
-  { "speaker": "NARRATOR", "text": "The king raised one hand. A goblin attendant scurried forward and dropped Barry's sword and pack at his feet." },
-  { "speaker": "GOBLIN KING", "text": "A human who walks into the mountain deserves the right to defend himself. Pick up your things." },
+  { "speaker": "NARRATOR", "text": "The king raised one hand. A goblin attendant scurried forward and dropped Barry's sword at his feet." },
+  { "speaker": "GOBLIN KING", "text": "A human who walks into the mountain deserves the right to defend himself. Pick up your sword." },
   { "speaker": "NARRATOR", "text": "The goblins in the crowd pressed closer. The chamber buzzed with low chatter and the scrape of feet on stone. This was entertainment to them." },
   { "speaker": "NARRATOR", "text": "Barry looked at his sword on the ground. He looked at the goblins circling. He looked at the king, who had settled deeper into his throne with the expression of a man about to enjoy a show." },
   { "speaker": "BARRY", "text": "Fine." },
-  { "speaker": "NARRATOR", "text": "Barry picked up his sword." }
 ]

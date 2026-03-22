@@ -5,6 +5,7 @@
 #include <sstream>
 #include <string>
 
+#include <conio.h>
 #include "../include/Combat.h"
 
 static std::mt19937 rng(std::random_device{}());
@@ -158,11 +159,18 @@ CombatResult RunCombat(Player& player, std::vector<Enemy>& enemies) {
 				}
 			}
 
-			std::cout << "\nBarry is victorious! Hopefully this is the last of them...\n";
+			std::cout << "\nBarry is victorious!\n";
+			std::cout << "\n[Press any key to continue]";
+			(void)_getch();
+			system("cls");
 			return CombatResult::Victory;
 		}
 
 		if (player.GetCurrentHealth() <= 0) {
+			std::cout << "\nBarry has fallen...\n";
+			std::cout << "\n[Press any key to continue]";
+			(void)_getch();
+			system("cls");
 			return CombatResult::Defeat;
 		}
 
@@ -178,7 +186,7 @@ CombatResult RunCombat(Player& player, std::vector<Enemy>& enemies) {
 		CombatCommand command;
 		std::string input;
 		while (true) {
-			std::cout << "\n(attack / block / parry / eat)\n> ";
+			std::cout << "\n(attack <#> / block / parry <#> / eat)\n> ";
 			std::getline(std::cin, input);
 
 			if (!ParseCombatInput(input, command)) {
@@ -189,7 +197,7 @@ CombatResult RunCombat(Player& player, std::vector<Enemy>& enemies) {
 			// Attack and Parry require a valid, living target
 			if (command.action == CombatAction::Attack || command.action == CombatAction::Parry) {
 				if (command.target < 0 || command.target >= (int)enemies.size()) {
-				std::cout << std::format("Which one? Pick a number (example: attack 1, parry 2).\n");
+				std::cout << std::format("Which one? (example: attack 1, parry 2).\n");
 					continue;
 				}
 				if (enemies[command.target].IsDead()) {
@@ -215,5 +223,7 @@ CombatResult RunCombat(Player& player, std::vector<Enemy>& enemies) {
 		std::uniform_real_distribution<float> dist(0.0f, 1.0f);
 		ResolvePlayerAction(command, player, enemies, enemyActions, dist);
 		ResolveEnemyAttacks(command, player, enemies, enemyActions, dist);
+
+		std::cout << "\n";
 	}
 }

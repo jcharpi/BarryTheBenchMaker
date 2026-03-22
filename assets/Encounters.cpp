@@ -21,11 +21,11 @@ Encounter GoblinEncounter() {
 		"data/preGoblin.json",
 		"data/postGoblin.json",
 		{
-			Enemy("Goblin", 40, 12, 0.55f, 0.15f, { { &goblinEar, 0.50f, 2 } }),
-			Enemy("Goblin", 40, 12, 0.55f, 0.15f, { { &goblinEar, 0.50f, 2 } }),
-			Enemy("Goblin", 40, 12, 0.55f, 0.15f, { { &goblinEar, 0.50f, 2 } }),
-			Enemy("Goblin", 40, 12, 0.55f, 0.15f, { { &goblinEar, 0.50f, 2 } }),
-			Enemy("Goblin", 40, 12, 0.55f, 0.15f, { { &goblinEar, 0.50f, 2 } }),
+			Enemy("Goblin Scout",  40, 12, 0.55f, 0.15f, { { &goblinEar, 0.50f, 2 } }),
+			Enemy("Goblin Brute",  40, 12, 0.55f, 0.15f, { { &goblinEar, 0.50f, 2 } }),
+			Enemy("Goblin Shaman", 40, 12, 0.55f, 0.15f, { { &goblinEar, 0.50f, 2 } }),
+			Enemy("Goblin Archer", 40, 12, 0.55f, 0.15f, { { &goblinEar, 0.50f, 2 } }),
+			Enemy("Goblin Runt",   40, 12, 0.55f, 0.15f, { { &goblinEar, 0.50f, 2 } }),
 		}
 	};
 }
@@ -54,25 +54,6 @@ static CombatResult RunBear(Player& player, int& storyProgress) {
 	return result;
 }
 
-static CombatResult RunGoblins(Player& player, int& storyProgress) {
-	Encounter goblinsEncounter = GoblinEncounter();
-	PlayDialogue(LoadDialogue(goblinsEncounter.preCutscene));
-	CombatResult result = RunCombat(player, goblinsEncounter.enemies);
-	
-	if (result == CombatResult::Victory) {
-		PlayDialogue(LoadDialogue(goblinsEncounter.postCutscene));
-		storyProgress = 2;
-	} else {
-		player.SetCurrentHealth(player.GetMaxHealth() / 2);
-		player.LoseAllCake();
-		storyProgress = 1;
-		std::cout << "\nUgh... back in Kelsa. I'm a bit worse for wear, and I feel a few cakes lighter.\n";
-	}
-
-	return result;
-}
-
-
 static CombatResult RunGoblinKing(Player& player, int& storyProgress) {
 	Encounter goblinKingEncounter = GoblinKingEncounter();
 	PlayDialogue(LoadDialogue(goblinKingEncounter.preCutscene));
@@ -81,10 +62,31 @@ static CombatResult RunGoblinKing(Player& player, int& storyProgress) {
 	if (result == CombatResult::Victory) {
 		PlayDialogue(LoadDialogue(goblinKingEncounter.postCutscene));
 		player.GetSword()->SetGoblinBlade();
+		player.SetCurrentHealth(player.GetMaxHealth());
 		storyProgress = 3;
-	} else {
+	}
+	else {
 		player.SetCurrentHealth(1);
 		player.LosePercentCake(50);
+		storyProgress = 1;
+		std::cout << "\nUgh... back in Kelsa. I'm a bit worse for wear, and I feel a few cakes lighter.\n";
+	}
+
+	return result;
+}
+
+static CombatResult RunGoblins(Player& player, int& storyProgress) {
+	Encounter goblinsEncounter = GoblinEncounter();
+	PlayDialogue(LoadDialogue(goblinsEncounter.preCutscene));
+	CombatResult result = RunCombat(player, goblinsEncounter.enemies);
+	
+	if (result == CombatResult::Victory) {
+		PlayDialogue(LoadDialogue(goblinsEncounter.postCutscene));
+		storyProgress = 2;
+		RunGoblinKing(player, storyProgress);
+	} else {
+		player.SetCurrentHealth(player.GetMaxHealth() / 2);
+		player.LoseAllCake();
 		storyProgress = 1;
 		std::cout << "\nUgh... back in Kelsa. I'm a bit worse for wear, and I feel a few cakes lighter.\n";
 	}
