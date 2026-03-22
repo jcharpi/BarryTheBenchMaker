@@ -6,4 +6,4 @@ enum class VoyageResult {
 	Sunk
 };
 
-VoyageResult RunVoyage(Player& player, int shipHealth);
+VoyageResult RunVoyage(int shipHealth);

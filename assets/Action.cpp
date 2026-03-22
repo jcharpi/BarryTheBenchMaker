@@ -132,7 +132,7 @@ static void HandleBuy(Player& player, const ParsedCommand& command, const std::v
         player.LoseGold(goldToSpend);
         std::cout << std::format("Spent {} gold on a ship. Crane's Reach, the bench maker is on his way.\n", goldToSpend);
 
-        VoyageResult result = RunVoyage(player, goldToSpend);
+        VoyageResult result = RunVoyage(goldToSpend);
 
         if (result == VoyageResult::Arrived) {
             storyProgress = 4;

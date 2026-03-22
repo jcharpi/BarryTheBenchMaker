@@ -59,7 +59,7 @@ static void PrintVoyageStatus(int shipHealth, int maxShipHealth) {
 	std::cout << std::format("\n  [ Ship: {}/{} — {} ]\n", shipHealth, maxShipHealth, condition);
 }
 
-VoyageResult RunVoyage(Player& player, int shipHealth) {
+VoyageResult RunVoyage(int shipHealth) {
 	PlayDialogue(LoadDialogue("data/preShip.json"));
 
 	const int maxShipHealth = shipHealth;
