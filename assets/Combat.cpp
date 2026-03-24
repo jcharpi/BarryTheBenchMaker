@@ -2,13 +2,11 @@
 #include <conio.h>
 #include <format>
 #include <iostream>
-#include <random>
 #include <sstream>
 #include <string>
 
 #include "../include/Combat.h"
-
-static std::mt19937 randomEngine(std::random_device{}());
+#include "../include/Random.h"
 
 // region HUD
 
@@ -81,7 +79,7 @@ static void ResolvePlayerAction(
 			? std::max(0.05f, playerHitChance - target.GetBlockChance())
 			: playerHitChance;
 
-		if (distribution(randomEngine) < hitChance) {
+		if (distribution(GetRandomEngine()) < hitChance) {
 			int damage = player.GetSword()->GetDamage();
 			target.TakeDamage(damage);
 			std::cout << std::format("Barry hits {} for {} damage!\n", target.GetName(), damage);
@@ -138,7 +136,7 @@ static void ResolveEnemyAttacks(
 		float effectiveHitChance = enemies[i].GetHitChance();
 		if (command.action == CombatAction::Block) effectiveHitChance /= 2.0f;
 
-		if (distribution(randomEngine) < effectiveHitChance) {
+		if (distribution(GetRandomEngine()) < effectiveHitChance) {
 			int damage = enemies[i].GetDamage();
 			player.TakeDamage(damage);
 			std::cout << std::format("{} hits Barry for {} damage!\n", enemies[i].GetName(), damage);
@@ -151,7 +149,7 @@ static void ResolveEnemyAttacks(
 CombatResult RunCombat(Player& player, std::vector<Enemy>& enemies) {
 	while (true) {
 		if (std::all_of(enemies.begin(), enemies.end(), [](const Enemy& enemy) { return enemy.IsDead(); })) {
-				for (Enemy& enemy : enemies) {
+			for (Enemy& enemy : enemies) {
 				std::vector<EnemyDrop> drops = enemy.RollDrops();
 				for (const EnemyDrop& drop : drops) {
 					player.AddItem(drop.item, drop.quantity);
@@ -197,7 +195,7 @@ CombatResult RunCombat(Player& player, std::vector<Enemy>& enemies) {
 			// Attack and Parry require a valid, living target
 			if (command.action == CombatAction::Attack || command.action == CombatAction::Parry) {
 				if (command.target < 0 || command.target >= (int)enemies.size()) {
-				std::cout << std::format("Which one? (example: attack 1, parry 2).\n");
+					std::cout << std::format("Which one? (example: attack 1, parry 2).\n");
 					continue;
 				}
 				if (enemies[command.target].IsDead()) {

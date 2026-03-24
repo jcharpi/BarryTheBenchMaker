@@ -12,10 +12,6 @@ int Craftable::GetTimeToCraft() const {
 	return timeToCraft;
 }
 
-void Craftable::SetTimeToCraft(int newTimeToCraft) {
-	timeToCraft = newTimeToCraft;
-}
-
 const std::unordered_map<ItemId, int>& Craftable::GetItemsRequired() const {
 	return itemsRequired;
 }

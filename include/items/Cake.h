@@ -9,5 +9,4 @@ public:
 	Cake(int buyAmount, int sellAmount, int healAmount);
 
 	int GetHealAmount() const;
-	void SetHealAmount(int newHealAmount);
 };

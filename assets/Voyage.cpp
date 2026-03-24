@@ -1,11 +1,11 @@
 #include <conio.h>
 #include <format>
 #include <iostream>
-#include <random>
 #include <string>
 #include <vector>
 
 #include "../include/Dialogue.h"
+#include "../include/Random.h"
 #include "../include/Voyage.h"
 
 // region Event definitions
@@ -64,9 +64,8 @@ VoyageResult RunVoyage(int shipHealth) {
 
 	const int maxShipHealth = shipHealth;
 
-	std::mt19937 randomEngine(std::random_device{}());
 	std::uniform_int_distribution<int> eventCountDistribution(5, 10);
-	const int totalEvents = eventCountDistribution(randomEngine);
+	const int totalEvents = eventCountDistribution(GetRandomEngine());
 
 	std::cout << "\nThe chandler looked at the gold and nodded.\n";
 	std::cout << "\nBarry set sail for Crane's Reach.\n";
@@ -78,13 +77,13 @@ VoyageResult RunVoyage(int shipHealth) {
 		system("cls");
 
 		std::uniform_int_distribution<int> eventDistribution(0, (int)events.size() - 1);
-		const auto& event = events[eventDistribution(randomEngine)];
+		const auto& event = events[eventDistribution(GetRandomEngine())];
 
 		std::uniform_int_distribution<int> descriptionDistribution(0, (int)event.descriptions.size() - 1);
-		const std::string& description = event.descriptions[descriptionDistribution(randomEngine)];
+		const std::string& description = event.descriptions[descriptionDistribution(GetRandomEngine())];
 
 		std::uniform_int_distribution<int> damageDistribution(event.minDamage, event.maxDamage);
-		int damage = damageDistribution(randomEngine);
+		int damage = damageDistribution(GetRandomEngine());
 
 		std::cout << std::format("\n--- {} ({}/{}) ---\n", event.name, i + 1, totalEvents);
 		std::cout << "\n" << description << "\n";

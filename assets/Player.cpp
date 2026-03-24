@@ -134,12 +134,11 @@ bool Player::Eat() {
 }
 
 void Player::PrintInventory() const {
+	std::cout << std::format("{}/{} HP, {} gold\n", currentHealth, maxHealth, gold);
 	if (itemsOwned.empty()) {
 		std::cout << "Nothing here yet.\n";
 		return;
 	}
-
-	std::cout << "Inventory\n";
 	for (const auto& [itemId, count] : itemsOwned) {
 		std::string name = "Unknown";
 		auto itemEntry = itemLookup.find(itemId);

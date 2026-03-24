@@ -24,7 +24,7 @@ std::string Axe::GetNameForTier(int tier) {
 	}
 }
 
-Axe::Axe() : Tool(ItemId::Axe, GetNameForTier(GetTier()), 1), timeToChop(GetTimeToChopForTier(GetTier())) {}
+Axe::Axe() : Tool(ItemId::Axe, GetNameForTier(1), 1), timeToChop(GetTimeToChopForTier(1)) {}
 
 int Axe::GetTimeToChop() const {
 	return timeToChop;

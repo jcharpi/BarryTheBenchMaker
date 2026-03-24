@@ -1,45 +1,41 @@
 #include "../include/Encounter.h"
 #include "../include/Combat.h"
 #include "../include/Dialogue.h"
-#include "../include/interfaces/Sellable.h"
+#include "../include/World.h"
 #include <algorithm>
 #include <iostream>
 
-Sellable bearPelt(ItemId::BearPelt, "Bear Pelt", 50);
-Sellable goblinEar(ItemId::GoblinEar, "Goblin Ear", 15);
-Sellable goblinCrown(ItemId::GoblinCrown, "Goblin Crown", 200);
-
-Encounter BearEncounter() {
+static Encounter BearEncounter(World& world) {
 	return {
 		"data/preBear.json",
 		"data/postBear.json",
-		{ Enemy("Forest Bear", 120, 20, 0.65f, 0.20f, { { &bearPelt, 0.75f, 1 } }) }
+		{ Enemy("Forest Bear", 120, 20, 0.65f, 0.20f, { { &world.bearPelt, 0.75f, 1 } }) }
 	};
 }
 
-Encounter GoblinEncounter() {
+static Encounter GoblinEncounter(World& world) {
 	return {
 		"data/preGoblin.json",
 		"data/postGoblin.json",
 		{
-			Enemy("Goblin Brute",    55, 15, 0.50f, 0.25f, { { &goblinEar, 0.50f, 2 } }),
-			Enemy("Goblin Tunneler", 35, 10, 0.55f, 0.15f, { { &goblinEar, 0.50f, 2 } }),
-			Enemy("Goblin Miner",    40, 12, 0.50f, 0.20f, { { &goblinEar, 0.50f, 2 } }),
-			Enemy("Goblin Scrapper", 25,  8, 0.70f, 0.10f, { { &goblinEar, 0.50f, 2 } }),
-			Enemy("Goblin Runt",     20,  6, 0.45f, 0.05f, { { &goblinEar, 0.50f, 2 } }),
+			Enemy("Goblin Brute",	55, 15, 0.50f, 0.25f, { { &world.goblinEar, 0.50f, 2 } }),
+			Enemy("Goblin Tunneler", 35, 10, 0.55f, 0.15f, { { &world.goblinEar, 0.50f, 2 } }),
+			Enemy("Goblin Miner",	40, 12, 0.50f, 0.20f, { { &world.goblinEar, 0.50f, 2 } }),
+			Enemy("Goblin Scrapper", 25,  8, 0.70f, 0.10f, { { &world.goblinEar, 0.50f, 2 } }),
+			Enemy("Goblin Runt",	 20,  6, 0.45f, 0.05f, { { &world.goblinEar, 0.50f, 2 } }),
 		}
 	};
 }
 
-Encounter GoblinKingEncounter() {
+static Encounter GoblinKingEncounter(World& world) {
 	return {
 		"data/preGoblinKing.json",
 		"data/postGoblinKing.json",
-		{ Enemy("Goblin King", 200, 30, 0.70f, 0.40f, { { &goblinCrown, 1.0f, 1 } }) }
+		{ Enemy("Goblin King", 200, 30, 0.70f, 0.40f, { { &world.goblinCrown, 1.0f, 1 } }) }
 	};
 }
 
-Encounter CraneEncounter() {
+static Encounter CraneEncounter() {
 	return {
 		"data/preCrane.json",
 		"data/postCrane.json",
@@ -51,85 +47,76 @@ Encounter CraneEncounter() {
 	};
 }
 
-static CombatResult RunBear(Player& player, int& storyProgress) {
-	Encounter bearEncounter = BearEncounter();
-	PlayDialogue(LoadDialogue(bearEncounter.preCutscene));
-	CombatResult result = RunCombat(player, bearEncounter.enemies);
-	
+static void RunBear(World& world) {
+	Encounter encounter = BearEncounter(world);
+	PlayDialogue(LoadDialogue(encounter.preCutscene));
+	CombatResult result = RunCombat(world.player, encounter.enemies);
+
 	if (result == CombatResult::Victory) {
-		PlayDialogue(LoadDialogue(bearEncounter.postCutscene));
-		storyProgress = 1;
+		PlayDialogue(LoadDialogue(encounter.postCutscene));
+		world.phase = StoryPhase::Kelsa;
 	} else {
-		player.SetCurrentHealth(std::max(1, player.GetMaxHealth() / 2));
-		player.LosePercentGold(25);
+		world.player.SetCurrentHealth(std::max(1, world.player.GetMaxHealth() / 2));
+		world.player.LosePercentGold(25);
 		std::cout << "\nBack in my workshop... Guess I'll have to prepare a bit more before starting off.\n";
 	}
-	return result;
 }
 
-static CombatResult RunGoblinKing(Player& player, int& storyProgress) {
-	Encounter goblinKingEncounter = GoblinKingEncounter();
-	PlayDialogue(LoadDialogue(goblinKingEncounter.preCutscene));
-	CombatResult result = RunCombat(player, goblinKingEncounter.enemies);
+static void RunGoblinKing(World& world) {
+	Encounter encounter = GoblinKingEncounter(world);
+	PlayDialogue(LoadDialogue(encounter.preCutscene));
+	CombatResult result = RunCombat(world.player, encounter.enemies);
 
 	if (result == CombatResult::Victory) {
-		PlayDialogue(LoadDialogue(goblinKingEncounter.postCutscene));
-		player.GetSword()->SetGoblinBlade();
-		player.SetCurrentHealth(player.GetMaxHealth());
-		storyProgress = 3;
-	}
-	else {
-		player.SetCurrentHealth(1);
-		player.LosePercentCake(50);
-		storyProgress = 1;
-		std::cout << "\nUgh... back in Kelsa. I'm a bit worse for wear, and I feel a few cakes lighter.\n";
-	}
-
-	return result;
-}
-
-static CombatResult RunGoblins(Player& player, int& storyProgress) {
-	Encounter goblinsEncounter = GoblinEncounter();
-	PlayDialogue(LoadDialogue(goblinsEncounter.preCutscene));
-	CombatResult result = RunCombat(player, goblinsEncounter.enemies);
-	
-	if (result == CombatResult::Victory) {
-		PlayDialogue(LoadDialogue(goblinsEncounter.postCutscene));
-		storyProgress = 2;
-		RunGoblinKing(player, storyProgress);
+		PlayDialogue(LoadDialogue(encounter.postCutscene));
+		world.player.GetSword()->SetGoblinBlade();
+		world.player.SetCurrentHealth(world.player.GetMaxHealth());
+		world.phase = StoryPhase::Ship;
 	} else {
-		player.SetCurrentHealth(std::max(1, player.GetMaxHealth() / 2));
-		player.LoseAllCake();
-		storyProgress = 1;
+		world.player.SetCurrentHealth(1);
+		world.player.LosePercentCake(50);
+		world.phase = StoryPhase::Kelsa;
 		std::cout << "\nUgh... back in Kelsa. I'm a bit worse for wear, and I feel a few cakes lighter.\n";
 	}
-
-	return result;
 }
 
-static CombatResult RunCrane(Player& player, int& storyProgress) {
-	Encounter craneEncounter = CraneEncounter();
-	PlayDialogue(LoadDialogue(craneEncounter.preCutscene));
-	CombatResult result = RunCombat(player, craneEncounter.enemies);
+static void RunGoblins(World& world) {
+	Encounter encounter = GoblinEncounter(world);
+	PlayDialogue(LoadDialogue(encounter.preCutscene));
+	CombatResult result = RunCombat(world.player, encounter.enemies);
 
 	if (result == CombatResult::Victory) {
-		PlayDialogue(LoadDialogue(craneEncounter.postCutscene));
-		PlayDialogue(LoadDialogue("data/ending.json"));
-		storyProgress = 5;
+		PlayDialogue(LoadDialogue(encounter.postCutscene));
+		RunGoblinKing(world);
+	} else {
+		world.player.SetCurrentHealth(std::max(1, world.player.GetMaxHealth() / 2));
+		world.player.LoseAllCake();
+		world.phase = StoryPhase::Kelsa;
+		std::cout << "\nUgh... back in Kelsa. I'm a bit worse for wear, and I feel a few cakes lighter.\n";
 	}
-	else {
-		player.SetCurrentHealth(1);
-		player.LoseAllCake();
-		storyProgress = 3;
+}
+
+void RunCrane(World& world) {
+	Encounter encounter = CraneEncounter();
+	PlayDialogue(LoadDialogue(encounter.preCutscene));
+	CombatResult result = RunCombat(world.player, encounter.enemies);
+
+	if (result == CombatResult::Victory) {
+		PlayDialogue(LoadDialogue(encounter.postCutscene));
+		PlayDialogue(LoadDialogue("data/ending.json"));
+		world.phase = StoryPhase::Complete;
+	} else {
+		world.player.SetCurrentHealth(1);
+		world.player.LoseAllCake();
+		world.phase = StoryPhase::Ship;
 		std::cout << "\nBarry woke back in Greyna, battered and benchless. He'll need another ship.\n";
 	}
-
-	return result;
 }
 
-void RunEncounter(Player& player, int& storyProgress) {
-	if (storyProgress == 0) RunBear(player, storyProgress);
-	else if (storyProgress == 1) RunGoblins(player, storyProgress);
-	else if (storyProgress == 2) RunGoblinKing(player, storyProgress);
-	else if (storyProgress == 4) RunCrane(player, storyProgress);
+void RunEncounter(World& world) {
+	switch (world.phase) {
+	case StoryPhase::Forest: RunBear(world); break;
+	case StoryPhase::Kelsa: RunGoblins(world); break;
+	default: break;
+	}
 }

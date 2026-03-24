@@ -160,6 +160,7 @@
     <ClCompile Include="assets\items\tools\Sword.cpp" />
     <ClCompile Include="assets\Player.cpp" />
     <ClCompile Include="assets\Voyage.cpp" />
+    <ClCompile Include="assets\World.cpp" />
     <ClCompile Include="BarryTheBenchMaker.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -178,7 +179,10 @@
     <ClInclude Include="include\items\tools\Axe.h" />
     <ClInclude Include="include\items\tools\Sword.h" />
     <ClInclude Include="include\Player.h" />
+    <ClInclude Include="include\Random.h" />
+    <ClInclude Include="include\StoryPhase.h" />
     <ClInclude Include="include\Voyage.h" />
+    <ClInclude Include="include\World.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="data\ending.json" />

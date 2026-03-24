@@ -7,7 +7,3 @@ Material::Material(ItemId id, std::string name, int buyAmount, int sellAmount) :
 int Material::GetBuyAmount() const {
 	return buyAmount;
 }
-
-void Material::SetBuyAmount(int newBuyAmount) {
-	buyAmount = newBuyAmount;
-}

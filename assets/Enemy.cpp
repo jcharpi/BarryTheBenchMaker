@@ -1,9 +1,7 @@
 #include <algorithm>
-#include <random>
 
 #include "../include/Enemy.h"
-
-static std::mt19937 randomEngine(std::random_device{}());
+#include "../include/Random.h"
 
 Enemy::Enemy(
 	std::string name,
@@ -67,7 +65,7 @@ void Enemy::SetIsBlocking(bool blocking) {
 
 EnemyAction Enemy::ChooseAction() {
 	std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
-	float roll = distribution(randomEngine);
+	float roll = distribution(GetRandomEngine());
 
 	if (roll < blockChance) {
 		isBlocking = true;
@@ -89,7 +87,7 @@ std::vector<EnemyDrop> Enemy::RollDrops() const {
 	for (const EnemyDrop& drop : drops) {
 		if (drop.dropChance <= 0.0f || drop.dropChance > 1.0f) continue;
 
-		float roll = distribution(randomEngine);
+		float roll = distribution(GetRandomEngine());
 		if (roll < drop.dropChance) {
 			result.push_back(drop);
 		}
