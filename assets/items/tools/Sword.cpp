@@ -4,13 +4,13 @@ int Sword::GetDamageForTier(int tier) {
 	switch (tier) {
 	default:
 	case 1:
-		return 1;
+		return 10;
 	case 2:
-		return 1;
+		return 18;
 	case 3:
-		return 1;
+		return 28;
 	case 4:
-		return 1;
+		return 40;
 	}
 }
 
@@ -64,8 +64,8 @@ void Sword::SetGoblinBlade() {
 
 int Sword::GetUpgradeCost() const {
 	switch (GetTier()) {
-	case 1: return 1;
-	case 2: return 1;
+	case 1: return 75;
+	case 2: return 150;
 	default: return 0;
 	}
 }

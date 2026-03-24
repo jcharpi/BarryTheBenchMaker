@@ -29,7 +29,7 @@ private:
 public:
 	Enemy(
 		std::string name,
-		int maxHp,
+		int maxHealth,
 		int damage,
 		float hitChance,
 		float blockChance,

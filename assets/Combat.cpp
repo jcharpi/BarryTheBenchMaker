@@ -8,7 +8,7 @@
 
 #include "../include/Combat.h"
 
-static std::mt19937 rng(std::random_device{}());
+static std::mt19937 randomEngine(std::random_device{}());
 
 // region HUD
 
@@ -71,7 +71,7 @@ static void ResolvePlayerAction(
 	Player& player,
 	std::vector<Enemy>& enemies,
 	const std::vector<EnemyAction>& enemyActions,
-	std::uniform_real_distribution<float>& dist)
+	std::uniform_real_distribution<float>& distribution)
 {
 	const float playerHitChance = player.GetSword()->GetHitChance();
 
@@ -81,7 +81,7 @@ static void ResolvePlayerAction(
 			? std::max(0.05f, playerHitChance - target.GetBlockChance())
 			: playerHitChance;
 
-		if (dist(rng) < hitChance) {
+		if (distribution(randomEngine) < hitChance) {
 			int damage = player.GetSword()->GetDamage();
 			target.TakeDamage(damage);
 			std::cout << std::format("Barry hits {} for {} damage!\n", target.GetName(), damage);
@@ -123,7 +123,7 @@ static void ResolveEnemyAttacks(
 	Player& player,
 	std::vector<Enemy>& enemies,
 	const std::vector<EnemyAction>& enemyActions,
-	std::uniform_real_distribution<float>& dist)
+	std::uniform_real_distribution<float>& distribution)
 {
 	for (size_t i = 0; i < enemies.size(); i++) {
 		if (enemies[i].IsDead()) continue;
@@ -138,7 +138,7 @@ static void ResolveEnemyAttacks(
 		float effectiveHitChance = enemies[i].GetHitChance();
 		if (command.action == CombatAction::Block) effectiveHitChance /= 2.0f;
 
-		if (dist(rng) < effectiveHitChance) {
+		if (distribution(randomEngine) < effectiveHitChance) {
 			int damage = enemies[i].GetDamage();
 			player.TakeDamage(damage);
 			std::cout << std::format("{} hits Barry for {} damage!\n", enemies[i].GetName(), damage);
@@ -220,9 +220,9 @@ CombatResult RunCombat(Player& player, std::vector<Enemy>& enemies) {
 		}
 
 		// Resolve the round
-		std::uniform_real_distribution<float> dist(0.0f, 1.0f);
-		ResolvePlayerAction(command, player, enemies, enemyActions, dist);
-		ResolveEnemyAttacks(command, player, enemies, enemyActions, dist);
+		std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
+		ResolvePlayerAction(command, player, enemies, enemyActions, distribution);
+		ResolveEnemyAttacks(command, player, enemies, enemyActions, distribution);
 
 		std::cout << "\n";
 	}

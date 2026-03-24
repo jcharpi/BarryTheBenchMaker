@@ -24,11 +24,11 @@ int main()
     while (true) {
         Sword sword;
         Axe axe;
-        Material wood(ItemId::Wood, "Wood", 1, 1);
-        Cake cake(1, 1, 1);
-        Craftable benchLeg (ItemId::BenchLeg,  "Bench Leg",  1, 1, {{ItemId::Wood, 1}});
-        Craftable benchSeat(ItemId::BenchSeat, "Bench Seat", 1, 1, {{ItemId::Wood, 1}});
-        Craftable bench    (ItemId::Bench,     "Bench",      1, 1, {{ItemId::BenchLeg, 1}, {ItemId::BenchSeat, 1}});
+        Material wood(ItemId::Wood, "Wood", 0, 3);
+        Cake cake(10, 5, 25);
+        Craftable benchLeg (ItemId::BenchLeg,  "Bench Leg",  8,   10, {{ItemId::Wood, 2}});
+        Craftable benchSeat(ItemId::BenchSeat, "Bench Seat", 60,  25, {{ItemId::Wood, 12}});
+        Craftable bench    (ItemId::Bench,     "Bench",      200, 35, {{ItemId::BenchLeg, 4}, {ItemId::BenchSeat, 1}});
 
         int storyProgress = 0;
 
@@ -36,7 +36,7 @@ int main()
         std::vector<Craftable*> craftables  = { &benchLeg, &benchSeat, &bench };
         std::vector<Sellable*> sellables    = { &wood, &cake, &benchLeg, &benchSeat, &bench, &bearPelt, &goblinEar, &goblinCrown };
 
-    Player player(1, 1, &sword, &axe);
+    Player player(100, 0, &sword, &axe);
 
         PlayDialogue(LoadDialogue("data/opening.json"));
         std::cout << "Ashpeak. The goblin tunnels.\n";

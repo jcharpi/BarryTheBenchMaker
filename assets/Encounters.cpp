@@ -22,11 +22,11 @@ Encounter GoblinEncounter() {
 		"data/preGoblin.json",
 		"data/postGoblin.json",
 		{
-			Enemy("Goblin Scout",  40, 12, 0.55f, 0.15f, { { &goblinEar, 0.50f, 2 } }),
-			Enemy("Goblin Brute",  40, 12, 0.55f, 0.15f, { { &goblinEar, 0.50f, 2 } }),
-			Enemy("Goblin Shaman", 40, 12, 0.55f, 0.15f, { { &goblinEar, 0.50f, 2 } }),
-			Enemy("Goblin Archer", 40, 12, 0.55f, 0.15f, { { &goblinEar, 0.50f, 2 } }),
-			Enemy("Goblin Runt",   40, 12, 0.55f, 0.15f, { { &goblinEar, 0.50f, 2 } }),
+			Enemy("Goblin Brute",    55, 15, 0.50f, 0.25f, { { &goblinEar, 0.50f, 2 } }),
+			Enemy("Goblin Tunneler", 35, 10, 0.55f, 0.15f, { { &goblinEar, 0.50f, 2 } }),
+			Enemy("Goblin Miner",    40, 12, 0.50f, 0.20f, { { &goblinEar, 0.50f, 2 } }),
+			Enemy("Goblin Scrapper", 25,  8, 0.70f, 0.10f, { { &goblinEar, 0.50f, 2 } }),
+			Enemy("Goblin Runt",     20,  6, 0.45f, 0.05f, { { &goblinEar, 0.50f, 2 } }),
 		}
 	};
 }
@@ -44,9 +44,9 @@ Encounter CraneEncounter() {
 		"data/preCrane.json",
 		"data/postCrane.json",
 		{
-			Enemy("Lord Crane", 250, 35, 0.75f, 0.35f, {}),
-			Enemy("Crane's Guard", 150, 28, 0.70f, 0.30f, {}),
-			Enemy("Crane's Guard", 150, 28, 0.70f, 0.30f, {}),
+			Enemy("Lord Crane", 160, 25, 0.65f, 0.30f, {}),
+			Enemy("Crane's Guard", 70, 15, 0.55f, 0.20f, {}),
+			Enemy("Crane's Guard", 70, 15, 0.55f, 0.20f, {}),
 		}
 	};
 }

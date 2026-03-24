@@ -5,8 +5,8 @@
     },
     "materials": {
         "wood": {
-            "buyAmount": 15,
-            "sellAmount": 5
+            "buyAmount": 0,
+            "sellAmount": 3
         }
     },
     "consumables": {
@@ -25,7 +25,7 @@
             }
         },
         "benchSeat": {
-            "sellAmount": 90,
+            "sellAmount": 60,
             "timeToCraft": 25,
             "requirements": {
                 "wood": 12
@@ -42,10 +42,13 @@
     },
     "tools": {
         "axe": {
-            "chopTime": [4, 2, 1]
+            "chopTime": [4, 2, 1],
+            "upgradeCost": [50, 100, 0]
         },
         "sword": {
-            "damage": [25, 50, 100]
+            "damage": [10, 18, 28, 40],
+            "hitChance": [0.70, 0.75, 0.80, 0.85],
+            "upgradeCost": [75, 150, 0]
         }
     }
 }

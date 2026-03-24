@@ -3,16 +3,16 @@
 
 #include "../include/Enemy.h"
 
-static std::mt19937 rng(std::random_device{}());
+static std::mt19937 randomEngine(std::random_device{}());
 
 Enemy::Enemy(
 	std::string name,
-	int maxHp,
+	int maxHealth,
 	int damage,
 	float hitChance,
 	float blockChance,
 	std::vector<EnemyDrop> drops
-) : blockChance(blockChance), currentHealth(maxHp), damage(damage), drops(drops), hitChance(hitChance), hitPenalty(0.0f), isBlocking(false), maxHealth(maxHp), name(name) {
+) : blockChance(blockChance), currentHealth(maxHealth), damage(damage), drops(drops), hitChance(hitChance), hitPenalty(0.0f), isBlocking(false), maxHealth(maxHealth), name(name) {
 }
 
 // Getters
@@ -66,8 +66,8 @@ void Enemy::SetIsBlocking(bool blocking) {
 // Actions
 
 EnemyAction Enemy::ChooseAction() {
-	std::uniform_real_distribution<float> dist(0.0f, 1.0f);
-	float roll = dist(rng);
+	std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
+	float roll = distribution(randomEngine);
 
 	if (roll < blockChance) {
 		isBlocking = true;
@@ -84,12 +84,12 @@ void Enemy::ResetTurnState() {
 std::vector<EnemyDrop> Enemy::RollDrops() const {
 	std::vector<EnemyDrop> result;
 
-	std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+	std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
 
 	for (const EnemyDrop& drop : drops) {
 		if (drop.dropChance <= 0.0f || drop.dropChance > 1.0f) continue;
 
-		float roll = dist(rng);
+		float roll = distribution(randomEngine);
 		if (roll < drop.dropChance) {
 			result.push_back(drop);
 		}

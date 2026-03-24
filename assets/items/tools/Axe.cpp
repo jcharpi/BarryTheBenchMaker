@@ -4,9 +4,9 @@ int Axe::GetTimeToChopForTier(int tier) {
 	switch (tier) {
 	default:
 	case 1:
-		return 1;
+		return 4;
 	case 2:
-		return 1;
+		return 2;
 	case 3:
 		return 1;
 	}
@@ -36,8 +36,8 @@ void Axe::SetTimeToChop(int newTimeToChop) {
 
 int Axe::GetUpgradeCost() const {
 	switch (GetTier()) {
-	case 1: return 1;
-	case 2: return 1;
+	case 1: return 50;
+	case 2: return 100;
 	default: return 0;
 	}
 }

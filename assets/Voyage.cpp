@@ -23,28 +23,28 @@ static const std::vector<VoyageEvent> events = {
 		"The wind changed direction without warning. The mast groaned under the sudden strain.",
 		"Rain came in sideways, hard enough to sting. Visibility dropped to nothing.",
 		"A swell lifted the ship and dropped it into the trough. Something cracked below deck.",
-	}, 8, 25 },
+	}, 15, 40 },
 	{ "Leak", {
 		"Water seeped through a join in the hull. Slow at first, then not slow at all.",
 		"A plank below the waterline had worked itself loose. The bilge was rising.",
 		"Barry heard dripping from somewhere he couldn't reach. Never a good sign.",
-	}, 5, 15 },
+	}, 8, 20 },
 	{ "Debris", {
 		"A floating log slammed into the hull. The impact rattled Barry's teeth.",
 		"Something scraped along the underside of the ship. Rock or wreckage, hard to say.",
 		"Driftwood caught in the rudder. Barry heard the wood splitting before he felt the drag.",
 		"The ship clipped a submerged rock. The jolt sent supplies sliding across the deck.",
-	}, 10, 20 },
+	}, 12, 30 },
 	{ "Sea Creature", {
 		"Something large moved beneath the hull. A shadow wider than the ship.",
 		"A tentacle broke the surface off starboard. It tested the hull, then pulled away. It left marks.",
 		"The water went still. Then the ship lurched sideways as something rammed it from below.",
 		"Barnacle-crusted teeth raked the hull. Whatever it was, it was tasting the wood.",
-	}, 15, 35 },
+	}, 20, 50 },
 	{ "Rogue Wave", {
 		"The horizon tilted. A wall of water rose ahead, taller than the mast.",
 		"A wave came from nowhere. The ship climbed it, hung at the crest, and dropped.",
-	}, 20, 40 },
+	}, 30, 60 },
 };
 // endregion
 
@@ -64,10 +64,9 @@ VoyageResult RunVoyage(int shipHealth) {
 
 	const int maxShipHealth = shipHealth;
 
-	std::random_device rd;
-	std::mt19937 rng(rd());
-	std::uniform_int_distribution<int> eventCountDist(5, 10);
-	const int totalEvents = eventCountDist(rng);
+	std::mt19937 randomEngine(std::random_device{}());
+	std::uniform_int_distribution<int> eventCountDistribution(5, 10);
+	const int totalEvents = eventCountDistribution(randomEngine);
 
 	std::cout << "\nThe chandler looked at the gold and nodded.\n";
 	std::cout << "\nBarry set sail for Crane's Reach.\n";
@@ -78,15 +77,14 @@ VoyageResult RunVoyage(int shipHealth) {
 	for (int i = 0; i < totalEvents && shipHealth > 0; i++) {
 		system("cls");
 
-		std::uniform_int_distribution<int> eventDist(0, (int)events.size() - 1);
-		const auto& event = events[eventDist(rng)];
+		std::uniform_int_distribution<int> eventDistribution(0, (int)events.size() - 1);
+		const auto& event = events[eventDistribution(randomEngine)];
 
-		std::uniform_int_distribution<int> descDist(0, (int)event.descriptions.size() - 1);
-		const std::string& description = event.descriptions[descDist(rng)];
+		std::uniform_int_distribution<int> descriptionDistribution(0, (int)event.descriptions.size() - 1);
+		const std::string& description = event.descriptions[descriptionDistribution(randomEngine)];
 
-		// Roll damage
-		std::uniform_int_distribution<int> damageDist(event.minDamage, event.maxDamage);
-		int damage = damageDist(rng);
+		std::uniform_int_distribution<int> damageDistribution(event.minDamage, event.maxDamage);
+		int damage = damageDistribution(randomEngine);
 
 		std::cout << std::format("\n--- {} ({}/{}) ---\n", event.name, i + 1, totalEvents);
 		std::cout << "\n" << description << "\n";
