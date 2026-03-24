@@ -123,6 +123,9 @@
     <ClInclude Include="include\Voyage.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\EmbeddedData.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\opening.json">
