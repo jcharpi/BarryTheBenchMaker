@@ -1,10 +1,10 @@
 #include <algorithm>
 #include <chrono>
+#include <format>
 #include <iostream>
 #include <thread>
 
 #include "../include/Player.h"
-#include "../include/interfaces/Sellable.h"
 
 Player::Player(int maxHealth, int startingGold, Sword* sword, Axe* axe) :
 	axe(axe),

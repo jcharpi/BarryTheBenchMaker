@@ -1,9 +1,10 @@
-#include "../include/Encounter.h"
-#include "../include/Combat.h"
-#include "../include/Dialogue.h"
-#include "../include/World.h"
 #include <algorithm>
 #include <iostream>
+
+#include "../include/Combat.h"
+#include "../include/Dialogue.h"
+#include "../include/Encounter.h"
+#include "../include/World.h"
 
 static Encounter BearEncounter(World& world) {
 	return {

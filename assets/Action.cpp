@@ -9,8 +9,8 @@
 
 #include "../include/Action.h"
 #include "../include/Encounter.h"
-#include "../include/World.h"
 #include "../include/Voyage.h"
+#include "../include/World.h"
 
 // region Helpers
 

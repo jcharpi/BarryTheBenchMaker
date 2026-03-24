@@ -2,7 +2,6 @@
 #include <fstream>
 #include <iostream>
 #include <json/json.h>
-#include <sstream>
 
 #include "../include/Dialogue.h"
 #include "../include/EmbeddedData.h"
