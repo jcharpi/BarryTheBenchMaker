@@ -46,13 +46,13 @@ void PrintSettingText(StoryPhase phase) {
 		break;
 	case StoryPhase::Kelsa:
 		std::cout << "Kelsa. Past the forest, past the bear.\n";
-		std::cout << "The market had everything — gear, supplies, a blacksmith who knew his craft.\n";
-		std::cout << "The tunnels of Ashpeak loomed above the town. Somewhere up there, goblins had his bench.\n";
+		std::cout << "The market has everything I need for the journey into the peaks.\n";
+		std::cout << "The tunnels of Ashpeak loom above the town. Somewhere up there, goblins have my bench.\n";
 		std::cout << "Time to prepare.\n";
 		break;
 	case StoryPhase::Ship:
-		std::cout << "The goblin king was dead. The bench wasn't in Ashpeak.\n";
-		std::cout << "Lord Crane had it. Crane's Reach, across the open water.\n";
+		std::cout << "The goblin king is defeated. The bench wasn't in Ashpeak.\n";
+		std::cout << "Lord Crane has it. Crane's Reach, across the open water.\n";
 		std::cout << "Going to need gold for a ship. Whatever it takes.\n";
 		break;
 	default:
