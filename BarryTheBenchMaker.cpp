@@ -18,7 +18,7 @@ int main()
 		World world;
 
 		PlayDialogue(LoadDialogue("data/opening.json"));
-		PrintSettingText(world.phase);
+		PrintSettingText(world);
 
 		auto startTime = std::chrono::steady_clock::now();
 		bool gameCompleted = false;
@@ -39,7 +39,7 @@ int main()
 			HandleAction(command, world, availableActions);
 
 			if (world.phase != previousPhase) {
-				PrintSettingText(world.phase);
+				PrintSettingText(world);
 			}
 
 			if (world.phase == StoryPhase::Complete) {

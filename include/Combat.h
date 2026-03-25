@@ -6,8 +6,7 @@
 enum class CombatAction {
 	Attack,
 	Block,
-	Eat,
-	Parry
+	Eat
 };
 
 enum class CombatResult {

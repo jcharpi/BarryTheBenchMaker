@@ -13,6 +13,7 @@ class Player {
 private:
 	Axe* axe;
 	int currentHealth;
+	int fullness;
 	int gold;
 	std::unordered_map<ItemId, Item*> itemLookup;
 	std::unordered_map<ItemId, int> itemsOwned;
@@ -26,15 +27,20 @@ public:
 	Axe* GetAxe() const;
 	int GetCakeCount() const;
 	int GetCurrentHealth() const;
+	int GetFullness() const;
 	int GetGold() const;
 	int GetItemCount(const Item* item) const;
 	const std::unordered_map<ItemId, int>& GetItemsOwned() const;
 	int GetMaxHealth() const;
 	Sword* GetSword() const;
 
+	bool IsFull() const;
+	void ReduceFullness();
+
 	// Inventory
 	void AddItem(Item* item, int amount);
 	bool Buy(Item* item, int quantity);
+	bool CanCraft(const Craftable* item) const;
 	bool Chop(Material* wood);
 	bool Craft(Craftable* item);
 	bool Eat();

@@ -36,8 +36,8 @@ static Craftable* FindCraftable(const std::vector<Craftable*>& craftables, const
 
 // region Setting text
 
-void PrintSettingText(StoryPhase phase) {
-	switch (phase) {
+void PrintSettingText(const World& world) {
+	switch (world.phase) {
 	case StoryPhase::Forest:
 		std::cout << "Ashpeak. The goblin tunnels.\n";
 		std::cout << "...Going to need supplies. Cake for the road. A better blade, maybe.\n";
@@ -57,6 +57,10 @@ void PrintSettingText(StoryPhase phase) {
 		break;
 	default:
 		break;
+	}
+
+	if (world.phase != StoryPhase::Complete) {
+		std::cout << std::format("\n{}/{} HP | {} gold\n", world.player.GetCurrentHealth(), world.player.GetMaxHealth(), world.player.GetGold());
 	}
 }
 
@@ -384,6 +388,10 @@ void HandleAction(
 		}
 
 		else if (command.action == Action::Eat) {
+			if (player.IsFull()) {
+				std::cout << "Too full to eat right now.\n";
+				break;
+			}
 			std::cout << std::format("{}/{} health.\n", player.GetCurrentHealth(), player.GetMaxHealth());
 			if (!player.Eat()) {
 				std::cout << "No cake. Going to have to buy some.\n";
@@ -398,13 +406,14 @@ void HandleAction(
 				std::cout << std::format("I don't know how to craft \"{}\".\n", command.target);
 				break;
 			}
-
-			std::cout << std::format("Crafting {}...\n", itemToCraft->GetName());
-			std::this_thread::sleep_for(std::chrono::seconds(itemToCraft->GetTimeToCraft()));
-			if (!player.Craft(itemToCraft)) {
+			if (!player.CanCraft(itemToCraft)) {
 				std::cout << std::format("Not enough materials to craft {}.\n", itemToCraft->GetName());
 				break;
 			}
+
+			std::cout << std::format("Crafting {}...\n", itemToCraft->GetName());
+			std::this_thread::sleep_for(std::chrono::seconds(itemToCraft->GetTimeToCraft()));
+			player.Craft(itemToCraft);
 			std::cout << std::format("Done! {} crafted. ({}/{})\n", itemToCraft->GetName(), i + 1, command.quantity);
 		}
 	}

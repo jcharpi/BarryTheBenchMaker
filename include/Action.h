@@ -29,4 +29,4 @@ std::vector<Action> GetAvailableActions(const World& world);
 std::string ActionToString(Action action);
 std::string FormatPrompt(const std::vector<Action>& available);
 void HandleAction(const ParsedCommand& command, World& world, const std::vector<Action>& availableActions);
-void PrintSettingText(StoryPhase phase);
+void PrintSettingText(const World& world);

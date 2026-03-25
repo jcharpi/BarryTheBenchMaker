@@ -28,7 +28,7 @@ void RenderCombatHUD(const Player& player, const std::vector<Enemy>& enemies) {
 	std::string playerBar = std::string(filledLength, '#') + std::string(10 - filledLength, '-');
 	int cakeCount = player.GetCakeCount();
 
-	std::cout << std::format("\nBarry  [{}]  {}/{}  | Gold: {} | Cakes: {}\n", playerBar, player.GetCurrentHealth(), player.GetMaxHealth(), player.GetGold(), cakeCount);
+	std::cout << std::format("\nBarry  [{}]  {}/{}  | Gold: {} | Cakes: {} | Stomach: {}%\n", playerBar, player.GetCurrentHealth(), player.GetMaxHealth(), player.GetGold(), cakeCount, player.GetFullness());
 }
 
 // region Input
@@ -54,11 +54,6 @@ bool ParseCombatInput(const std::string& input, CombatCommand& result) {
 		result.action = CombatAction::Eat;
 		return true;
 	}
-	if (action == "parry") {
-		result.action = CombatAction::Parry;
-		return true;
-	}
-
 	return false;
 }
 
@@ -68,7 +63,6 @@ static void ResolvePlayerAction(
 	const CombatCommand& command,
 	Player& player,
 	std::vector<Enemy>& enemies,
-	const std::vector<EnemyAction>& enemyActions,
 	std::uniform_real_distribution<float>& distribution)
 {
 	const float playerHitChance = player.GetSword()->GetHitChance();
@@ -87,29 +81,16 @@ static void ResolvePlayerAction(
 			std::cout << std::format("Barry swings at {} — misses.\n", target.GetName());
 		}
 
+		player.ReduceFullness();
+
 	} else if (command.action == CombatAction::Block) {
-		std::cout << "Barry braces.\n";
-
-	} else if (command.action == CombatAction::Parry) {
-		Enemy& target = enemies[command.target];
-		EnemyAction targetAction = enemyActions[command.target];
-
-		if (targetAction == EnemyAction::Attack) {
-			// Parry success — negate the attack, weaken the enemy next turn
-			target.SetHitPenalty(0.2f);
-			std::cout << std::format("Barry parries {}! The attack is deflected — they're off-balance.\n", target.GetName());
-		} else {
-			// Parry stumble — enemy blocked, Barry is wide open next turn.
-			// A penalty of -1.0f makes effectiveHitChance = hitChance + 1.0f,
-			// which always exceeds 1.0f, so the hit roll always succeeds.
-			const float GUARANTEED_HIT_PENALTY = -1.0f;
-			target.SetHitPenalty(GUARANTEED_HIT_PENALTY);
-			std::cout << std::format("Barry lunges — {} was blocking. Barry stumbles and is left wide open.\n", target.GetName());
-		}
+		std::cout << std::format("Barry braces against {}.\n", enemies[command.target].GetName());
 
 	} else if (command.action == CombatAction::Eat) {
-		if (player.Eat()) {
-			std::cout << std::format("Barry eats a cake. {}/{} HP.\n", player.GetCurrentHealth(), player.GetMaxHealth());
+		if (player.IsFull()) {
+			std::cout << "Too full to eat right now.\n";
+		} else if (player.Eat()) {
+			std::cout << std::format("Barry eats a cake. {}/{} HP. Stomach: {}%\n", player.GetCurrentHealth(), player.GetMaxHealth(), player.GetFullness());
 		} else {
 			std::cout << "No cake left.\n";
 		}
@@ -123,6 +104,8 @@ static void ResolveEnemyAttacks(
 	const std::vector<EnemyAction>& enemyActions,
 	std::uniform_real_distribution<float>& distribution)
 {
+	const int blockReduction = player.GetSword()->GetDamage() / 2;
+
 	for (size_t i = 0; i < enemies.size(); i++) {
 		if (enemies[i].IsDead()) continue;
 		if (enemyActions[i] == EnemyAction::Block) {
@@ -130,16 +113,21 @@ static void ResolveEnemyAttacks(
 			continue;
 		}
 
-		// Skip this enemy's attack if it was successfully parried
-		if (command.action == CombatAction::Parry && (int)i == command.target && enemyActions[i] == EnemyAction::Attack) continue;
-
 		float effectiveHitChance = enemies[i].GetHitChance();
-		if (command.action == CombatAction::Block) effectiveHitChance /= 2.0f;
 
 		if (distribution(GetRandomEngine()) < effectiveHitChance) {
 			int damage = enemies[i].GetDamage();
-			player.TakeDamage(damage);
-			std::cout << std::format("{} hits Barry for {} damage!\n", enemies[i].GetName(), damage);
+			bool blocked = command.action == CombatAction::Block && (int)i == command.target;
+			if (blocked) {
+				damage = std::max(0, damage - blockReduction);
+			}
+			if (damage > 0) {
+				player.TakeDamage(damage);
+				std::cout << std::format("{} hits Barry for {} damage!{}\n", enemies[i].GetName(), damage,
+					blocked ? " (blocked)" : "");
+			} else {
+				std::cout << std::format("{} strikes, but Barry's guard absorbs it completely!\n", enemies[i].GetName());
+			}
 		} else {
 			std::cout << std::format("{} swings at Barry — misses.\n", enemies[i].GetName());
 		}
@@ -184,18 +172,19 @@ CombatResult RunCombat(Player& player, std::vector<Enemy>& enemies) {
 		CombatCommand command;
 		std::string input;
 		while (true) {
-			std::cout << "\n(attack <#> / block / parry <#> / eat)\n> ";
+			std::cout << "\n(attack <#> / block <#> / eat)\n> ";
 			std::getline(std::cin, input);
 
 			if (!ParseCombatInput(input, command)) {
-				std::cout << "...Not an option. Try: attack, block, parry, eat.\n";
+				std::cout << "...Not an option. Try: attack, block, eat.\n";
 				continue;
 			}
 
-			// Attack and Parry require a valid, living target
-			if (command.action == CombatAction::Attack || command.action == CombatAction::Parry) {
+			// Attack and block require a valid, living target
+			if (command.action == CombatAction::Attack || command.action == CombatAction::Block) {
 				if (command.target < 0 || command.target >= (int)enemies.size()) {
-					std::cout << std::format("Which one? (example: attack 1, parry 2).\n");
+					std::cout << std::format("Which one? (example: {} 1).\n",
+						command.action == CombatAction::Attack ? "attack" : "block");
 					continue;
 				}
 				if (enemies[command.target].IsDead()) {
@@ -219,7 +208,7 @@ CombatResult RunCombat(Player& player, std::vector<Enemy>& enemies) {
 
 		// Resolve the round
 		std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
-		ResolvePlayerAction(command, player, enemies, enemyActions, distribution);
+		ResolvePlayerAction(command, player, enemies, distribution);
 		ResolveEnemyAttacks(command, player, enemies, enemyActions, distribution);
 
 		std::cout << "\n";

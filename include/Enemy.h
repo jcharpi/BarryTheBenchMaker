@@ -21,7 +21,6 @@ private:
 	int damage;
 	std::vector<EnemyDrop> drops;
 	float hitChance;
-	float hitPenalty;
 	bool isBlocking;
 	int maxHealth;
 	std::string name;
@@ -40,7 +39,7 @@ public:
 	float GetBlockChance() const;
 	int GetCurrentHealth() const;
 	int GetDamage() const;
-	float GetHitChance(); // not const — consumes hitPenalty as a side effect
+	float GetHitChance() const;
 	int GetMaxHealth() const;
 	const std::string& GetName() const;
 
@@ -49,7 +48,6 @@ public:
 	bool IsDead() const;
 
 	// Setters
-	void SetHitPenalty(float penalty);
 	void SetIsBlocking(bool blocking);
 
 	// Actions
