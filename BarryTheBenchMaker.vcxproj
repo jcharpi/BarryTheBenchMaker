@@ -198,7 +198,7 @@
     <None Include="data\preGoblinKing.json" />
     <None Include="data\preShip.json" />
     <None Include="data\values.json" />
-    <None Include="GUIDE.md" />
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
