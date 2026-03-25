@@ -1,5 +1,6 @@
-#include "../../include/interfaces/Craftable.h"
 #include <stdexcept>
+
+#include "../../include/interfaces/Craftable.h"
 
 Craftable::Craftable(ItemId id, std::string name, int sellAmount,
 	int timeToCraft, const std::unordered_map<ItemId, int>& itemsRequired) :
@@ -10,10 +11,6 @@ Craftable::Craftable(ItemId id, std::string name, int sellAmount,
 
 int Craftable::GetTimeToCraft() const {
 	return timeToCraft;
-}
-
-void Craftable::SetTimeToCraft(int newTimeToCraft) {
-	timeToCraft = newTimeToCraft;
 }
 
 const std::unordered_map<ItemId, int>& Craftable::GetItemsRequired() const {

@@ -1,14 +1,9 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "Combat.h"
 #include "Enemy.h"
-#include "Player.h"
-#include "interfaces/Sellable.h"
 
-extern Sellable bearPelt;
-extern Sellable goblinEar;
-extern Sellable goblinCrown;
+struct World;
 
 struct Encounter {
 	std::string preCutscene;
@@ -16,9 +11,5 @@ struct Encounter {
 	std::vector<Enemy> enemies;
 };
 
-Encounter BearEncounter();
-Encounter GoblinEncounter();
-Encounter GoblinKingEncounter();
-Encounter CraneEncounter();
-
-void RunEncounter(Player& player, int& storyProgress);
+void RunEncounter(World& world);
+void RunCrane(World& world);

@@ -1,13 +1,12 @@
 #pragma once
 #include <vector>
-#include "Player.h"
 #include "Enemy.h"
+#include "Player.h"
 
 enum class CombatAction {
 	Attack,
 	Block,
-	Eat,
-	Parry
+	Eat
 };
 
 enum class CombatResult {

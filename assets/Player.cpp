@@ -1,14 +1,15 @@
 #include <algorithm>
 #include <chrono>
+#include <format>
 #include <iostream>
 #include <thread>
 
 #include "../include/Player.h"
-#include "../include/interfaces/Sellable.h"
 
 Player::Player(int maxHealth, int startingGold, Sword* sword, Axe* axe) :
 	axe(axe),
 	currentHealth(maxHealth),
+	fullness(0),
 	gold(startingGold),
 	maxHealth(maxHealth),
 	sword(sword) {
@@ -37,6 +38,10 @@ int Player::GetCurrentHealth() const {
 	return currentHealth;
 }
 
+int Player::GetFullness() const {
+	return fullness;
+}
+
 int Player::GetGold() const {
 	return gold;
 }
@@ -60,6 +65,14 @@ int Player::GetMaxHealth() const {
 
 Sword* Player::GetSword() const {
 	return sword;
+}
+
+bool Player::IsFull() const {
+	return fullness >= 100;
+}
+
+void Player::ReduceFullness() {
+	fullness = std::max(0, fullness - 25);
 }
 
 // Inventory
@@ -95,16 +108,19 @@ bool Player::Chop(Material* wood) {
 	return true;
 }
 
-bool Player::Craft(Craftable* item) {
+bool Player::CanCraft(const Craftable* item) const {
 	if (item == nullptr) return false;
-
-	const auto& requirements = item->GetItemsRequired();
-
-	// Validate all required ingredients exist before consuming any
-	for (const auto& [requiredItemId, requiredCount] : requirements) {
+	for (const auto& [requiredItemId, requiredCount] : item->GetItemsRequired()) {
 		const auto itemOwned = itemsOwned.find(requiredItemId);
 		if (itemOwned == itemsOwned.end() || itemOwned->second < requiredCount) return false;
 	}
+	return true;
+}
+
+bool Player::Craft(Craftable* item) {
+	if (!CanCraft(item)) return false;
+
+	const auto& requirements = item->GetItemsRequired();
 
 	for (const auto& [requiredItemId, requiredCount] : requirements) {
 		auto itemOwned = itemsOwned.find(requiredItemId);
@@ -118,6 +134,8 @@ bool Player::Craft(Craftable* item) {
 }
 
 bool Player::Eat() {
+	if (fullness >= 100) return false;
+
 	auto ownedCakeEntry = itemsOwned.find(ItemId::Cake);
 	if (ownedCakeEntry == itemsOwned.end()) return false;
 
@@ -128,18 +146,18 @@ bool Player::Eat() {
 	if (cake == nullptr) return false;
 
 	currentHealth = std::min(maxHealth, currentHealth + cake->GetHealAmount());
+	fullness = std::min(100, fullness + 25);
 	ownedCakeEntry->second -= 1;
 	if (ownedCakeEntry->second == 0) itemsOwned.erase(ownedCakeEntry);
 	return true;
 }
 
 void Player::PrintInventory() const {
+	std::cout << std::format("{}/{} HP, {} gold\n", currentHealth, maxHealth, gold);
 	if (itemsOwned.empty()) {
 		std::cout << "Nothing here yet.\n";
 		return;
 	}
-
-	std::cout << "Inventory\n";
 	for (const auto& [itemId, count] : itemsOwned) {
 		std::string name = "Unknown";
 		auto itemEntry = itemLookup.find(itemId);

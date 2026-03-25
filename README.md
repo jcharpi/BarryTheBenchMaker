@@ -23,10 +23,9 @@ You play by typing commands into the terminal. The game will show you what's ava
 - `quit` — exit the game
 
 **In combat:**
-- `attack [#]` — swing at a target
-- `block` — brace against incoming attacks
-- `parry [#]` — attempt to deflect an enemy's attack. If they were attacking, you negate the hit and throw them off-balance. If they were blocking, you stumble and leave yourself wide open. High risk, high reward.
-- `eat` — heal mid-fight
+- `attack [#]` — swing at a target (also digests food)
+- `block [#]` — brace against a specific enemy's attack, reducing their damage
+- `eat` — heal mid-fight (increases fullness)
 
 ## Tips
 
@@ -34,3 +33,24 @@ You play by typing commands into the terminal. The game will show you what's ava
 - Gold management matters. Spend wisely.
 - Combat rewards careful decision-making over button mashing.
 - Prepare before you continue the story. You won't always get a second chance to stock up.
+
+## Patch Notes
+
+### v0.2
+
+**Combat rework:**
+- Removed parry. Combat actions are now attack, block, and eat.
+- Block is now targeted — choose which enemy to brace against. Their damage is reduced based on your sword tier. Other enemies still hit at full strength.
+- Added a fullness meter. Each cake eaten fills your stomach by 25%. At 100%, you can't eat until you attack to digest. Manage your stomach alongside your health.
+
+**Quality of life:**
+- Setting text now displays your current health and gold.
+- Inventory shows your health.
+- Story text updated to Barry's perspective (present tense).
+
+**Under the hood:**
+- Game state consolidated into a single World struct.
+- Story progress uses a named enum instead of raw integers.
+- Shared random engine across all systems.
+- Removed unused item setters.
+- Sword upgrade to tier 3 is now locked behind reaching Kelsa.

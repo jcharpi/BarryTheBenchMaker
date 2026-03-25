@@ -7,7 +7,3 @@ Cake::Cake(int buyAmount, int sellAmount, int healAmount) :
 int Cake::GetHealAmount() const {
 	return healAmount;
 }
-
-void Cake::SetHealAmount(int newHealAmount) {
-	healAmount = newHealAmount;
-}

@@ -42,7 +42,7 @@ std::string Sword::GetNameForTier(int tier) {
 	}
 }
 
-Sword::Sword() : Tool(ItemId::Sword, GetNameForTier(GetTier()), 1), damage(GetDamageForTier(GetTier())) {}
+Sword::Sword() : Tool(ItemId::Sword, GetNameForTier(1), 1), damage(GetDamageForTier(1)) {}
 
 int Sword::GetDamage() const {
 	return damage;

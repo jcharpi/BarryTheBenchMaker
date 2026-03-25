@@ -9,5 +9,4 @@ public:
 	Material(ItemId id, std::string name, int buyAmount, int sellAmount);
 
 	int GetBuyAmount() const;
-	void SetBuyAmount(int newBuyAmount);
 };

@@ -1,42 +1,32 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "StoryPhase.h"
 
 enum class Action {
-    Buy,
-    Chop,
-    Continue, // continues to next encounter
-    Craft,    // shown when owned items overlap any recipe's ingredients
-    Eat,      // shown when player has Cake
-    Inv,
-    Quit,
-    Sell,     // shown when player owns any sellable item
-    Unknown,
-    Upgrade,
+	Buy,
+	Chop,
+	Continue, // continues to next encounter
+	Craft,	// shown when owned items overlap any recipe's ingredients
+	Eat,	  // shown when player has Cake
+	Inv,
+	Quit,
+	Sell,	 // shown when player owns any sellable item
+	Unknown,
+	Upgrade,
 };
 
 struct ParsedCommand {
-    Action action = Action::Unknown;
-    int quantity = 1;
-    std::string target;
+	Action action = Action::Unknown;
+	int quantity = 1;
+	std::string target;
 };
 
-class Craftable;
-class Material;
-class Player;
-class Sellable;
+struct World;
 
 ParsedCommand ParseInput(const std::string& input);
-std::vector<Action> GetAvailableActions(const Player& player, const std::vector<Craftable*>& craftables, const std::vector<Sellable*>& sellables);
+std::vector<Action> GetAvailableActions(const World& world);
 std::string ActionToString(Action action);
 std::string FormatPrompt(const std::vector<Action>& available);
-void HandleAction(
-    const ParsedCommand& command,
-    Player& player,
-	int& storyProgress,
-    const std::vector<Action>& availableActions,
-    Material* wood,
-    const std::vector<Material*>& buyables,
-    const std::vector<Craftable*>& craftables,
-    const std::vector<Sellable*>& sellables
-);
+void HandleAction(const ParsedCommand& command, World& world, const std::vector<Action>& availableActions);
+void PrintSettingText(const World& world);

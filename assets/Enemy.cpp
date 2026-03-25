@@ -1,9 +1,7 @@
 #include <algorithm>
-#include <random>
 
 #include "../include/Enemy.h"
-
-static std::mt19937 randomEngine(std::random_device{}());
+#include "../include/Random.h"
 
 Enemy::Enemy(
 	std::string name,
@@ -12,7 +10,7 @@ Enemy::Enemy(
 	float hitChance,
 	float blockChance,
 	std::vector<EnemyDrop> drops
-) : blockChance(blockChance), currentHealth(maxHealth), damage(damage), drops(drops), hitChance(hitChance), hitPenalty(0.0f), isBlocking(false), maxHealth(maxHealth), name(name) {
+) : blockChance(blockChance), currentHealth(maxHealth), damage(damage), drops(drops), hitChance(hitChance), isBlocking(false), maxHealth(maxHealth), name(name) {
 }
 
 // Getters
@@ -29,10 +27,8 @@ int Enemy::GetDamage() const {
 	return damage;
 }
 
-float Enemy::GetHitChance() {
-	float effectiveHitChance = std::max(0.0f, hitChance - hitPenalty);
-	hitPenalty = 0.0f;
-	return effectiveHitChance;
+float Enemy::GetHitChance() const {
+	return hitChance;
 }
 
 int Enemy::GetMaxHealth() const {
@@ -55,10 +51,6 @@ bool Enemy::IsDead() const {
 
 // Setters
 
-void Enemy::SetHitPenalty(float penalty) {
-	hitPenalty = penalty;
-}
-
 void Enemy::SetIsBlocking(bool blocking) {
 	isBlocking = blocking;
 }
@@ -67,7 +59,7 @@ void Enemy::SetIsBlocking(bool blocking) {
 
 EnemyAction Enemy::ChooseAction() {
 	std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
-	float roll = distribution(randomEngine);
+	float roll = distribution(GetRandomEngine());
 
 	if (roll < blockChance) {
 		isBlocking = true;
@@ -89,7 +81,7 @@ std::vector<EnemyDrop> Enemy::RollDrops() const {
 	for (const EnemyDrop& drop : drops) {
 		if (drop.dropChance <= 0.0f || drop.dropChance > 1.0f) continue;
 
-		float roll = distribution(randomEngine);
+		float roll = distribution(GetRandomEngine());
 		if (roll < drop.dropChance) {
 			result.push_back(drop);
 		}

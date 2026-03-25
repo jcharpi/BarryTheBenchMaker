@@ -9,5 +9,4 @@ public:
 	Sellable(ItemId id, std::string name, int sellAmount);
 
 	int GetSellAmount() const;
-	void SetSellAmount(int newSellAmount);
 };

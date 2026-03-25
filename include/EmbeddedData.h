@@ -563,7 +563,7 @@ inline const std::unordered_map<std::string, std::string>& GetEmbeddedDialogue()
   },
   {
     "speaker": "BARRY",
-    "text": "Three years of my life sat in that room. A bench painstakingly crafted. Perfect. The best thing I have ever made."
+    "text": "Three years of my life sat in that room. A bench painstakingly crafted. Perfect. The best bench I have ever made."
   },
   {
     "speaker": "BARRY",
@@ -1175,7 +1175,7 @@ inline const std::unordered_map<std::string, std::string>& GetEmbeddedDialogue()
 {"data/preGoblinKing.json", R"json([
   {
     "speaker": "NARRATOR",
-    "text": "The Goblin King stepped down from his throne. The crowd parted for him without being told, the way water parts for a stone that has always been there."
+    "text": "The Goblin King stepped down from his throne. The crowd parted for him without being told."
   },
   {
     "speaker": "NARRATOR",

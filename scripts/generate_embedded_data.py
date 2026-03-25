@@ -3,9 +3,7 @@ Pre-build script: reads all .json files from data/ and generates
 include/EmbeddedData.h with their contents as raw string literals.
 """
 
-import hashlib
 import os
-import sys
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)

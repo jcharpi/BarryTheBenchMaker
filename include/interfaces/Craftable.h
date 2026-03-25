@@ -12,8 +12,6 @@ public:
 		const std::unordered_map<ItemId, int>& itemsRequired);
 
 	int GetTimeToCraft() const;
-	void SetTimeToCraft(int newTimeToCraft);
-
 	const std::unordered_map<ItemId, int>& GetItemsRequired() const;
 	void SetItemsRequired(const std::unordered_map<ItemId, int>& newItemsRequired);
 };

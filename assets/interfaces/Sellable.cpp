@@ -7,7 +7,3 @@ Sellable::Sellable(ItemId id, std::string name, int sellAmount) :
 int Sellable::GetSellAmount() const {
 	return sellAmount;
 }
-
-void Sellable::SetSellAmount(int newSellAmount) {
-	sellAmount = newSellAmount;
-}

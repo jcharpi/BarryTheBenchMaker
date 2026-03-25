@@ -75,6 +75,9 @@
     <ClCompile Include="assets\Voyage.cpp">
       <Filter>assets</Filter>
     </ClCompile>
+    <ClCompile Include="assets\World.cpp">
+      <Filter>assets</Filter>
+    </ClCompile>
     <ClCompile Include="BarryTheBenchMaker.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -120,7 +123,16 @@
     <ClInclude Include="include\Player.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\Random.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\StoryPhase.h">
+      <Filter>include</Filter>
+    </ClInclude>
     <ClInclude Include="include\Voyage.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\World.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\EmbeddedData.h">
